@@ -2,7 +2,14 @@ import React, { SVGProps } from "react";
 
 function CartIndicator(props: SVGProps<SVGSVGElement>) {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" width={props.width} height={props.height} fill="none" viewBox="0 0 32 28">
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width={props.width}
+			height={props.height}
+			fill="none"
+			viewBox="0 0 32 28"
+			{...props}
+		>
 			<path
 				fill={props.color}
 				stroke={props.color}
