@@ -49,6 +49,10 @@ module.exports = {
 				"paragraph-4": ["1rem", "2rem"],
 				"paragraph-5": ["0.875rem", "1.5rem"],
 			},
+
+			borderRadius: {
+				"4xl": "2rem",
+			},
 		},
 	},
 	plugins: [],
