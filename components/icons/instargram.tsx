@@ -2,23 +2,16 @@ import React, { SVGProps } from "react";
 
 function Instargram(props: SVGProps<SVGSVGElement>) {
 	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width={props.width}
-			height={props.height}
-			fill="none"
-			viewBox="0 0 24 24"
-			{...props}
-		>
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
 			<path
-				stroke={props.color}
+				stroke="currentColor"
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				strokeWidth="2"
 				d="M16.5 3h-9A4.5 4.5 0 003 7.5v9A4.5 4.5 0 007.5 21h9a4.5 4.5 0 004.5-4.5v-9A4.5 4.5 0 0016.5 3z"
 			></path>
 			<path
-				stroke={props.color}
+				stroke="currentColor"
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				strokeWidth="2"
