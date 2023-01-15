@@ -7,15 +7,14 @@ function GoBack(props: SVGProps<SVGSVGElement>) {
 			width={props.width}
 			height={props.height}
 			fill="none"
-			viewBox="0 0 24 24"
+			viewBox="0 0 16 16"
 			{...props}
 		>
 			<path
-				stroke={props.color}
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth="2"
-				d="M16.5 21l-9-9 9-9"
+				fill="#000"
+				fillRule="evenodd"
+				d="M11.707 1.293a1 1 0 010 1.414L6.414 8l5.293 5.293a1 1 0 01-1.414 1.414l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 0z"
+				clipRule="evenodd"
 			></path>
 		</svg>
 	);
