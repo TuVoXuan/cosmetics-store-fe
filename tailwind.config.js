@@ -35,6 +35,13 @@ module.exports = {
 					40: "rgba(247, 250, 252, 0.4)",
 					24: "rgba(247, 250, 252, 0.24)",
 				},
+				"black-dark": {
+					1: "#000000",
+					2: "#1E1E27",
+					3: "#14141B",
+					4: "#2C2C37",
+				},
+				"white-light": "#ffffff",
 			},
 
 			fontSize: {

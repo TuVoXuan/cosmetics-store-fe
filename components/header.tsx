@@ -26,7 +26,7 @@ export default function Header() {
 	};
 
 	return (
-		<header className="relative flex items-center justify-between">
+		<header className="relative flex items-center justify-between dark:bg-dark-100">
 			<div className="hidden h-12 lg:block">
 				<Image
 					className="w-auto h-full aspect-auto"
@@ -36,14 +36,21 @@ export default function Header() {
 					alt="logo"
 				/>
 			</div>
-			<div className=" p-3 rounded-full cursor-pointer bg-gray-accent w-fit lg:absolute lg:left-[50%] lg:-translate-x-[50%] hover:bg-primary-100 group">
-				<Menu className="group-hover:text-light-100" height={24} width={24} />
+			<div className=" p-3 rounded-full cursor-pointer bg-gray-accent w-fit lg:absolute lg:left-[50%] lg:-translate-x-[50%] hover:bg-primary-100 group dark:bg-dark-40">
+				<Menu className="group-hover:text-light-100 dark:text-light-100" height={24} width={24} />
 			</div>
 
 			<div ref={logoRef} className="absolute h-12 left-[50%] -translate-x-[50%] lg:hidden">
 				<Image
-					className="w-auto h-full aspect-auto sm:hidden"
+					className="w-auto h-full aspect-auto sm:hidden dark:hidden"
 					src={"./images/logo/logo-secondary-lightBg.svg"}
+					height={100}
+					width={100}
+					alt="logo"
+				/>
+				<Image
+					className="hidden w-auto h-full aspect-auto sm:hidden dark:block"
+					src={"./images/logo/logo-secondary-darkBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
@@ -70,7 +77,12 @@ export default function Header() {
 					/>
 				)}
 
-				<CartIndicator className="cursor-pointer sm:mr-6 sm:ml-8" height={28} width={32} color="#000" />
+				<CartIndicator
+					className="cursor-pointer sm:mr-6 sm:ml-8"
+					height={28}
+					width={32}
+					color="#000"
+				/>
 				<Profile className="hidden cursor-pointer sm:block" height={24} width={24} color="#000" />
 			</div>
 		</header>
