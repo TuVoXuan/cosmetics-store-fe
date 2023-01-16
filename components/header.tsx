@@ -26,38 +26,59 @@ export default function Header() {
 	};
 
 	return (
-		<header className="relative flex items-center justify-between dark:bg-dark-100">
+		<header className="relative flex items-center justify-between dark:bg-black-dark-3">
 			<div className="hidden h-12 lg:block">
+				{/* light logo */}
 				<Image
-					className="w-auto h-full aspect-auto"
-					src={"./images/logo/logo-primary-lightBg.svg"}
+					className="w-auto h-full aspect-auto dark:hidden"
+					src={"./images/logo/light/logo-primary-lightBg.svg"}
+					height={100}
+					width={100}
+					alt="logo"
+				/>
+
+				{/* dark logo */}
+				<Image
+					className="hidden w-auto h-full aspect-auto dark:lg:block"
+					src={"./images/logo/dark/logo-primary-darkBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
 				/>
 			</div>
-			<div className=" p-3 rounded-full cursor-pointer bg-gray-accent w-fit lg:absolute lg:left-[50%] lg:-translate-x-[50%] hover:bg-primary-100 group dark:bg-dark-40">
+			<div className=" p-3 rounded-full cursor-pointer bg-gray-accent w-fit lg:absolute lg:left-[50%] lg:-translate-x-[50%] hover:bg-primary-100 group dark:bg-black-dark-2">
 				<Menu className="group-hover:text-light-100 dark:text-light-100" height={24} width={24} />
 			</div>
 
 			<div ref={logoRef} className="absolute h-12 left-[50%] -translate-x-[50%] lg:hidden">
+				{/* light logo */}
 				<Image
-					className="w-auto h-full aspect-auto sm:hidden dark:hidden"
-					src={"./images/logo/logo-secondary-lightBg.svg"}
+					className="w-auto h-full aspect-auto md:hidden dark:hidden"
+					src={"./images/logo/light/logo-secondary-lightBg.svg"}
+					height={100}
+					width={100}
+					alt="logo"
+				/>
+
+				<Image
+					className="hidden w-auto h-full aspect-auto md:block dark:hidden"
+					src={"./images/logo/light/logo-primary-lightBg.svg"}
+					height={100}
+					width={100}
+					alt="logo"
+				/>
+
+				{/* dark light */}
+				<Image
+					className="hidden w-auto h-full aspect-auto md:hidden dark:block md:dark:hidden"
+					src={"./images/logo/dark/logo-secondary-darkBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
 				/>
 				<Image
-					className="hidden w-auto h-full aspect-auto sm:hidden dark:block"
-					src={"./images/logo/logo-secondary-darkBg.svg"}
-					height={100}
-					width={100}
-					alt="logo"
-				/>
-				<Image
-					className="hidden w-auto h-full aspect-auto sm:block"
-					src={"./images/logo/logo-primary-lightBg.svg"}
+					className="hidden w-auto h-full aspect-auto dark:md:block"
+					src={"./images/logo/dark/logo-primary-darkBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
@@ -69,7 +90,7 @@ export default function Header() {
 					<SearchInput onClose={handleCloseSearchInput} />
 				) : (
 					<Search
-						className="hidden cursor-pointer sm:block"
+						className="hidden cursor-pointer md:block dark:text-light-100"
 						height={24}
 						width={24}
 						color="#000"
@@ -78,12 +99,17 @@ export default function Header() {
 				)}
 
 				<CartIndicator
-					className="cursor-pointer sm:mr-6 sm:ml-8"
+					className="cursor-pointer md:mr-6 md:ml-8 dark:text-light-100"
 					height={28}
 					width={32}
 					color="#000"
 				/>
-				<Profile className="hidden cursor-pointer sm:block" height={24} width={24} color="#000" />
+				<Profile
+					className="hidden cursor-pointer md:block dark:text-light-100"
+					height={24}
+					width={24}
+					color="#000"
+				/>
 			</div>
 		</header>
 	);

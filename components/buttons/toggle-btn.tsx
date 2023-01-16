@@ -26,7 +26,7 @@ export default function ToggleBtn() {
 			<Switch
 				checked={dark}
 				onChange={Toggle}
-				className={`${dark ? "bg-dark-100" : "bg-gray-accent"}
+				className={`${dark ? "bg-black-dark-2" : "bg-gray-accent"}
           relative inline-flex w-14 p-1 shrink-0 cursor-pointer rounded-2xl border-none transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
 			>
 				<div
@@ -34,7 +34,11 @@ export default function ToggleBtn() {
 					className={`${dark ? "translate-x-[100%]" : "translate-x-0"}
             pointer-events-none inline-block p-1 transform rounded-full bg-primary-100 shadow-lg ring-0 transition duration-200 ease-in-out`}
 				>
-					{dark ? <Moon width={16} height={16} color="#F7FAFC" /> : <Sun width={16} height={16} color="#F7FAFC" />}
+					{dark ? (
+						<Moon width={16} height={16} color="#F7FAFC" />
+					) : (
+						<Sun width={16} height={16} color="#F7FAFC" />
+					)}
 				</div>
 			</Switch>
 		</div>
