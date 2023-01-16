@@ -25,7 +25,7 @@ export default function SearchInput({ onClose }: Props) {
 	return (
 		<div
 			ref={searchCoverRef}
-			className="flex items-center h-12 text-dark-100 rounded-[32px] border-2 border-gray-accent py-3 px-4 box-border"
+			className="flex items-center h-12 text-dark-100 rounded-[32px] border-2 dark:border-black-dark-2 border-gray-accent py-3 px-4 box-border"
 		>
 			<Search className="dark:text-light-100" height={24} width={24} color="#000" />
 			<input
