@@ -7,7 +7,7 @@ import Twitter from "./icons/twitter";
 
 export default function Footer() {
 	return (
-		<section className="dark:bg-black-dark-3 grid grid-cols-2 mb-10 gap-x-16 md:gap-x-28 gap-y-14 lg:flex lg:justify-between">
+		<section className="dark:bg-black-dark-3 grid grid-cols-2 mb-10 bg-white-light gap-x-16 md:gap-x-28 gap-y-14 lg:flex lg:justify-between">
 			<div>
 				{/* Light icons */}
 				<Image
