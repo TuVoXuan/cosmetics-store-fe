@@ -24,6 +24,7 @@ export default function Header({ onShowNavbar }: Props) {
 	const navbarListRef = useRef<HTMLUListElement>(null);
 	const headerRef = useRef<HTMLElement>(null);
 	const categoriesRef = useRef<HTMLDivElement>(null);
+	const categoriesTagRef = useRef<HTMLParagraphElement>(null);
 
 	const [showNavbar, setShowNavbar] = useState<boolean>(false);
 	// const [showCategories, setShowCategories] = useState<boolean>(false);
@@ -76,6 +77,12 @@ export default function Header({ onShowNavbar }: Props) {
 					navbarListRef.current.classList.remove("h-[552px]");
 				}
 			}
+
+			if (categoriesTagRef.current) {
+				if (categoriesTagRef.current.classList.contains("text-primary-100")) {
+					categoriesTagRef.current.classList.remove("text-primary-100", "dark:text-primary-100");
+				}
+			}
 		}
 	};
 
@@ -111,10 +118,20 @@ export default function Header({ onShowNavbar }: Props) {
 					navbarListRef.current.classList.add("-translate-x-[110px]");
 				}
 
-				if (!navbarListRef.current.classList.contains("h-[552px]")) {
-					navbarListRef.current.classList.add("h-[552px]");
+				if (window.innerHeight > 980) {
+					if (!navbarListRef.current.classList.contains("h-[552px]")) {
+						navbarListRef.current.classList.add("h-[552px]");
+					} else {
+						navbarListRef.current.classList.remove("h-[552px]");
+					}
+				}
+			}
+
+			if (categoriesTagRef.current) {
+				if (!categoriesTagRef.current.classList.contains("text-primary-100")) {
+					categoriesTagRef.current.classList.add("text-primary-100", "dark:text-primary-100");
 				} else {
-					navbarListRef.current.classList.remove("h-[552px]");
+					categoriesTagRef.current.classList.remove("text-primary-100", "dark:text-primary-100");
 				}
 			}
 		}
@@ -239,23 +256,26 @@ export default function Header({ onShowNavbar }: Props) {
 			{/* navbar */}
 			<section
 				ref={navbarRef}
-				className="fixed pt-[110px] top-0 bottom-0 left-0 right-0 z-[2] hidden px-8 bg-white-light md:px-10 lg:px-12 xl:px-24"
+				className="fixed pt-[110px] top-0 bottom-0 left-0 right-0 z-[2] hidden px-8 bg-white-light dark:bg-black-dark-3 md:px-10 lg:px-12 xl:px-24"
 			>
 				<SearchInput className="mb-6 md:hidden" />
 
 				<ul
 					ref={navbarListRef}
-					className="flex flex-col items-center mx-auto text-center transition-transform gap-y-6"
+					className="flex flex-col items-center mx-auto text-center transition-transform select-none lg:overflow-y-auto gap-y-6 dark:text-white-light"
 				>
 					<li className="text-paragraph-1 text-primary-100">Home</li>
-					<div onClick={handleShowCategories} className="md:relative">
-						<div className="flex items-center text-paragraph-1 gap-x-4">
+					<div onClick={handleShowCategories} className="md:relative dark:text-white-light">
+						<div
+							ref={categoriesTagRef}
+							className="flex items-center duration-300 ease-linear cursor-pointer text-paragraph-1 gap-x-4 hover:text-primary-100"
+						>
 							Categories
-							<GoForward height={16} width={16} stroke={white_light} fill={black_dark[1]} />
+							<GoForward height={16} width={16} />
 						</div>
 						<div
 							ref={categoriesRef}
-							className="fixed z-[2] bg-white-light top-0 bottom-0 left-0 right-0 p-8 hidden transition-all ease-linear duration-300 md:absolute md:top-0 md:left-[calc(100%+70px)] md:p-0"
+							className="fixed z-[2] bg-white-light top-0 bottom-0 left-0 right-0 p-8 hidden transition-all ease-linear duration-300 md:absolute md:top-0 md:left-[calc(100%+70px)] md:p-0 dark:bg-black-dark-3"
 						>
 							<nav className="flex justify-between md:hidden">
 								<button
@@ -271,21 +291,43 @@ export default function Header({ onShowNavbar }: Props) {
 									<Delete className="dark:text-light-100" height={24} width={24} />
 								</button>
 							</nav>
-							<ul className="space-y-6 text-center text-paragraph-1">
-								<li>On sale</li>
-								<li>Featured</li>
-								<li>Masks</li>
-								<li>Eye care</li>
-								<li>Moisturizers</li>
-								<li>Treatments</li>
-								<li>Night Care</li>
-								<li>Sun Care</li>
+							<ul className="space-y-6 text-center select-none text-paragraph-1">
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									On sale
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Featured
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Masks
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Eye care
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Moisturizers
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Treatments
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Night Care
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Sun Care
+								</li>
 							</ul>
 						</div>
 					</div>
-					<li className="text-paragraph-1">Blog</li>
-					<li className="text-paragraph-1">About</li>
-					<li className="text-paragraph-1">Contact</li>
+					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
+						Blog
+					</li>
+					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
+						About
+					</li>
+					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
+						Contact
+					</li>
 				</ul>
 
 				<PrimaryBtn title="Login" size="small" type="primary" className="w-full mt-6 mb-[68px]" />
