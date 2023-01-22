@@ -23,10 +23,13 @@ export default function RadioInput({ children, onSelect }: Props) {
 	};
 
 	return (
-		<div onClick={handleClick} className="flex items-center select-none gap-x-4 group dark:text-white-light">
+		<div
+			onClick={handleClick}
+			className="flex items-center select-none gap-x-4 group dark:text-white-light"
+		>
 			<div
 				ref={btnRef}
-				className=" w-6 h-6 transition-all duration-300 ease-linear border-2 rounded-full cursor-pointer border-gray-accent group-hover:border-primary-100 dark:group-hover:border-primary-100 dark:border-black-dark-2 "
+				className="w-6 h-6 transition-all duration-300 ease-linear border-2 rounded-full cursor-pointer shrink-0 border-gray-accent group-hover:border-primary-100 dark:group-hover:border-primary-100 dark:border-black-dark-2"
 			></div>
 			{children}
 		</div>
