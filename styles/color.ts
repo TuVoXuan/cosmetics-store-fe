@@ -28,3 +28,12 @@ export const light = {
 	40: "rgba(247, 250, 252, 0.4)",
 	24: "rgba(247, 250, 252, 0.24)",
 };
+
+export const black_dark = {
+	1: "#000000",
+	2: "#1E1E27",
+	3: "#14141B",
+	4: "#2C2C37",
+};
+
+export const white_light = "#ffffff";
