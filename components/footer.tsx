@@ -7,19 +7,19 @@ import Twitter from "./icons/twitter";
 
 export default function Footer() {
 	return (
-		<section className="dark:bg-black-dark-3 grid grid-cols-2 mb-10 bg-white-light gap-x-16 md:gap-x-28 gap-y-14 lg:flex lg:justify-between">
+		<section className="grid grid-cols-2 mb-10 dark:bg-black-dark-3 bg-white-light gap-x-16 md:gap-x-28 gap-y-14 lg:flex lg:justify-between">
 			<div>
 				{/* Light icons */}
 				<Image
 					className="md:hidden dark:hidden"
-					src={"./images/logo/light/logo-secondary-lightBg.svg"}
+					src={"/images/logo/light/logo-secondary-lightBg.svg"}
 					alt="logo-mobile"
 					width={74}
 					height={32}
 				/>
 				<Image
 					className="hidden md:block dark:hidden"
-					src={"./images/logo/light/logo-primary-lightBg.svg"}
+					src={"/images/logo/light/logo-primary-lightBg.svg"}
 					alt="logo-mobile"
 					width={115}
 					height={32}
@@ -28,14 +28,14 @@ export default function Footer() {
 				{/* Dark icons */}
 				<Image
 					className="hidden md:dark:hidden dark:block"
-					src={"./images/logo/dark/logo-secondary-darkBg.svg"}
+					src={"/images/logo/dark/logo-secondary-darkBg.svg"}
 					alt="logo-mobile"
 					width={74}
 					height={32}
 				/>
 				<Image
 					className="hidden dark:md:block"
-					src={"./images/logo/dark/logo-primary-darkBg.svg"}
+					src={"/images/logo/dark/logo-primary-darkBg.svg"}
 					alt="logo-mobile"
 					width={115}
 					height={32}

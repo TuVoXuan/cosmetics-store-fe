@@ -31,7 +31,7 @@ export default function Header() {
 				{/* light logo */}
 				<Image
 					className="w-auto h-full aspect-auto dark:hidden"
-					src={"./images/logo/light/logo-primary-lightBg.svg"}
+					src={"/images/logo/light/logo-primary-lightBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
@@ -40,7 +40,7 @@ export default function Header() {
 				{/* dark logo */}
 				<Image
 					className="hidden w-auto h-full aspect-auto dark:lg:block"
-					src={"./images/logo/dark/logo-primary-darkBg.svg"}
+					src={"/images/logo/dark/logo-primary-darkBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
@@ -54,7 +54,7 @@ export default function Header() {
 				{/* light logo */}
 				<Image
 					className="w-auto h-full aspect-auto md:hidden dark:hidden"
-					src={"./images/logo/light/logo-secondary-lightBg.svg"}
+					src={"/images/logo/light/logo-secondary-lightBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
@@ -62,7 +62,7 @@ export default function Header() {
 
 				<Image
 					className="hidden w-auto h-full aspect-auto md:block dark:hidden"
-					src={"./images/logo/light/logo-primary-lightBg.svg"}
+					src={"/images/logo/light/logo-primary-lightBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
@@ -71,14 +71,14 @@ export default function Header() {
 				{/* dark light */}
 				<Image
 					className="hidden w-auto h-full aspect-auto md:hidden dark:block md:dark:hidden"
-					src={"./images/logo/dark/logo-secondary-darkBg.svg"}
+					src={"/images/logo/dark/logo-secondary-darkBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
 				/>
 				<Image
 					className="hidden w-auto h-full aspect-auto dark:md:block"
-					src={"./images/logo/dark/logo-primary-darkBg.svg"}
+					src={"/images/logo/dark/logo-primary-darkBg.svg"}
 					height={100}
 					width={100}
 					alt="logo"
@@ -104,12 +104,7 @@ export default function Header() {
 					width={32}
 					color="#000"
 				/>
-				<Profile
-					className="hidden cursor-pointer md:block dark:text-light-100"
-					height={24}
-					width={24}
-					color="#000"
-				/>
+				<Profile className="hidden cursor-pointer md:block dark:text-light-100" height={24} width={24} color="#000" />
 			</div>
 		</header>
 	);
