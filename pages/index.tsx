@@ -1,4 +1,4 @@
-import RadioInput from "../components/inputs/radio-input";
+import Checkbox from "../components/inputs/checkbox";
 import { useSession, signOut } from "next-auth/react";
 import Button from "../components/buttons/button";
 import { useRouter } from "next/router";
@@ -21,7 +21,10 @@ export default function Home() {
 				) : (
 					<>
 						<p>You are not signed in</p>
-						<button className="px-4 py-2 bg-red-400 border rounded-md" onClick={() => handleSignIn()}>
+						<button
+							className="px-4 py-2 bg-red-400 border rounded-md"
+							onClick={() => handleSignIn()}
+						>
 							Sign In
 						</button>
 					</>

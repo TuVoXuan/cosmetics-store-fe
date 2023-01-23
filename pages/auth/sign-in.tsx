@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/buttons/button";
 import Input from "../../components/inputs/input";
-import RadioInput from "../../components/inputs/radio-input";
+import Checkbox from "../../components/inputs/checkbox";
 import TitlePage from "../../components/title-page/title-page";
 
 type FormValues = {
@@ -34,7 +34,8 @@ export default function SignIn() {
 	const { data: session, status } = useSession();
 	const { push } = useRouter();
 	let { error } = useRouter().query;
-	const errorMessage = error && (errorsNextAuth[error as keyof typeof errorsNextAuth] ?? errorsNextAuth.default);
+	const errorMessage =
+		error && (errorsNextAuth[error as keyof typeof errorsNextAuth] ?? errorsNextAuth.default);
 
 	if (session) {
 		push("/");
@@ -80,13 +81,19 @@ export default function SignIn() {
 					error={errors.password?.message}
 					type="password"
 				/>
-				<RadioInput>Ghi nhớ tài khoản</RadioInput>
+				<Checkbox>Ghi nhớ tài khoản</Checkbox>
 				<div className="space-y-6">
 					<Button btnType="submit" title="Đăng nhập" type="primary" className="w-full" />
-					<button className="px-4 py-2 bg-red-400 border rounded-md" onClick={() => signIn("google")}>
+					<button
+						className="px-4 py-2 bg-red-400 border rounded-md"
+						onClick={() => signIn("google")}
+					>
 						Sign in with google
 					</button>
-					<button className="px-4 py-2 bg-red-400 border rounded-md" onClick={() => signIn("facebook")}>
+					<button
+						className="px-4 py-2 bg-red-400 border rounded-md"
+						onClick={() => signIn("facebook")}
+					>
 						Sign in with facebook
 					</button>
 					<div className="space-y-6 md:grid md:grid-cols-2 md:items-center">

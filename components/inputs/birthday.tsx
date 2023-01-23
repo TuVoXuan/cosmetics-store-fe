@@ -19,8 +19,13 @@ export default function Birthday({ className, error, label, name, option, regist
 	const [selectedDate, setSelectedDate] = useState<string>("");
 
 	const handleSelectedDate = (e: any) => {
-		const date = new Date(e.target.value);
-		setSelectedDate(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`);
+		console.log("e.target.value: ", e.target.value);
+		if (e.target.value) {
+			const date = new Date(e.target.value);
+			setSelectedDate(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`);
+		} else {
+			setSelectedDate("");
+		}
 	};
 
 	const handleClickCalendarIcon = () => {
@@ -41,11 +46,11 @@ export default function Birthday({ className, error, label, name, option, regist
 					ref(e);
 					inputDateRef.current = e;
 				}}
-				className="absolute z-0 translate-y-1/2 bg-transparent"
+				className="absolute z-0 translate-y-1/2 bg-transparent left-1"
 				type="date"
 				onChange={(e) => {
 					onChange(e);
-					handleClickCalendarIcon();
+					handleSelectedDate(e);
 				}}
 			/>
 			<div className="relative dark:bg-black-dark-3">

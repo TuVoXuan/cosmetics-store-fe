@@ -29,7 +29,7 @@ export default function CodeInput({ className, error, label, name, option, regis
 					placeholder="1234"
 					maxLength={6}
 				/>
-				<button className="absolute py-3 pl-4 pr-6 rounded-r-full whitespace-nowrap bottom-[2px] right-0  bg-primary-100 text-white-light font-semibold">
+				<button className="absolute py-3 md:py-4 md:text-heading-4 pl-4 pr-6 rounded-r-full whitespace-nowrap bottom-[2px] right-0  bg-primary-100 text-white-light font-semibold">
 					Lấy mã
 				</button>
 			</div>

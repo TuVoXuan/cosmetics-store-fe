@@ -1,11 +1,11 @@
 import { signIn } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/buttons/button";
 import Birthday from "../../components/inputs/birthday";
 import CodeInput from "../../components/inputs/code";
 import Input from "../../components/inputs/input";
-import RadioInput from "../../components/inputs/radio-input";
+import Checkbox from "../../components/inputs/checkbox";
 import TitlePage from "../../components/title-page/title-page";
 import { Gender } from "../../constants/enums";
 
@@ -16,6 +16,7 @@ type FormValues = {
 	gender: Gender;
 	birthday: Date;
 	code: number;
+	agreePollicy: boolean;
 };
 
 export default function SignUp() {
@@ -25,14 +26,17 @@ export default function SignUp() {
 		formState: { errors },
 	} = useForm<FormValues>();
 
-	const onSubmit = (data: FormValues) => console.log(data);
+	const onSubmit = (data: FormValues) => {
+		// console.log("data: ", data);
+		alert("submit form");
+	};
 
 	return (
 		<div className="pb-[104px] dark:bg-black-dark-3">
 			<TitlePage subtitle="Đăng ký" title="Tạo tài khoản của bạn" />
 			<form
 				id="registerForm"
-				className="space-y-10 lg:w-[536px] lg:mx-auto"
+				className="space-y-10 lg:w-[496px] lg:mx-auto"
 				// onSubmit={handleSubmit(onSubmit)}
 			>
 				<Input
@@ -80,7 +84,7 @@ export default function SignUp() {
 							message: "Yêu cầu họ tên",
 						},
 					}}
-					error={errors.password?.message}
+					error={errors.name?.message}
 					type="text"
 				/>
 				<CodeInput
@@ -113,13 +117,23 @@ export default function SignUp() {
 					}}
 					className="w-full"
 				/>
-				<RadioInput>
-					<p className="text-paragraph-4 dark:text-white-light">
+				<Checkbox
+					name="agreePollicy"
+					register={register}
+					option={{
+						required: {
+							value: true,
+							message: "Yêu cầu đồng ý chính sách",
+						},
+					}}
+					error={errors.agreePollicy?.message}
+				>
+					<p className="text-paragraph-4 dark:text-white-light md:text-paragraph-2">
 						Tôi đã đọc và đồng ý <a className="font-semibold underline">điều khoản & điều kiện</a>
 					</p>
-				</RadioInput>
+				</Checkbox>
 			</form>
-			<div className="grid grid-cols-1 gap-y-4 mt-14">
+			<div className="grid grid-cols-1 gap-y-4 mt-14 md:grid-cols-2 md:gap-x-6 md:w-[496px] md:mx-auto">
 				<Button
 					form="registerForm"
 					onClick={handleSubmit(onSubmit)}
