@@ -1,4 +1,4 @@
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/buttons/button";
@@ -7,38 +7,65 @@ import CodeInput from "../../components/inputs/code";
 import Input from "../../components/inputs/input";
 import Checkbox from "../../components/inputs/checkbox";
 import TitlePage from "../../components/title-page/title-page";
+import authApi from "../../api/auth-api";
+import { useRouter } from "next/router";
+import APP_PATH from "../../constants/app-path";
 import { Gender } from "../../constants/enums";
+import Dropdown from "../../components/inputs/dropdown";
 
 type FormValues = {
 	email: string;
 	password: string;
 	name: string;
-	gender: Gender;
 	birthday: Date;
-	code: number;
-	agreePollicy: boolean;
+	code: string;
+	agreePolicy: boolean;
 };
 
 export default function SignUp() {
+	const { data: session } = useSession();
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormValues>();
 
-	const onSubmit = (data: FormValues) => {
-		// console.log("data: ", data);
-		alert("submit form");
+	const [gender, setGender] = useState<string>("");
+	const [genderError, setGenderError] = useState<string>("");
+
+	const onSubmit = async (data: FormValues) => {
+		console.log("data: ", data);
+		console.log("gender: ", gender);
+		if (gender === "") {
+			setGenderError("Yêu cầu chọn giới tính");
+			return;
+		}
+
+		try {
+			const res = await authApi.signUp({
+				birthday: data.birthday,
+				email: data.email,
+				gender: gender as Gender,
+				name: data.name,
+				password: data.password,
+				code: data.code,
+			});
+			if (session) {
+				session.user.token = res.data.data.token;
+				session.user.email = res.data.data.user.email;
+				session.user.name = res.data.data.user.name;
+			}
+			router.push(APP_PATH.HOME);
+		} catch (error) {
+			console.log("error: ", error);
+		}
 	};
 
 	return (
 		<div className="pb-[104px] dark:bg-black-dark-3">
 			<TitlePage subtitle="Đăng ký" title="Tạo tài khoản của bạn" />
-			<form
-				id="registerForm"
-				className="space-y-10 lg:w-[496px] lg:mx-auto"
-				// onSubmit={handleSubmit(onSubmit)}
-			>
+			<form id="registerForm" className="space-y-10 lg:w-[496px] lg:mx-auto">
 				<Input
 					name="email"
 					register={register}
@@ -67,6 +94,11 @@ export default function SignUp() {
 						required: {
 							value: true,
 							message: "Yêu cầu mật khẩu",
+						},
+						pattern: {
+							value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+							message:
+								"Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
 						},
 					}}
 					error={errors.password?.message}
@@ -117,8 +149,33 @@ export default function SignUp() {
 					}}
 					className="w-full"
 				/>
+
+				<Dropdown
+					label="Giới tính"
+					size={"large"}
+					options={[
+						{
+							label: "Chọn giới tính",
+							value: "",
+						},
+						{
+							label: "Female",
+							value: "female",
+						},
+						{
+							label: "Male",
+							value: "male",
+						},
+						{
+							label: "Other",
+							value: "other",
+						},
+					]}
+					onChange={(value: string) => setGender(value)}
+					error={genderError}
+				/>
 				<Checkbox
-					name="agreePollicy"
+					name="agreePolicy"
 					register={register}
 					option={{
 						required: {
@@ -126,7 +183,7 @@ export default function SignUp() {
 							message: "Yêu cầu đồng ý chính sách",
 						},
 					}}
-					error={errors.agreePollicy?.message}
+					error={errors.agreePolicy?.message}
 				>
 					<p className="text-paragraph-4 dark:text-white-light md:text-paragraph-2">
 						Tôi đã đọc và đồng ý <a className="font-semibold underline">điều khoản & điều kiện</a>
@@ -137,11 +194,14 @@ export default function SignUp() {
 				<Button
 					form="registerForm"
 					onClick={handleSubmit(onSubmit)}
-					title="Tại tài khoản"
 					type="primary"
 					className="w-full"
-				/>
-				<Button title="Đăng nhập" type="secondary" className="w-full" />
+				>
+					Tại tài khoản
+				</Button>
+				<Button type="secondary" className="w-full">
+					Đăng nhập
+				</Button>
 			</div>
 		</div>
 	);

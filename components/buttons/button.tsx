@@ -9,7 +9,7 @@ interface Props {
 	onClick?: () => void;
 }
 
-export default function Button({ children, type, className, form, onClick, btnType = "button", onClick }: Props) {
+export default function Button({ children, type, className, form, btnType = "button", onClick }: Props) {
 	const getCSSType = () => {
 		if (type === "primary") {
 			return "bg-primary-100 text-light-100";

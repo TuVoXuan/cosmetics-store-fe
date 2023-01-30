@@ -1,5 +1,4 @@
-declare global {
-	var _mongoClientPromise: Promise<MongoClient>;
+declare interface IOption {
+	label: string;
+	value: string;
 }
-
-export {};
