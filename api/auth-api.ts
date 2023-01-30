@@ -26,9 +26,6 @@ const authApi = {
 	signIn: (body: ISignIn) => {
 		return axiosService.post<IResponseSuccess<ISignInWithSocialMediaRes>>(`${URL}/sign-in`, body);
 	},
-	signIn: (body: ISignIn) => {
-		return axiosService.post<IResponseSuccess<ISignInWithSocialMediaRes>>(`${URL}/sign-in`, body);
-	},
 };
 
 export default authApi;
