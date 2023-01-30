@@ -3,6 +3,9 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/buttons/button";
+import BxlFacebook from "../../components/icons/bxl-facebook";
+import Facebook from "../../components/icons/facebook";
+import Google from "../../components/icons/google";
 import Input from "../../components/inputs/input";
 import RadioInput from "../../components/inputs/radio-input";
 import TitlePage from "../../components/title-page/title-page";
@@ -14,16 +17,16 @@ type FormValues = {
 
 export default function SignIn() {
 	const errorsNextAuth = {
-		Signin: "Try signing with a different account.",
-		OAuthSignin: "Try signing with a different account.",
-		OAuthCallback: "Try signing with a different account.",
-		OAuthCreateAccount: "Try signing with a different account.",
-		EmailCreateAccount: "Try signing with a different account.",
-		Callback: "Try signing with a different account.",
-		OAuthAccountNotLinked: "To confirm your identity, sign in with the same account you used originally.",
-		EmailSignin: "Check your email address.",
-		CredentialsSignin: "Sign in failed. Check the details you provided are correct.",
-		default: "Unable to sign in.",
+		Signin: "Hãy thử lại với một tài khoản khác.",
+		OAuthSignin: "Hãy thử lại với một tài khoản khác.",
+		OAuthCallback: "Hãy thử lại với một tài khoản khác.",
+		OAuthCreateAccount: "Hãy thử lại với một tài khoản khác.",
+		EmailCreateAccount: "Hãy thử lại với một tài khoản khác.",
+		Callback: "Hãy thử lại với một tài khoản khác.",
+		OAuthAccountNotLinked: "Hãy đăng nhập bằng tài khoản bạn đã sử dụng ban đầu",
+		EmailSignin: "Hãy kiểm tra lại địa chỉ email.",
+		CredentialsSignin: "Đăng nhập thất bại. Hãy đảm bảo rằng các thông tin bạn cung cấp là chính xác",
+		default: "Không thể đăng nhập.",
 	};
 
 	const {
@@ -45,7 +48,9 @@ export default function SignIn() {
 	return (
 		<div className="pb-[104px] dark:bg-black-dark-3">
 			<TitlePage subtitle="Đăng nhập" title="Đăng nhập tài khoản của bạn" />
-			<p>{errorMessage}</p>
+			{errorMessage && (
+				<p className="lg:w-[536px] lg:mx-auto px-4 py-2 mb-2 text-white bg-red-400 rounded-md">{errorMessage}</p>
+			)}
 			<form className="space-y-10 lg:w-[536px] lg:mx-auto" onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					name="email"
@@ -82,15 +87,25 @@ export default function SignIn() {
 				/>
 				<RadioInput>Ghi nhớ tài khoản</RadioInput>
 				<div className="space-y-6">
-					<Button btnType="submit" title="Đăng nhập" type="primary" className="w-full" />
-					<button className="px-4 py-2 bg-red-400 border rounded-md" onClick={() => signIn("google")}>
-						Sign in with google
-					</button>
-					<button className="px-4 py-2 bg-red-400 border rounded-md" onClick={() => signIn("facebook")}>
-						Sign in with facebook
-					</button>
-					<div className="space-y-6 md:grid md:grid-cols-2 md:items-center">
-						<Button title="Tạo tài khoản" type="secondary" className="w-full" />
+					<Button btnType="submit" type="primary" className="w-full">
+						Đăng nhập
+					</Button>
+					<Button type="secondary" className="flex items-center justify-center w-full" onClick={() => signIn("google")}>
+						<Google width={24} height={24} className="inline mr-4 text-black dark:text-light-100" />
+						Đăng nhập với Google
+					</Button>
+					<Button
+						type="secondary"
+						className="flex items-center justify-center w-full"
+						onClick={() => signIn("facebook")}
+					>
+						<BxlFacebook width={24} height={24} className="inline mr-4 text-black dark:text-light-100" />
+						Đăng nhập với Facebook
+					</Button>
+					<div className="space-y-6 md:grid md:grid-cols-2 md:items-center md:gap-y-6 md:gap-x-2 md:space-y-0">
+						<Button type="secondary" className="w-full">
+							Tạo tài khoản
+						</Button>
 						<p className="font-normal text-center underline align-middle cursor-pointer md:text-paragraph-2 dark:text-white-light text-dark-100 text-heading-5">
 							Quên mật khẩu?
 						</p>

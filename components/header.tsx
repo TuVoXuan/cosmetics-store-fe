@@ -149,7 +149,7 @@ export default function Header({ onShowNavbar }: Props) {
 					{/* light logo */}
 					<Image
 						className="w-auto h-full aspect-auto dark:hidden"
-						src={"./images/logo/light/logo-primary-lightBg.svg"}
+						src={"/images/logo/light/logo-primary-lightBg.svg"}
 						height={100}
 						width={100}
 						alt="logo"
@@ -158,7 +158,7 @@ export default function Header({ onShowNavbar }: Props) {
 					{/* dark logo */}
 					<Image
 						className="hidden w-auto h-full aspect-auto dark:lg:block"
-						src={"./images/logo/dark/logo-primary-darkBg.svg"}
+						src={"/images/logo/dark/logo-primary-darkBg.svg"}
 						height={100}
 						width={100}
 						alt="logo"
@@ -179,7 +179,7 @@ export default function Header({ onShowNavbar }: Props) {
 					{/* light logo */}
 					<Image
 						className="w-auto h-full aspect-auto md:hidden dark:hidden"
-						src={"./images/logo/light/logo-secondary-lightBg.svg"}
+						src={"/images/logo/light/logo-secondary-lightBg.svg"}
 						height={100}
 						width={100}
 						alt="logo"
@@ -187,7 +187,7 @@ export default function Header({ onShowNavbar }: Props) {
 
 					<Image
 						className="hidden w-auto h-full aspect-auto md:block dark:hidden"
-						src={"./images/logo/light/logo-primary-lightBg.svg"}
+						src={"/images/logo/light/logo-primary-lightBg.svg"}
 						height={100}
 						width={100}
 						alt="logo"
@@ -196,14 +196,14 @@ export default function Header({ onShowNavbar }: Props) {
 					{/* dark light */}
 					<Image
 						className="hidden w-auto h-full aspect-auto md:hidden dark:block md:dark:hidden"
-						src={"./images/logo/dark/logo-secondary-darkBg.svg"}
+						src={"/images/logo/dark/logo-secondary-darkBg.svg"}
 						height={100}
 						width={100}
 						alt="logo"
 					/>
 					<Image
 						className="hidden w-auto h-full aspect-auto dark:md:block"
-						src={"./images/logo/dark/logo-primary-darkBg.svg"}
+						src={"/images/logo/dark/logo-primary-darkBg.svg"}
 						height={100}
 						width={100}
 						alt="logo"
@@ -288,7 +288,9 @@ export default function Header({ onShowNavbar }: Props) {
 					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">Contact</li>
 				</ul>
 
-				<Button title="Login" type="primary" className="w-full mt-6 mb-[68px]" />
+				<Button type="primary" className="w-full mt-6 mb-[68px]">
+					Đăng nhập
+				</Button>
 
 				<div className="fixed z-[2] flex gap-x-6 left-8 bottom-8 md:left-10 lg:left-12 lg:bottom-12 xl:left-24">
 					<div className="md:w-12 md:h-12 md:rounded-full md:bg-gray-accent md:dark:bg-black-dark-2 md:flex md:justify-center md:items-center">
