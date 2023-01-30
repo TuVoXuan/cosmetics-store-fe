@@ -34,3 +34,9 @@ declare interface ISignUpRes {
 		name: string;
 	};
 }
+
+declare interface ISignIn {
+	email: string;
+	password: string;
+	rememberMe?: boolean;
+}

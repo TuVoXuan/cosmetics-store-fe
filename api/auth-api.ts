@@ -1,4 +1,5 @@
 import {
+	ISignIn,
 	ISignInWithSocialMedia,
 	ISignInWithSocialMediaRes,
 	ISignUp,
@@ -21,6 +22,12 @@ const authApi = {
 	},
 	signUp: (body: ISignUp) => {
 		return axiosService.post<IResponseSuccess<ISignUpRes>>(`${URL}/sign-up`, body);
+	},
+	signIn: (body: ISignIn) => {
+		return axiosService.post<IResponseSuccess<ISignInWithSocialMediaRes>>(`${URL}/sign-in`, body);
+	},
+	signIn: (body: ISignIn) => {
+		return axiosService.post<IResponseSuccess<ISignInWithSocialMediaRes>>(`${URL}/sign-in`, body);
 	},
 };
 
