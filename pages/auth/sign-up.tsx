@@ -43,7 +43,7 @@ export default function SignUp() {
 		}
 
 		try {
-			const res = await authApi.signUp({
+			await authApi.signUp({
 				birthday: data.birthday,
 				email: data.email,
 				gender: gender as Gender,
@@ -51,12 +51,8 @@ export default function SignUp() {
 				password: data.password,
 				code: data.code,
 			});
-			if (session) {
-				session.user.token = res.data.data.token;
-				session.user.email = res.data.data.user.email;
-				session.user.name = res.data.data.user.name;
-			}
-			router.push(APP_PATH.HOME);
+
+			router.push(APP_PATH.SIGN_IN);
 		} catch (error) {
 			console.log("error: ", error);
 		}

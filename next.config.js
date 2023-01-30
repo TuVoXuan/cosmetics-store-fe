@@ -12,6 +12,7 @@ const nextConfig = {
 		FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
 		FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
 		MONGODB_URI: process.env.MONGODB_URI,
+		JWT_SECRET: process.env.JWT_SECRET,
 	},
 };
 
