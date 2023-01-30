@@ -22,3 +22,11 @@
 
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+	.checkboxActive {
+		@apply border-[6px] border-primary-100 dark:border-primary-100;
+	}
+	.checkboxNoActive {
+		@apply border-2 border-gray-accent dark:border-black-dark-2;
+	}
+}

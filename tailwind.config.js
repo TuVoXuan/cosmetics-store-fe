@@ -56,7 +56,7 @@ module.exports = {
 				"heading-5": ["1rem", "1.5rem"],
 				"heading-6": ["0.875rem", "1.5rem"],
 				"paragraph-1": ["1.5rem", "2.5rem"],
-				"paragraph-2": ["1.375rem", "2rem"],
+				"paragraph-2": ["1.25rem", "2rem"],
 				"paragraph-3": ["1.125rem", "2rem"],
 				"paragraph-4": ["1rem", "2rem"],
 				"paragraph-5": ["0.875rem", "1.5rem"],

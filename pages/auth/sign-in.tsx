@@ -7,7 +7,7 @@ import BxlFacebook from "../../components/icons/bxl-facebook";
 import Facebook from "../../components/icons/facebook";
 import Google from "../../components/icons/google";
 import Input from "../../components/inputs/input";
-import RadioInput from "../../components/inputs/radio-input";
+import Checkbox from "../../components/inputs/checkbox";
 import TitlePage from "../../components/title-page/title-page";
 
 type FormValues = {
@@ -85,7 +85,7 @@ export default function SignIn() {
 					error={errors.password?.message}
 					type="password"
 				/>
-				<RadioInput>Ghi nhớ tài khoản</RadioInput>
+				<Checkbox>Ghi nhớ tài khoản</Checkbox>
 				<div className="space-y-6">
 					<Button btnType="submit" type="primary" className="w-full">
 						Đăng nhập

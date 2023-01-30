@@ -102,7 +102,14 @@ export default function Header({ onShowNavbar }: Props) {
 			}
 		} else {
 			if (categoriesRef.current) {
-				categoriesRef.current.classList.remove("fixed", "z-[2]", "top-0", "bottom-0", "left-0", "right-0");
+				categoriesRef.current.classList.remove(
+					"fixed",
+					"z-[2]",
+					"top-0",
+					"bottom-0",
+					"left-0",
+					"right-0"
+				);
 			}
 			if (navbarListRef.current) {
 				if (navbarListRef.current.classList.contains("-translate-x-[110px]")) {
@@ -169,9 +176,17 @@ export default function Header({ onShowNavbar }: Props) {
 					className=" p-3 rounded-full cursor-pointer bg-gray-accent w-fit lg:absolute lg:left-[50%] lg:-translate-x-[50%] hover:bg-primary-100 group dark:bg-black-dark-2 transition-colors duration-300 ease-linear"
 				>
 					{showNavbar ? (
-						<Delete className="group-hover:text-light-100 dark:text-light-100" height={24} width={24} />
+						<Delete
+							className="group-hover:text-light-100 dark:text-light-100"
+							height={24}
+							width={24}
+						/>
 					) : (
-						<Menu className="group-hover:text-light-100 dark:text-light-100" height={24} width={24} />
+						<Menu
+							className="group-hover:text-light-100 dark:text-light-100"
+							height={24}
+							width={24}
+						/>
 					)}
 				</div>
 
@@ -229,7 +244,12 @@ export default function Header({ onShowNavbar }: Props) {
 						width={32}
 						color="#000"
 					/>
-					<Profile className="hidden cursor-pointer md:block dark:text-light-100" height={24} width={24} color="#000" />
+					<Profile
+						className="hidden cursor-pointer md:block dark:text-light-100"
+						height={24}
+						width={24}
+						color="#000"
+					/>
 				</div>
 			</section>
 
@@ -272,20 +292,42 @@ export default function Header({ onShowNavbar }: Props) {
 								</button>
 							</nav>
 							<ul className="space-y-6 text-center select-none text-paragraph-1">
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">On sale</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">Featured</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">Masks</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">Eye care</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">Moisturizers</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">Treatments</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">Night Care</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">Sun Care</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									On sale
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Featured
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Masks
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Eye care
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Moisturizers
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Treatments
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Night Care
+								</li>
+								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
+									Sun Care
+								</li>
 							</ul>
 						</div>
 					</div>
-					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">Blog</li>
-					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">About</li>
-					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">Contact</li>
+					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
+						Blog
+					</li>
+					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
+						About
+					</li>
+					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
+						Contact
+					</li>
 				</ul>
 
 				<Button type="primary" className="w-full mt-6 mb-[68px]">
