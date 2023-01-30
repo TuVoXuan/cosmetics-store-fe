@@ -7,6 +7,7 @@ import { selectUser } from "../redux/slices/user-slice";
 
 export default function Home() {
 	const { data: session } = useSession();
+	console.log("session: ", session);
 	const { push } = useRouter();
 	const user = useAppSelector(selectUser);
 
@@ -26,10 +27,7 @@ export default function Home() {
 				) : (
 					<>
 						<p>You are not signed in</p>
-						<button
-							className="px-4 py-2 bg-red-400 border rounded-md"
-							onClick={() => handleSignIn()}
-						>
+						<button className="px-4 py-2 bg-red-400 border rounded-md" onClick={() => handleSignIn()}>
 							Sign In
 						</button>
 					</>

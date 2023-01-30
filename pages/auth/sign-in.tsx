@@ -13,6 +13,7 @@ import TitlePage from "../../components/title-page/title-page";
 type FormValues = {
 	email: string;
 	password: string;
+	rememberMe: boolean;
 };
 
 export default function SignIn() {
@@ -43,7 +44,15 @@ export default function SignIn() {
 		push("/");
 	}
 
-	const onSubmit = (data: FormValues) => console.log(data);
+	const onSubmit = async (data: FormValues) => {
+		const res = await signIn("credentials", {
+			redirect: false,
+			email: data.email,
+			password: data.password,
+			rememberMe: data.rememberMe,
+			callbackUrl: `${window.location.origin}`,
+		});
+	};
 
 	return (
 		<div className="pb-[104px] dark:bg-black-dark-3">
@@ -85,7 +94,9 @@ export default function SignIn() {
 					error={errors.password?.message}
 					type="password"
 				/>
-				<Checkbox>Ghi nhớ tài khoản</Checkbox>
+				<Checkbox register={register} name="rememberMe">
+					Ghi nhớ tài khoản
+				</Checkbox>
 				<div className="space-y-6">
 					<Button btnType="submit" type="primary" className="w-full">
 						Đăng nhập

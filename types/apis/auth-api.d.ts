@@ -13,3 +13,9 @@ declare interface ISignInWithSocialMediaRes {
 		name: string;
 	};
 }
+
+declare interface ISignIn {
+	email: string;
+	password: string;
+	rememberMe?: boolean;
+}
