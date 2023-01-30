@@ -1,4 +1,3 @@
-import { signIn, useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/buttons/button";
@@ -12,6 +11,7 @@ import { useRouter } from "next/router";
 import APP_PATH from "../../constants/app-path";
 import { Gender } from "../../constants/enums";
 import Dropdown from "../../components/inputs/dropdown";
+import { toastError } from "../../util/toast";
 
 type FormValues = {
 	email: string;
@@ -23,11 +23,11 @@ type FormValues = {
 };
 
 export default function SignUp() {
-	const { data: session } = useSession();
 	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
+		getValues,
 		formState: { errors },
 	} = useForm<FormValues>();
 
@@ -54,6 +54,7 @@ export default function SignUp() {
 
 			router.push(APP_PATH.SIGN_IN);
 		} catch (error) {
+			toastError((error as IResponseError).error);
 			console.log("error: ", error);
 		}
 	};
@@ -131,6 +132,7 @@ export default function SignUp() {
 					}}
 					error={errors.code?.message}
 					className="w-full"
+					getValueRef={getValues}
 				/>
 				<Birthday
 					name="birthday"

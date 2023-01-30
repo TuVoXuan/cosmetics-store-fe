@@ -1,6 +1,17 @@
 import clsx from "clsx";
-import React from "react";
-import { RegisterOptions, UseFormRegister } from "react-hook-form";
+import React, { useRef, useState } from "react";
+import { RegisterOptions, UseFormGetValues, UseFormRegister } from "react-hook-form";
+import authApi from "../../api/auth-api";
+import { toastError, toastSuccess } from "../../util/toast";
+
+type FormValues = {
+	email: string;
+	password: string;
+	name: string;
+	birthday: Date;
+	code: string;
+	agreePolicy: boolean;
+};
 
 interface Props {
 	register: UseFormRegister<any>;
@@ -9,9 +20,37 @@ interface Props {
 	label?: string;
 	className?: string;
 	error?: string;
+	getValueRef: UseFormGetValues<FormValues>;
 }
 
-export default function CodeInput({ className, error, label, name, option, register }: Props) {
+export default function CodeInput({ className, error, label, name, option, register, getValueRef }: Props) {
+	const [countDown, setCountDown] = useState<number>(0);
+	const btnRef = useRef<HTMLButtonElement>(null);
+
+	const handleGetOTP = async () => {
+		try {
+			const email = getValueRef("email");
+			if (email) {
+				if (btnRef.current) {
+					btnRef.current.disabled = true;
+				}
+				await authApi.sendOTP(email);
+				toastSuccess("Send mail OTP success");
+				setTimeout(() => {
+					if (btnRef.current) {
+						btnRef.current.disabled = false;
+					}
+				}, 30000);
+			} else {
+				toastError("Email is empty");
+				// alert("email is empty");
+			}
+		} catch (error) {
+			toastError((error as IResponseError).error);
+			// alert("error");
+		}
+	};
+
 	return (
 		<div>
 			<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
@@ -29,10 +68,20 @@ export default function CodeInput({ className, error, label, name, option, regis
 					placeholder="1234"
 					maxLength={6}
 				/>
-				<button className="absolute py-3 md:py-4 md:text-heading-4 pl-4 pr-6 rounded-r-full whitespace-nowrap bottom-[2px] right-0  bg-primary-100 text-white-light font-semibold">
+				<button
+					ref={btnRef}
+					type="button"
+					onClick={handleGetOTP}
+					className="absolute py-3 md:py-4 md:text-heading-4 pl-4 pr-6 rounded-r-full whitespace-nowrap bottom-[2px] right-0  bg-primary-100 text-white-light font-semibold disabled:cursor-not-allowed disabled:bg-dark-64"
+				>
 					Lấy mã
 				</button>
 			</div>
+			{countDown > 0 ? (
+				<p className="pl-6 mt-1 text-paragraph-5 md:text-paragraph-4 md:mt-2">
+					resend email after {countDown} seconds
+				</p>
+			) : null}
 			{error && (
 				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
 					{error}
