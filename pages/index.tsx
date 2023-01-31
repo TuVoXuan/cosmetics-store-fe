@@ -25,6 +25,7 @@ import Quality from "../components/icons/quality";
 import Image from "next/image";
 import CommentCard from "../components/card/comment-card";
 import Button from "../components/buttons/button";
+import Input from "../components/inputs/input";
 
 const categories = [
 	{
@@ -68,7 +69,10 @@ export default function Home() {
 	const handleSignIn = () => push(`/auth/sign-in`);
 
 	return (
-		<section className="space-y-[104px] md:space-y-[112px] xl:space-y-[144px]">
+		<section
+			className="space-y-[104px] md:space-y-[112px] xl:space-y-[144px]
+			mb-[104px] md:mb-[112px] xl:mb-[144px]"
+		>
 			{/* banner */}
 			<div className="lg:bg-gray-accent lg:rounded-5xl lg:dark:bg-black-dark-2 dark:lg:rounded-5xl lg:relative">
 				<div className="lg:ml-12 lg:absolute lg:left-0 lg:w-[400px] xl:w-[496px] xl:ml-24 lg:top-0 lg:bottom-0 lg:content-center lg:grid">
@@ -229,6 +233,29 @@ export default function Home() {
 							<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 						</button>
 					</div>
+				</div>
+			</div>
+
+			{/* our newsletter */}
+			<div className="hidden md:block lg:bg-gray-accent dark:lg:bg-black-dark-2 lg:rounded-[48px] lg:py-16 xl:py-24 xl:rounded-[56px]">
+				<TitlePage
+					className="text-center mb-14 md:mb-10 lg:mb-12"
+					subtitle="Bản tin của chúng tôi"
+					title="Đăng ký nhận tin mới nhất từ chúng tôi"
+				/>
+
+				<div className="flex items-end justify-center gap-x-6">
+					<input
+						className="w-[448px] border-[2px] border-gray-accent font-semibold placeholder:text-dark-40 text-dark-100 
+						focus:border-primary-100 focus:outline-none dark:focus:border-primary-100 
+						dark:focus:outline-none px-6 py-3 text-heading-5 rounded-3xl md:px-6 md:py-4 
+						md:text-heading-4 md:rounded-4xl dark:border-black-dark-4 dark:bg-transparent 
+						dark:text-white-light dark:placeholder:text-light-40 dark:bg-black-dark-4"
+						placeholder="Email của bạn"
+					/>
+					<Button type="primary" className="h-full">
+						Đăng ký
+					</Button>
 				</div>
 			</div>
 		</section>
