@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: false,
-	images: {
-		loader: "akamai",
-		path: "/",
-	},
+	// images: {
+	// 	loader: "akamai",
+	// 	path: "/",
+	// },
 	env: {
 		API_URL: process.env.API_URL,
 		GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

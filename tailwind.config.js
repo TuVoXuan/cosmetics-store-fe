@@ -66,6 +66,13 @@ module.exports = {
 			screens: {
 				xl: "1440px",
 			},
+
+			maxWidth: {
+				"2/3": "66.666667%",
+			},
+			maxHeight: {
+				"2/3": "66.666667%",
+			},
 		},
 	},
 	plugins: [],

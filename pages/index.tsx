@@ -6,6 +6,8 @@ import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../redux/slices/user-slice";
 import TitlePage from "../components/title-page/title-page";
 import Image from "next/image";
+import ProductCard from "../components/card/product-card";
+import HyggeImage from "../components/Image/image";
 
 export default function Home() {
 	const { data: session } = useSession();
@@ -27,10 +29,31 @@ export default function Home() {
 						Mua ngay
 					</Button>
 				</div>
-				<div className=" lg:mt-12 lg:mb-6 rounded-5xl md:py-4 lg:flex lg:justify-end bg-gray-accent lg:bg-transparent dark:lg:bg-transparent lg:rounded-none dark:bg-black-dark-2 px-2 py-10 mt-10">
-					<div className="relative h-[221px] md:h-96 lg:h-[432px] lg:w-[576px] xl:w-[768px] xl:h-[576px]">
-						<Image className="mx-auto" src={"/images/banner/banner.svg"} fill alt="banner" />
-					</div>
+				<div className=" lg:mt-12 lg:mb-6 rounded-5xl md:py-4 lg:flex lg:justify-end bg-gray-accent lg:bg-transparent dark:lg:bg-transparent lg:rounded-none dark:bg-black-dark-2 px-2 py-10 mt-10 lg:pt-12 lg:pb-6 lg:pr-6 lg:pl-0 xl:pt-6">
+					<HyggeImage
+						className="h-[221px] md:h-96 lg:h-[432px] lg:w-[576px] xl:w-[768px] xl:h-[576px]"
+						src={"/images/banner/banner.svg"}
+						alt="banner"
+					/>
+				</div>
+			</div>
+			<div className="mt-[104px]">
+				<TitlePage
+					className="text-center mb-14 md:text-left"
+					subtitle="Sản phẩm"
+					title="Khám phá các sản phẩm của chúng tôi"
+				/>
+				<div className="space-y-14 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 lg:gap-x-14 md:space-y-0 md:gap-y-16 xl:grid-cols-4 xl:gap-x-12 xl:gap-y-[72px]">
+					<ProductCard />
+					<ProductCard />
+					<ProductCard />
+					<ProductCard />
+					<ProductCard />
+					<ProductCard />
+					<ProductCard />
+				</div>
+				<div className="flex justify-center mt-14">
+					<Button type="primary">Xem tất cả</Button>
 				</div>
 			</div>
 		</section>
