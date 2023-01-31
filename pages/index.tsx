@@ -4,6 +4,7 @@ import Button from "../components/buttons/button";
 import { useRouter } from "next/router";
 import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../redux/slices/user-slice";
+import TitlePage from "../components/title-page/title-page";
 
 export default function Home() {
 	const { data: session } = useSession();
@@ -13,26 +14,15 @@ export default function Home() {
 
 	const handleSignIn = () => push(`/auth/sign-in`);
 	return (
-		<>
+		<section>
 			<div>
-				{session ? (
-					<>
-						<p>You are signed in</p>
-						<p>token: {session.user.token}</p>
-						<p>name: {session.user.name}</p>
-						<button className="px-4 py-2 bg-red-400 border rounded-md" onClick={() => signOut()}>
-							Sign Out
-						</button>
-					</>
-				) : (
-					<>
-						<p>You are not signed in</p>
-						<button className="px-4 py-2 bg-red-400 border rounded-md" onClick={() => handleSignIn()}>
-							Sign In
-						</button>
-					</>
-				)}
+				<TitlePage
+					className="pt-14 pb-6"
+					subtitle="Sản phẩm chăm sóc da"
+					title="Chúng tôi cung cấp những sản phẩm tốt nhất cho làn da của bạn"
+				/>
+				<Button type="primary">Mua ngay</Button>
 			</div>
-		</>
+		</section>
 	);
 }

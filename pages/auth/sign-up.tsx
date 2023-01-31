@@ -61,7 +61,7 @@ export default function SignUp() {
 
 	return (
 		<div className="pb-[104px] dark:bg-black-dark-3">
-			<TitlePage subtitle="Đăng ký" title="Tạo tài khoản của bạn" />
+			<TitlePage className="py-14" subtitle="Đăng ký" title="Tạo tài khoản của bạn" />
 			<form id="registerForm" className="space-y-10 lg:w-[496px] lg:mx-auto">
 				<Input
 					name="email"
@@ -94,8 +94,7 @@ export default function SignUp() {
 						},
 						pattern: {
 							value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-							message:
-								"Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
+							message: "Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
 						},
 					}}
 					error={errors.password?.message}
@@ -189,12 +188,7 @@ export default function SignUp() {
 				</Checkbox>
 			</form>
 			<div className="grid grid-cols-1 gap-y-4 mt-14 md:grid-cols-2 md:gap-x-6 md:w-[496px] md:mx-auto">
-				<Button
-					form="registerForm"
-					onClick={handleSubmit(onSubmit)}
-					type="primary"
-					className="w-full"
-				>
+				<Button form="registerForm" onClick={handleSubmit(onSubmit)} type="primary" className="w-full">
 					Tại tài khoản
 				</Button>
 				<Button type="secondary" className="w-full">

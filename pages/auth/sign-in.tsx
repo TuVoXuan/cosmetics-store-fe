@@ -56,7 +56,7 @@ export default function SignIn() {
 
 	return (
 		<div className="pb-[104px] dark:bg-black-dark-3">
-			<TitlePage subtitle="Đăng nhập" title="Đăng nhập tài khoản của bạn" />
+			<TitlePage className="py-14" subtitle="Đăng nhập" title="Đăng nhập tài khoản của bạn" />
 			{errorMessage && (
 				<p className="lg:w-[536px] lg:mx-auto px-4 py-2 mb-2 text-white bg-red-400 rounded-md">{errorMessage}</p>
 			)}
