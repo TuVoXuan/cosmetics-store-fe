@@ -195,14 +195,16 @@ export default function Home() {
 						breakpoints={{
 							1024: {
 								slidesPerView: 3,
+								spaceBetween: 56,
 							},
 							1440: {
 								slidesPerView: 4,
+								spaceBetween: 48,
 							},
 						}}
 						spaceBetween={48}
 						modules={[Grid, Pagination]}
-						className="mySwiper"
+						className="mySwiper hidden md:block"
 						ref={productsSwiperRef}
 					>
 						<SwiperSlide>
@@ -252,8 +254,8 @@ export default function Home() {
 						</SwiperSlide>
 					</Swiper>
 				</div>
-				{/* <div
-					className="space-y-14 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 lg:gap-x-14 
+				<div
+					className="space-y-14 md:hidden md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 lg:gap-x-14 
 				md:space-y-0 md:gap-y-16 xl:grid-cols-4 xl:gap-x-12 xl:gap-y-[72px]"
 				>
 					<ProductCard />
@@ -263,7 +265,7 @@ export default function Home() {
 					<ProductCard />
 					<ProductCard />
 					<ProductCard />
-				</div> */}
+				</div>
 				<div className="flex justify-center mt-14">
 					<Button type="primary">Xem tất cả</Button>
 				</div>
