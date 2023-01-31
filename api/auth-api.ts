@@ -8,7 +8,6 @@ import {
 import axiosService from "./axios-service";
 
 const API = process.env.API_URL;
-console.log("API: ", API);
 
 const ENDPOINT = "auth";
 const URL = `${API}/${ENDPOINT}`;
