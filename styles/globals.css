@@ -42,3 +42,27 @@
 		height: unset !important;
 	}
 }
+
+.swiper-pagination {
+	bottom: 0 !important;
+}
+.swiper-pagination > .swiper-pagination-bullet {
+	opacity: 1;
+	height: 6px;
+	width: 6px;
+	background-color: #00cc96;
+}
+.swiper-pagination > .swiper-pagination-bullet-active {
+	background-color: transparent;
+	height: 8px;
+	width: 8px;
+	border: #00cc96 solid 1px;
+}
+
+@media only screen and (min-width: 1024px) {
+	.swiper-pagination {
+		bottom: 0 !important;
+		left: 0 !important;
+		transform: translateY(-50%) !important;
+	}
+}

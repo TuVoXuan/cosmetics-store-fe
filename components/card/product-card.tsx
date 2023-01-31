@@ -10,7 +10,10 @@ export default function ProductCard() {
 
 	return (
 		<div>
-			<div className="bg-gray-accent dark:bg-black-dark-2 relative rounded-4xl w-full aspect-square flex items-center">
+			<div
+				className="bg-gray-accent dark:bg-black-dark-2 relative rounded-4xl w-full 
+			aspect-square flex items-center"
+			>
 				<div className={clsx("relative z-10", clsName)}>
 					<Image
 						className="object-contain object-bottom w-full h-full z-10"

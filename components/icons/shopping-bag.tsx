@@ -4,21 +4,20 @@ function ShoppingBag(props: SVGProps<SVGSVGElement>) {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			width={props.width}
-			height={props.height}
+			stroke="currentColor"
 			fill="none"
 			viewBox="0 0 32 32"
 			{...props}
 		>
 			<path
-				stroke={props.color}
+				// stroke={props.color}
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				strokeWidth="2.5"
 				d="M8.167 2L4 7.6v19.6c0 .743.293 1.455.814 1.98.52.525 1.227.82 1.964.82h19.444c.737 0 1.444-.295 1.964-.82.521-.525.814-1.237.814-1.98V7.6L24.833 2H8.167zM4 7.6h25"
 			></path>
 			<path
-				stroke={props.color}
+				// stroke={props.color}
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				strokeWidth="2.5"
