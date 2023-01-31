@@ -21,7 +21,7 @@ export default function Home() {
 					subtitle="Sản phẩm chăm sóc da"
 					title="Chúng tôi cung cấp những sản phẩm tốt nhất cho làn da của bạn"
 				/>
-				<Button type="primary">Mua ngay</Button>
+				<Button type="primary">Mua ngay dddd</Button>
 			</div>
 		</section>
 	);
