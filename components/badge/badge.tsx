@@ -3,36 +3,42 @@ import React from "react";
 import { primary } from "../../styles/color";
 
 interface IBadge {
-	size: "small" | "medium" | "large";
-	children: string;
-	color?: string;
-	backgroundColor?: string;
+	color: "primary" | "secondary" | "yellow_tertiary" | "pink_tertiary";
+	title: string;
+	isResponsive: boolean;
 	className?: string;
 }
 
-export default function Badge({ size, children, color, backgroundColor, className }: IBadge) {
-	let clsName = "font-bold w-fit ";
-	switch (size) {
-		case "small":
-			clsName += "px-4 py-2 text-heading-6 rounded-3xl";
-			break;
-		case "medium":
-			clsName += "px-6 py-3 text-heading-5 rounded-3xl";
-		case "large":
-			clsName += "px-8 py-3 text-heading-4 rounded-4xl";
-		default:
-			break;
+export default function Badge({ color, title, isResponsive, className }: IBadge) {
+	const handleColor = () => {
+		switch (color) {
+			case "primary":
+				return "text-primary-100 bg-primary-10";
+			case "secondary":
+				return "text-secondary-100 bg-secondary-10";
+			case "yellow_tertiary":
+				return "text-yellow-tertiary-100 bg-yellow-tertiary-10";
+			case "pink_tertiary":
+				return "text-pink-tertiary-100 bg-pink-tertiary-10";
+			default:
+				return "text-primary-100 bg-primary-10";
+		}
+	};
+
+	if (isResponsive) {
+		return (
+			<p
+				className={clsx(
+					"px-6 py-3 font-bold text-heading-6 rounded-3xl",
+					"md:px-8 md:text-paragraph-2 md:rounded-4xl",
+					handleColor(),
+					className
+				)}
+			>
+				{title}
+			</p>
+		);
 	}
 
-	return (
-		<p
-			className={clsx(clsName, className !== undefined && className)}
-			style={{
-				color: color ? color : primary[100],
-				backgroundColor: backgroundColor ? backgroundColor : primary[10],
-			}}
-		>
-			{children}
-		</p>
-	);
+	return <p className={clsx("px-4 py-2 text-heading-6 rounded-3xl", handleColor(), className)}>{title}</p>;
 }
