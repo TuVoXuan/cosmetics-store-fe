@@ -1,5 +1,218 @@
-import React from "react";
+import dynamic from "next/dynamic";
+import React, { useRef, useState } from "react";
+import "react-quill/dist/quill.snow.css";
+import Button from "../../components/buttons/button";
+import QuantityBtn from "../../components/buttons/quantity-btn";
+import Comment from "../../components/comment/comment";
+import GoBack from "../../components/icons/go-back";
+import GoForward from "../../components/icons/go-forward";
+import Quality from "../../components/icons/quality";
+import Dropdown from "../../components/inputs/dropdown";
+import Editor from "../../components/quill-editor/quill-editor";
+import QuillToolbar, { formats, modules } from "../../components/quill-editor/quill-editor-toolbar";
+import TitlePage from "../../components/title-page/title-page";
+import { primary } from "../../styles/color";
+const QuillNoSSRWrapper = dynamic(import("react-quill"), {
+	ssr: false,
+	loading: () => <p>Loading ...</p>,
+});
 
 export default function Product() {
-	return <div>Product</div>;
+	const [value, setValue] = useState("");
+	const productInfoRef = useRef<HTMLDivElement>(null);
+
+	const modules = {
+		toolbar: [
+			["bold", "italic", "underline", "strike"], // toggled buttons
+			["blockquote", "code-block"],
+			[{ header: 1 }, { header: 2 }], // custom button values
+			[{ list: "ordered" }, { list: "bullet" }],
+			[{ script: "sub" }, { script: "super" }], // superscript/subscript
+			// [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+			// [{ direction: "rtl" }], // text direction
+			[{ header: [1, 2, 3, 4, 5, 6, false] }],
+			[{ color: [] }, { background: [] }], // dropdown with defaults from theme
+			[{ align: [] }],
+			["clean"],
+		],
+	};
+	const formats = [
+		"font",
+		"size",
+		"bold",
+		"italic",
+		"underline",
+		"strike",
+		"color",
+		"background",
+		"script",
+		"header",
+		"blockquote",
+		// "code-block",
+		// "indent",
+		"list",
+		// "direction",
+		"align",
+		"link",
+		"image",
+		"video",
+		"formula",
+	];
+
+	return (
+		<div>
+			<TitlePage className="text-center xl:text-left " subtitle="Đặc điểm sản phẩm" title="Khám phá các đặc điểm" />
+
+			{/* <div className="mt-8" dangerouslySetInnerHTML={{ __html: value }}></div> */}
+			<div className="mt-8">
+				<p>
+					<strong>Cách sử dụng</strong>:
+				</p>
+				<p>- Thoa 1 đến 2 lần/ngày lên điểm mụn sau khi được rửa sạch và lau khô.</p>
+				<p>
+					<br />
+				</p>
+				<p>
+					<strong>Thành phần</strong>:
+				</p>
+				<p>
+					Water, Hamamelis, Virginiana Extract, Centella Asiatica Extract, Polysorbate 60, Lactic Acid, Cetyl Alcohol,
+					Glycolic Acid, Manganese Chloride, Dimethicone Phenoxyethanol, Zinc Oxide, Pyridoxine HCL, Niacinamide,
+					Retinal, Bisanolol, Salicylic Acid.
+				</p>
+				<p>
+					<br />
+				</p>
+				<p>
+					<strong>Công dụng</strong>:
+				</p>
+				<p>Ngừa mụn trứng cá, ngừa thâm, dưỡng da..</p>
+				<p>Chống lão hóa, giảm mụn sưng viêm..</p>
+				<p>
+					<br />
+				</p>
+				<p>
+					<strong>Sản phẩm khuyên dùng</strong>:
+				</p>
+				<p>
+					Trường hợp da bị mụn là da hỗn hợp, da khô...rửa mặt sạch và vùng da bị mụn bằng sữa rửa mặt chuyên biệt
+					Skinsiogel trước khi thoa Megaduo plus Gel.
+				</p>
+				<p>
+					Trường hợp da bị mụn là da dầu, rửa mặt sạch và vùng da bị mụn bằng sữa rửa mặt Vinatid để loại sạch dầu trươc
+					khi thoa Megaduo plus Gel
+				</p>
+				<p>
+					<br />
+				</p>
+				<p>
+					<strong>Xuất xứ</strong> : Việt Nam, nhà sản xuất Gamma Chemical.
+				</p>
+				<p>
+					<strong>Hạn sử dụng</strong> : 3 năm kể từ ngày sản xuất..
+				</p>
+				<p>
+					<strong>Khối lượng</strong> : 15 gram.
+				</p>
+				<p>
+					<strong>Thương Hiệu</strong> : Gamma{" "}
+				</p>
+			</div>
+
+			{/* <QuillNoSSRWrapper
+				onChange={(value) => {
+					const newValue = value.replaceAll("<ul>", "<ul class='list-disc ml-6'>");
+					const newValue1 = newValue.replaceAll("<h1>", "<h1 class='text-heading-1'>");
+					const newValue2 = newValue1.replaceAll("<h2>", "<h2 class='text-heading-2'>");
+					const newValue3 = newValue2.replaceAll("<h3>", "<h3 class='text-heading-3'>");
+					const newValue4 = newValue3.replaceAll("<h4>", "<h4 class='text-heading-4'>");
+					const newValue5 = newValue4.replaceAll("<h5>", "<h5 class='text-heading-5'>");
+					const newValue6 = newValue5.replaceAll("<ol>", "<ol class='list-decimal ml-6'>");
+					console.log("newValue6: ", newValue6);
+					setValue(newValue6);
+				}}
+				theme="snow"
+				value={
+					"<p><strong>Cách sử dụng</strong>:</p><p>- Thoa 1 đến 2 lần/ngày lên điểm mụn sau khi được rửa sạch và lau khô.</p><p><br></p><p><strong>Thành phần</strong>:</p><p>Water, Hamamelis, Virginiana Extract, Centella Asiatica Extract, Polysorbate 60, Lactic Acid, Cetyl Alcohol, Glycolic Acid, Manganese Chloride, Dimethicone Phenoxyethanol, Zinc Oxide, Pyridoxine HCL, Niacinamide, Retinal, Bisanolol, Salicylic Acid.</p><p><br></p><p><strong>Công dụng</strong>:</p><p>Ngừa mụn trứng cá, ngừa thâm, dưỡng da..</p><p>Chống lão hóa, giảm mụn sưng viêm..</p><p><br></p><p><strong>Sản phẩm khuyên dùng</strong>:</p><p>Trường hợp da bị mụn là da hỗn hợp, da khô...rửa mặt sạch và vùng da bị mụn bằng sữa rửa mặt chuyên biệt Skinsiogel trước khi thoa Megaduo plus Gel.</p><p>Trường hợp da bị mụn là da dầu, rửa mặt sạch và vùng da bị mụn bằng sữa rửa mặt Vinatid để loại sạch dầu trươc khi thoa Megaduo plus Gel</p><p><br></p><p><strong>Xuất xứ</strong> : Việt Nam, nhà sản xuất Gamma Chemical.</p><p><strong>Hạn sử dụng</strong> : 3 năm kể từ ngày sản xuất..</p><p><strong>Khối lượng</strong> : 15 gram.</p><p><strong>Thương Hiệu</strong> : Gamma</p>"
+				}
+				modules={modules}
+				formats={formats}
+			/> */}
+			{/* comments */}
+			<div className="space-y-4">
+				<TitlePage className="text-center xl:text-left" subtitle="Đánh giá" title="Khác hàng của chúng tôi nói gì" />
+
+				<div className="flex justify-between md:justify-evenly">
+					<h3 className="grid content-center md:text-heading-1 text-heading-2 dark:text-light-100">4.9 / 5</h3>
+					<div className="space-y-1">
+						<div className="flex items-center justify-start gap-x-1">
+							<Quality width={20} height={20} fill={primary[100]} className="h-full lg:w-7 lg:h-7 text-primary-100" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<p className="ml-2 dark:text-light-100 lg:text-heading-3">120</p>
+						</div>
+						<div className="flex items-center justify-start gap-x-1">
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<p className="ml-2 dark:text-light-100 lg:text-heading-3">45</p>
+						</div>
+						<div className="flex items-center justify-start gap-x-1">
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<p className="ml-2 dark:text-light-100 lg:text-heading-3">12</p>
+						</div>
+						<div className="flex items-center justify-start gap-x-1">
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<p className="ml-2 dark:text-light-100 lg:text-heading-3">4</p>
+						</div>
+						<div className="flex items-center justify-start gap-x-1">
+							<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+							<p className="ml-2 dark:text-light-100 lg:text-heading-3">1</p>
+						</div>
+					</div>
+				</div>
+
+				<Dropdown
+					className="md:w-1/4"
+					size="small"
+					options={[
+						{ label: "5 sao", value: "5" },
+						{ label: "4 sao", value: "4" },
+						{ label: "3 sao", value: "3" },
+						{ label: "2 sao", value: "2" },
+						{ label: "1 sao", value: "1" },
+					]}
+					onChange={(value: string) => console.log(value)}
+				/>
+
+				<div className="lg:grid lg:grid-cols-2">
+					<Comment />
+					<Comment />
+					<Comment />
+					<Comment />
+				</div>
+				<div className="flex items-center justify-center gap-x-2">
+					<GoBack className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
+					<p className="font-semibold text-paragraph-5 md:text-paragraph-4 dark:text-light-100">1 / 1</p>
+					<GoForward className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
+				</div>
+			</div>
+		</div>
+	);
 }

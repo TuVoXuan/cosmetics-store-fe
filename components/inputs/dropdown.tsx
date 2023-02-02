@@ -53,9 +53,9 @@ export default function Dropdown({ options, size, className, label, error, onCha
 
 	return (
 		<div>
-			<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
-				{label}
-			</p>
+			{label && (
+				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
+			)}
 			<div className={clsx("relative", className)}>
 				<button
 					ref={listBoxButtonRef}
@@ -95,18 +95,11 @@ export default function Dropdown({ options, size, className, label, error, onCha
 									onClick={() => handleOnchange(option)}
 									className={clsx(
 										"flex items-center justify-between font-semibold cursor-pointer select-none capitalize",
-										size === "large"
-											? "text-heading-5 mt-6 md:text-heading-4 md:mt-8"
-											: "text-heading-5 mt-6"
+										size === "large" ? "text-heading-5 mt-6 md:text-heading-4 md:mt-8" : "text-heading-5 mt-6"
 									)}
 								>
 									{option.label}
-									<Selected
-										width={16}
-										height={16}
-										color="#1A202C"
-										className="dark:text-light-100"
-									/>
+									<Selected width={16} height={16} color="#1A202C" className="dark:text-light-100" />
 								</li>
 							);
 						}
@@ -116,9 +109,7 @@ export default function Dropdown({ options, size, className, label, error, onCha
 								onClick={() => handleOnchange(option)}
 								className={clsx(
 									"flex items-center justify-between cursor-pointer select-none capitalize",
-									size === "large"
-										? "text-heading-5 mt-6 md:text-heading-4 md:mt-8"
-										: "text-heading-5 mt-6"
+									size === "large" ? "text-heading-5 mt-6 md:text-heading-4 md:mt-8" : "text-heading-5 mt-6"
 								)}
 							>
 								{option.label}
@@ -127,11 +118,7 @@ export default function Dropdown({ options, size, className, label, error, onCha
 					})}
 				</ul>
 			</div>
-			{error && (
-				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
-					{error}
-				</p>
-			)}
+			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
 		</div>
 	);
 }

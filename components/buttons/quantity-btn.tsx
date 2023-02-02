@@ -4,9 +4,10 @@ import GoForward from "../icons/go-forward";
 
 interface Props {
 	size: "large" | "small";
+	children?: React.ReactNode;
 }
 
-export default function QuantityBtn({ size }: Props) {
+export default function QuantityBtn({ size, children }: Props) {
 	return (
 		<div
 			className={`flex items-center border-2 border-gray-accent rounded-[32px] w-fit ${
@@ -14,12 +15,8 @@ export default function QuantityBtn({ size }: Props) {
 			}`}
 		>
 			<GoBack className="cursor-pointer" width={16} height={16} color="#1A202C" />
-			<span
-				className={`font-bold text-dark-100 ${
-					size === "large" ? "text-heading-3" : "text-heading-4"
-				}`}
-			>
-				1
+			<span className={`font-bold text-dark-100 ${size === "large" ? "text-heading-3" : "text-heading-4"}`}>
+				{children}
 			</span>
 			<GoForward className="cursor-pointer" width={16} height={16} color="#1A202C" />
 		</div>
