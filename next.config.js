@@ -17,6 +17,10 @@ const nextConfig = {
 	images: {
 		domains: ["i.pinimg.com"],
 	},
+	i18n: {
+		locales: ["en", "vi"],
+		defaultLocale: "vi",
+	},
 };
 
 module.exports = nextConfig;
