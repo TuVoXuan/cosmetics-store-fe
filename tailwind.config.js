@@ -73,6 +73,12 @@ module.exports = {
 			maxHeight: {
 				"2/3": "66.666667%",
 			},
+
+			width: {
+				"screen-4/5": "80vw",
+				"screen-1/2": "50vw",
+				"screen-1/3": "33.333333vw",
+			},
 		},
 	},
 	plugins: [],
