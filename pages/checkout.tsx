@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { CLIENT_RENEG_LIMIT } from "tls";
 import adminstrativeApi from "../api/adminstrative-api";
-import Button from "../components/buttons/button";
 import Dropdown from "../components/inputs/dropdown";
 import Input from "../components/inputs/input";
+import Button from "../components/buttons/button";
+import ItemCartCheckout from "../components/card/item-cart-checkout";
 import Steps from "../components/steps/steps";
 import TitlePage from "../components/title-page/title-page";
 import { adminstrative } from "../constants/adminstrative";
-import { getDistricts, getProvinces, getWards } from "../util/adminstrative-api";
 
 type FormValues = {
 	name: string;
@@ -168,6 +167,24 @@ export default function Checkout() {
 					submit
 				</Button>
 			</form>
+
+			{/* my cart */}
+			<div className="p-6 space-y-10 border-2 md:p-14 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-12">
+				<p className="font-semibold text-heading-4 md:text-heading-2 text-dark-100 dark:text-light-100">
+					Giỏ hàng của tôi
+				</p>
+				<div className="space-y-10 md:space-y-6">
+					<ItemCartCheckout />
+					<ItemCartCheckout />
+				</div>
+				<div className="flex justify-between font-semibold md:text-heading-3 text-heading-5 xl:text-paragraph-1">
+					<p className="dark:text-light-100">Tổng:</p>
+					<p className="dark:text-light-100">$244</p>
+				</div>
+				<Button className="w-full !mt-14 md:!mt-20 dark:text-light-100" type="secondary">
+					Chỉnh sửa giỏ hàng
+				</Button>
+			</div>
 		</div>
 	);
 }

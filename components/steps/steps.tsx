@@ -33,17 +33,17 @@ export default function Steps({ totalSteps, currentStep, className }: Props) {
 				} else if (value > currentStep && value < totalSteps) {
 					return (
 						<Fragment key={value}>
-							<p className="w-6 h-6 md:w-12 md:h-12 md:text-heading-4 font-semibold text-center rounded-full border-[1px] md:border-2 border-gray-accent text-dark-100 flex items-center justify-center text-heading-6">
+							<p className="w-6 h-6 md:w-12 md:h-12 md:text-heading-4 font-semibold text-center rounded-full dark:text-light-100 border-[1px] md:border-2 border-gray-accent dark:border-black-dark-2 text-dark-100 flex items-center justify-center text-heading-6">
 								{value}
 							</p>
-							<p className="h-[2px] bg-gray-accent rounded grow"></p>
+							<p className="h-[2px] bg-gray-accent dark:bg-black-dark-2 rounded grow"></p>
 						</Fragment>
 					);
 				} else if (value === totalSteps && value !== currentStep) {
 					return (
 						<p
 							key={value}
-							className="w-6 h-6 md:w-12 md:h-12 md:text-heading-4 font-semibold text-center rounded-full border-[1px] md:border-2 border-gray-accent text-dark-100 flex items-center justify-center text-heading-6"
+							className="w-6 h-6 md:w-12 md:h-12 md:text-heading-4 font-semibold text-center rounded-full border-[1px] md:border-2 border-gray-accent dark:border-black-dark-2 text-dark-100 dark:text-light-100 flex items-center justify-center text-heading-6"
 						>
 							{value}
 						</p>
