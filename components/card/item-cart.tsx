@@ -33,7 +33,11 @@ export default function ItemCart({ sale, price }: Props) {
 				<div className="flex gap-x-6">
 					<QuantityBtn />
 
-					<button className="top-0 p-3 border-2 rounded-full border-gray-accent md:p-4 lg:absolute lg:right-14 lg:top-1/2 lg:-translate-y-[50%] xl:static xl:translate-y-0 dark:border-black-dark-2">
+					<button
+						className="top-0 p-3 border-2 rounded-full border-gray-accent md:p-4 lg:absolute lg:right-14 
+						lg:top-1/2 lg:-translate-y-[50%] xl:static xl:translate-y-0 dark:border-black-dark-2
+						hover:border-dark-100 dark:hover:border-white transition-colors duration-300 ease-linear"
+					>
 						<Delete height={24} width={24} className="dark:text-white md:w-8 md:h-8" />
 					</button>
 				</div>
