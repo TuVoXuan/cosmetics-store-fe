@@ -18,6 +18,7 @@ type FormValues = {
 	password: string;
 	name: string;
 	birthday: Date;
+	gender: Gender;
 	code: string;
 	agreePolicy: boolean;
 };
@@ -31,22 +32,22 @@ export default function SignUp() {
 		formState: { errors },
 	} = useForm<FormValues>();
 
-	const [gender, setGender] = useState<string>("");
-	const [genderError, setGenderError] = useState<string>("");
+	// const [gender, setGender] = useState<string>("");
+	// const [genderError, setGenderError] = useState<string>("");
 
 	const onSubmit = async (data: FormValues) => {
 		console.log("data: ", data);
-		console.log("gender: ", gender);
-		if (gender === "") {
-			setGenderError("Yêu cầu chọn giới tính");
-			return;
-		}
+		// console.log("gender: ", gender);
+		// if (gender === "") {
+		// 	setGenderError("Yêu cầu chọn giới tính");
+		// 	return;
+		// }
 
 		try {
 			await authApi.signUp({
 				birthday: data.birthday,
 				email: data.email,
-				gender: gender as Gender,
+				gender: data.gender,
 				name: data.name,
 				password: data.password,
 				code: data.code,
@@ -94,7 +95,8 @@ export default function SignUp() {
 						},
 						pattern: {
 							value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-							message: "Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
+							message:
+								"Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
 						},
 					}}
 					error={errors.password?.message}
@@ -152,10 +154,6 @@ export default function SignUp() {
 					size={"large"}
 					options={[
 						{
-							label: "Chọn giới tính",
-							value: "",
-						},
-						{
 							label: "Female",
 							value: "female",
 						},
@@ -168,8 +166,15 @@ export default function SignUp() {
 							value: "other",
 						},
 					]}
-					onChange={(value: string) => setGender(value)}
-					error={genderError}
+					name="gender"
+					register={register}
+					option={{
+						required: {
+							value: true,
+							message: "Chọn tỉnh/thành phố",
+						},
+					}}
+					error={errors.gender?.message}
 				/>
 				<Checkbox
 					name="agreePolicy"
@@ -188,7 +193,12 @@ export default function SignUp() {
 				</Checkbox>
 			</form>
 			<div className="grid grid-cols-1 gap-y-4 mt-14 md:grid-cols-2 md:gap-x-6 md:w-[496px] md:mx-auto">
-				<Button form="registerForm" onClick={handleSubmit(onSubmit)} type="primary" className="w-full">
+				<Button
+					form="registerForm"
+					onClick={handleSubmit(onSubmit)}
+					type="primary"
+					className="w-full"
+				>
 					Tại tài khoản
 				</Button>
 				<Button type="secondary" className="w-full">
