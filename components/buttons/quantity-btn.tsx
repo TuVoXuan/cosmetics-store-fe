@@ -17,8 +17,15 @@ export default function QuantityBtn({ className, children }: Props) {
 			)}
 		>
 			<GoBack className="cursor-pointer dark:text-white-light" width={16} height={16} color="#1A202C" />
-			<span className="font-bold text-dark-100 text-heading-4 md:text-heading-3 dark:text-white">1</span>
-			<GoForward className="cursor-pointer dark:text-white-light" width={16} height={16} color="#1A202C" />
+			<span className="font-bold text-dark-100 text-heading-4 md:text-heading-3 dark:text-white">
+				1
+			</span>
+			<GoForward
+				className="cursor-pointer dark:text-white-light"
+				width={16}
+				height={16}
+				color="#1A202C"
+			/>
 		</div>
 	);
 }

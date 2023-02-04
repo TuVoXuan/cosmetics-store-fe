@@ -23,11 +23,27 @@ export default function ParaEmail({ children }: Props) {
 	const newArr: string[] = children.split(email);
 
 	if (index === 0) {
-		newElement = [<span className="inline-block font-semibold">{email}</span>, newArr[0]];
+		newElement = (
+			<>
+				<span className="inline-block font-semibold">{email}</span>
+				{newArr[0]}
+			</>
+		);
 	} else if (index > 0 && index < arr.length - 1) {
-		newElement = [newArr[0], <span className="inline-block font-semibold">{email}</span>, newArr[1]];
+		newElement = (
+			<>
+				{newArr[0]}
+				<span className="inline-block font-semibold">{email}</span>
+				{newArr[1]}
+			</>
+		);
 	} else {
-		newElement = [newArr[0], <span className="inline-block font-semibold">{email}</span>];
+		newElement = (
+			<>
+				{newArr[0]}
+				<span className="inline-block font-semibold">{email}</span>
+			</>
+		);
 	}
 	return <p className="text-paragraph-3 dark:text-white">{newElement}</p>;
 }
