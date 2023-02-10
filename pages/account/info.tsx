@@ -30,6 +30,8 @@ export default function Info() {
 					</div>
 					<div className="space-y-10">
 						<Dropdown
+							register={register}
+							name={"gender"}
 							size="large"
 							onChange={(value: string) => {
 								console.log("first");

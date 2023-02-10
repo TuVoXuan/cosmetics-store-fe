@@ -1,14 +1,18 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import Dropdown from "../../components/inputs/dropdown";
 import OrderContainer from "../../components/order/order-container";
 import OrderStatus from "../../components/order/order-status";
 import TitlePage from "../../components/title-page/title-page";
 
 export default function OrdersHistory() {
+	const { register } = useForm();
 	return (
 		<div className="mb-[104px] md:mb-28 xl:mb-36">
 			<TitlePage className="mt-14" subtitle="Cá nhân" title="Đơn hàng của bạn" />
 			<Dropdown
+				register={register}
+				name={"orderStatus"}
 				className="z-10 mt-14 md:mt-16 lg:hidden"
 				onChange={(value: string) => console.log(value)}
 				options={[
