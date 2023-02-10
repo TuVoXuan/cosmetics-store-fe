@@ -1,19 +1,37 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Expand from "../icons/expand";
 import Selected from "../icons/selected";
 import clsx from "clsx";
+import { RegisterOptions, UseFormRegister } from "react-hook-form";
 
 interface Props {
 	options: IOption[];
 	size: "large" | "small";
 	label?: string;
 	className?: string;
+	register: UseFormRegister<any>;
+	option?: RegisterOptions;
+	name: string;
+	defaulValue?: string;
 	error?: string;
-	onChange: (value: string) => void;
+	onChange?: (value: string) => void;
+	watch?: string;
 }
 
-export default function Dropdown({ options, size, className, label, error, onChange }: Props) {
-	const [selectedValue, setSelectedValue] = useState<IOption>(options[0]);
+export default function Dropdown({
+	options,
+	size,
+	className,
+	label,
+	error,
+	name,
+	defaulValue,
+	option,
+	watch,
+	register,
+	onChange,
+}: Props) {
+	const [selectedValue, setSelectedValue] = useState<IOption>();
 	const listBoxButtonRef = useRef<HTMLButtonElement>(null);
 	const listBoxRef = useRef<HTMLUListElement>(null);
 
@@ -48,14 +66,38 @@ export default function Dropdown({ options, size, className, label, error, onCha
 	const handleOnchange = (option: IOption) => {
 		handleClick();
 		setSelectedValue(option);
-		onChange(option.value);
+		onChange && onChange(option.value);
 	};
+
+	useEffect(() => {
+		setSelectedValue(undefined);
+	}, [watch]);
 
 	return (
 		<div>
+			<div className="hidden">
+				{options.length > 0 ? (
+					options.map((item) => (
+						<input
+							{...register(name, option)}
+							key={item.value}
+							value={item.value}
+							type="radio"
+							name={name}
+							id={item.value}
+							defaultChecked={defaulValue === item.value}
+						/>
+					))
+				) : (
+					<input {...register(name, option)} value={""} type="radio" name={name} checked={false} />
+				)}
+			</div>
 			{label && (
-				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
+				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
+					{label}
+				</p>
 			)}
+
 			<div className={clsx("relative", className)}>
 				<button
 					ref={listBoxButtonRef}
@@ -73,52 +115,67 @@ export default function Dropdown({ options, size, className, label, error, onCha
 							size === "large" ? "text-heading-5 md:text-heading-4" : "text-heading-5"
 						)}
 					>
-						{selectedValue.label}
+						{selectedValue ? selectedValue.label : "Chọn giá trị"}
 					</p>
 					<Expand width={16} height={16} className="dark:text-light-100" />
 				</button>
 				<ul
 					ref={listBoxRef}
 					className={clsx(
-						"hidden absolute left-0 right-0 bg-white-light border-x-2 border-b-2 border-gray-accent dark:border-black-dark-2 dark:bg-black-dark-3 dark:text-white-light",
+						"hidden absolute left-0 right-0 z-[1] bg-white border-x-2 border-b-2 border-gray-accent dark:border-black-dark-2 dark:bg-black-dark-3 dark:text-white-light max-h-56 overflow-y-auto",
 						size === "large"
 							? "pb-3 px-6 top-[calc(100%-12px)] rounded-b-[32px] md:pb-4 md:top-[calc(100%-16px)]"
 							: "px-4 pb-3 top-[calc(100%-12px)] rounded-b-3xl",
 						error && "border-red-accent"
 					)}
 				>
-					{options.map((option) => {
-						if (option.value === selectedValue.value) {
+					{options.map((item) => {
+						if (selectedValue && item.value === selectedValue.value) {
 							return (
 								<li
-									key={option.value}
-									onClick={() => handleOnchange(option)}
+									key={item.value}
 									className={clsx(
 										"flex items-center justify-between font-semibold cursor-pointer select-none capitalize",
-										size === "large" ? "text-heading-5 mt-6 md:text-heading-4 md:mt-8" : "text-heading-5 mt-6"
+										size === "large"
+											? "text-heading-5 mt-6 md:text-heading-4 md:mt-8"
+											: "text-heading-5 mt-6"
 									)}
 								>
-									{option.label}
-									<Selected width={16} height={16} color="#1A202C" className="dark:text-light-100" />
+									<label onClick={() => handleOnchange(item)} htmlFor={item.value}>
+										{item.label}
+									</label>
+									<Selected
+										width={16}
+										height={16}
+										color="#1A202C"
+										className="dark:text-light-100"
+									/>
 								</li>
 							);
 						}
 						return (
 							<li
-								key={option.value}
-								onClick={() => handleOnchange(option)}
+								key={item.value}
 								className={clsx(
 									"flex items-center justify-between cursor-pointer select-none capitalize",
-									size === "large" ? "text-heading-5 mt-6 md:text-heading-4 md:mt-8" : "text-heading-5 mt-6"
+									size === "large"
+										? "text-heading-5 mt-6 md:text-heading-4 md:mt-8"
+										: "text-heading-5 mt-6"
 								)}
 							>
-								{option.label}
+								<label onClick={() => handleOnchange(item)} htmlFor={item.value}>
+									{item.label}
+								</label>
 							</li>
 						);
 					})}
 				</ul>
 			</div>
-			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
+			{error && (
+				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
+					{error}
+				</p>
+			)}
 		</div>
 	);
 }

@@ -29,6 +29,9 @@
 	.checkboxNoActive {
 		@apply border-2 border-gray-accent dark:border-black-dark-2;
 	}
+	.checkboxNoActiveBold {
+		@apply border-2 border-dark-40 dark:border-black-dark-2;
+	}
 
 	.image-container {
 		width: 100%;

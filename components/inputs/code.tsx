@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React, { useRef, useState } from "react";
 import { RegisterOptions, UseFormGetValues, UseFormRegister } from "react-hook-form";
 import authApi from "../../api/auth-api";
+import { Gender } from "../../constants/enums";
 import { toastError, toastSuccess } from "../../util/toast";
 
 type FormValues = {
@@ -9,6 +10,7 @@ type FormValues = {
 	password: string;
 	name: string;
 	birthday: Date;
+	gender: Gender;
 	code: string;
 	agreePolicy: boolean;
 };
