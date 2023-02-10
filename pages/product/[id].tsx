@@ -26,12 +26,15 @@ const QuillNoSSRWrapper = dynamic(import("react-quill"), {
 	loading: () => <p>Loading ...</p>,
 });
 import ProductCard from "../../components/card/product-card";
+import { useForm } from "react-hook-form";
 
 export default function Product() {
 	const [value, setValue] = useState("");
 	const productInfoRef = useRef<HTMLDivElement>(null);
 	const prodImagesSwiperRef = useRef<SwiperRef>(null);
 	const relatedProdsSwiperRef = useRef<SwiperRef>(null);
+
+	const { register } = useForm();
 
 	const modules = {
 		toolbar: [
@@ -431,6 +434,8 @@ export default function Product() {
 						{ label: "1 sao", value: "1" },
 					]}
 					onChange={(value: string) => console.log(value)}
+					register={register}
+					name="star"
 				/>
 
 				<div className="lg:grid lg:grid-cols-2">
