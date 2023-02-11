@@ -244,26 +244,26 @@ export default function Checkout() {
 						{/* step 1 */}
 						<div
 							ref={step1Form}
-							className="shrink-0 xl:grid xl:grid-cols-2 space-y-14 xl:space-y-0 xl:gap-x-24"
+							className="shrink-0 lg:grid lg:grid-cols-2 space-y-14 lg:space-y-0 lg:gap-x-12"
 						>
 							{/* delivery address */}
-							<div className="p-6 space-y-6 border-2 xl:col-start-2 h-fit md:p-8 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-12">
+							<div className="p-6 space-y-6 border-2 lg:col-start-2 h-fit md:p-8 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-8">
 								<div className="flex items-center gap-x-4">
 									<Pin height={24} width={24} className="text-primary-100" />
-									<h4 className="font-semibold text-heading-4 md:text-heading-2 text-primary-100 dark:text-light-100">
+									<h4 className="font-semibold capitalize text-heading-4 md:text-heading-2 text-primary-100 dark:text-light-100">
 										Địa chỉ nhận hàng
 									</h4>
 								</div>
 
 								<div className="md:flex md:items-center xl:block xl:space-y-4">
-									<div className="mb-4 space-y-4 md:mb-0 md:grow">
-										<p className="font-semibold capitalize text-paragraph-3 md:text-heading-3 md:inline-block dark:text-white">
+									<div className="mb-4 space-y-4 md:mb-0 md:grow md:space-y-0">
+										<p className="font-semibold capitalize text-paragraph-3 md:text-heading-4 md:inline-block dark:text-white">
 											nguyen thi my duyen
 										</p>
-										<p className="font-semibold text-paragraph-3 md:text-heading-3 md:inline-block md:pl-4 dark:text-white">
+										<p className="font-semibold text-paragraph-3 md:text-heading-4 md:inline-block md:pl-4 dark:text-white">
 											0987654321
 										</p>
-										<p className="text-paragraph-3 md:text-heading-3 md:pr-4 dark:text-white">
+										<p className="text-paragraph-3 md:text-heading-4 md:pr-4 dark:text-white">
 											Kí túc xá khu A, khu phố 6, Phường Linh Trung, Thành Phố Thủ Đức,
 											TP. Hồ Chí Minh
 										</p>
@@ -282,11 +282,11 @@ export default function Checkout() {
 							</div>
 
 							{/* my cart */}
-							<div className="p-6 space-y-10 border-2 xl:row-start-1 xl:col-start-1 md:p-14 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-12">
-								<p className="font-semibold text-heading-4 md:text-heading-2 text-dark-100 dark:text-light-100">
-									Giỏ hàng của tôi
+							<div className="p-6 space-y-10 border-2 lg:row-start-1 lg:col-start-1 md:p-8 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-12">
+								<p className="font-semibold capitalize text-heading-4 md:text-heading-2 text-dark-100 dark:text-light-100">
+									Giỏ hàng
 								</p>
-								<div className="xl:max-h-[400px] xl:overflow-y-auto space-y-10 md:space-y-6">
+								<div className="lg:max-h-[400px] lg:overflow-y-auto space-y-10 md:space-y-6">
 									<ItemCartCheckout />
 									<ItemCartCheckout />
 									<ItemCartCheckout />
@@ -308,7 +308,7 @@ export default function Checkout() {
 
 							<Button
 								onClick={() => handleStep("next")}
-								className="w-full xl:col-start-2"
+								className="w-full lg:col-start-2"
 								type="primary"
 							>
 								Tiếp tục thanh toán

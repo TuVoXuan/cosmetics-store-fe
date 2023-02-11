@@ -12,9 +12,11 @@ export default function Comment() {
 				<Quality width={12} height={12} fill={primary[100]} className="h-full text-primary-100" />
 				<Quality width={12} height={12} fill={primary[100]} className="h-full text-primary-100" />
 			</div>
-			<h3 className="dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Nguyen Lam</h3>
-			<p className="dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Chat lieu rat tuyet voi</p>
-			<p className="text-gray-300 dark:text-light-40 text-paragraph-5 md:text-paragraph-4">30/1/1223</p>
+			<h3 className="dark:text-light-100 text-paragraph-4 md:text-paragraph-2">Nguyen Lam</h3>
+			<p className="dark:text-light-100 text-paragraph-4 md:text-paragraph-2">
+				Chat lieu rat tuyet voi
+			</p>
+			<p className="text-gray-300 dark:text-light-40 text-paragraph-4 md:text-paragraph-2">30/1/1223</p>
 		</div>
 	);
 }

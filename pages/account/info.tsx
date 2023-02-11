@@ -20,15 +20,13 @@ export default function Info() {
 			<TitlePage className="mt-14 md-16" subtitle="Cá nhân" title="Thông tin cá nhân" />
 
 			<div className="lg:flex lg:gap-x-12 xl:mt-[72px] space-y-10 lg:space-y-0 mt-10 xl:mb-[144px] md:mt-16 md:space-y-12 md:mb-[112px] mb-[104px]">
-				<div className="p-6 space-y-10 border-2 lg:flex-1 xl:flex-1 md:space-y-12 md:px-14 lg:p-12 border-gray-accent rounded-4xl">
-					<h2 className="text-heading-4 md:text-heading-2 dark:text-light-100 lg:text-heading-3 xl:text-heading-2">
+				<div className="p-6 space-y-10 border-2 lg:flex-1 xl:flex-1 md:space-y-12 md:px-14 lg:p-8 border-gray-accent rounded-4xl">
+					<h2 className="capitalize text-heading-4 md:text-heading-2 dark:text-light-100 xl:text-heading-2">
 						Thông tin tài khoản
 					</h2>
-					<div className="space-y-10">
+					<div className="space-y-10 lg:space-y-8">
 						<Input className="w-full" label="Họ tên" />
 						<Input className="w-full" label="Email" />
-					</div>
-					<div className="space-y-10">
 						<Dropdown
 							register={register}
 							name={"gender"}
@@ -50,17 +48,14 @@ export default function Info() {
 						<Button className="w-full" type="primary">
 							Cập nhập
 						</Button>
-						<p className="mt-4 font-semibold text-center underline text-paragraph-4 md:text-paragraph-2 dark:text-light-100">
-							Quên mật khẩu?
-						</p>
 					</div>
 				</div>
-				<div className="p-6 space-y-10 border-2 lg:p-12 lg:h-fit lg:flex-1 xl:mb-0 xl:h-fit xl:flex-1 md:space-y-12 md:px-14 border-gray-accent rounded-4xl">
+				<div className="p-6 space-y-10 border-2 lg:p-8 lg:h-fit lg:flex-1 xl:mb-0 xl:h-fit xl:flex-1 md:space-y-12 md:px-14 border-gray-accent rounded-4xl">
 					<div className="space-y-6 lg:space-y-12">
-						<h2 className="text-heading-4 md:text-heading-2 dark:text-light-100 lg:text-heading-3 xl:text-heading-2">
+						<h2 className="capitalize text-heading-4 md:text-heading-2 dark:text-light-100 xl:text-heading-2">
 							Bảo mật
 						</h2>
-						<div className="flex justify-between">
+						<div className="flex justify-between xl:items-center">
 							<span className="font-semibold text-paragraph-4 md:text-paragraph-2 dark:text-light-100">
 								Đổi mật khẩu
 							</span>
@@ -76,14 +71,20 @@ export default function Info() {
 					</div>
 
 					<div className="space-y-6 lg:space-y-12">
-						<h2 className="text-heading-4 md:text-heading-2 dark:text-light-100 lg:text-heading-3 xl:text-heading-2">
+						<h2 className="capitalize text-heading-4 md:text-heading-2 dark:text-light-100 xl:text-heading-2">
 							Liên kết mạng xã hội
 						</h2>
 						<div className="space-y-6 md:space-y-6 lg:space-y-10">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-x-4">
-									<FacebookColor width={32} height={32} className="text-dark-100 md:w-12 md:h-12" />
-									<p className="font-semibold text-paragraph-4 md:text-paragraph-2 dark:text-light-100">Facebook</p>
+									<FacebookColor
+										width={32}
+										height={32}
+										className="text-dark-100 md:w-12 md:h-12"
+									/>
+									<p className="font-semibold text-paragraph-4 md:text-paragraph-2 dark:text-light-100">
+										Facebook
+									</p>
 								</div>
 								<Synchronize
 									width={24}
@@ -96,8 +97,14 @@ export default function Info() {
 							</div>
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-x-4">
-									<GoogleColor width={32} height={32} className="text-dark-100 md:w-12 md:h-12" />
-									<p className="font-semibold text-paragraph-4 md:text-paragraph-2 dark:text-light-100">Google</p>
+									<GoogleColor
+										width={32}
+										height={32}
+										className="text-dark-100 md:w-12 md:h-12"
+									/>
+									<p className="font-semibold text-paragraph-4 md:text-paragraph-2 dark:text-light-100">
+										Google
+									</p>
 								</div>
 								<Selected
 									width={24}

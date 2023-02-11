@@ -14,7 +14,7 @@ export default function ProductCard() {
 		<div>
 			<ProductImage sale={20} isTagResponsive={false} />
 			<div className="mt-8">
-				<p className="font-semibold text-heading-3 text-dark-100 dark:text-light-100">
+				<p className="font-semibold text-paragraph-2 text-dark-100 dark:text-light-100">
 					Product Name Here
 				</p>
 				<div className="flex items-center mt-4 gap-x-6">

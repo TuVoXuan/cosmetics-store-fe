@@ -143,7 +143,7 @@ export default function Category() {
 
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
-				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 gap-x-12 gap-y-16 lg:grid-cols-3 lg:gap-x-14">
+				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 gap-x-12 gap-y-16 lg:grid-cols-4 lg:gap-x-14">
 					<ProductCard />
 					<ProductCard />
 					<ProductCard />

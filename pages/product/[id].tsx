@@ -79,7 +79,7 @@ export default function Product() {
 			className="pt-14 md:pt-16 space-y-[104px] md:space-y-[112px] xl:space-y-[144px]
 			mb-[104px] md:mb-[112px] xl:mb-[144px]"
 		>
-			<div className="xl:flex xl:gap-x-[72px] xl:items-center">
+			<div className="lg:flex lg:gap-x-[72px] lg:items-center">
 				<div className="md:hidden">
 					<Swiper
 						slidesPerView={1}
@@ -124,9 +124,9 @@ export default function Product() {
 					</nav>
 				</div>
 
-				<div className="hidden md:block md:mb-16 xl:mb-0 xl:w-[55%]">
-					<div className="px-[84px] lg:px-[124px] lg:grid lg:grid-cols-4 lg:gap-x-6 xl:px-0">
-						<ProductImage isTagResponsive sale={20} className="mb-6 lg:col-span-3 xl:mb-0" />
+				<div className="hidden md:block md:mb-16 lg:mb-0 lg:w-[55%]">
+					<div className="px-[84px] lg:grid lg:grid-cols-4 lg:gap-x-6 lg:px-0">
+						<ProductImage isTagResponsive sale={20} className="mb-6 lg:col-span-3 lg:mb-0" />
 
 						<div className="grid grid-cols-3 gap-x-6 lg:block lg:col-start-1 lg:row-start-1 lg:gap-x-0 lg:space-y-6">
 							<ProductImage />
@@ -139,19 +139,19 @@ export default function Product() {
 				{/* product info */}
 				<div>
 					<TitlePage
-						className="mb-6 text-center md:mb-8 xl:text-left"
+						className="mb-6 text-center md:mb-8 lg:text-left"
 						subtitle="Bán chạy"
 						title="Kem chống nắng"
 					/>
 
-					<div className="flex items-center justify-center mb-10 gap-x-6 md:gap-x-8 xl:mb-12">
+					<div className="flex items-center justify-center mb-10 lg:gap-x-8 lg:justify-start gap-x-6 md:gap-x-8 lg:mb-12">
 						<Badge isResponsive color="yellow_tertiary">
 							SUN CARE
 						</Badge>
 						<Price isResponsive price={30} sale={20} />
 					</div>
 
-					<div className="flex flex-col items-center gap-6 md:flex-row md:justify-center">
+					<div className="flex flex-col items-center gap-6 md:items-stretch md:flex-row md:justify-center">
 						<QuantityBtn />
 						<Button type="primary">Thêm vào giỏ</Button>
 					</div>
@@ -166,7 +166,7 @@ export default function Product() {
 					title="Khám phá các đặc điểm"
 				/>
 				{/* <div className="mt-8" dangerouslySetInnerHTML={{ __html: value }}></div> */}
-				<div className="mt-8 text-paragraph-5 md:text-paragraph-4">
+				<div className="mt-8 text-paragraph-4 md:text-paragraph-2">
 					<p>
 						<strong>Cách sử dụng</strong>:
 					</p>
@@ -425,7 +425,7 @@ export default function Product() {
 
 				<Dropdown
 					className="md:w-1/4"
-					size="small"
+					size="large"
 					options={[
 						{ label: "5 sao", value: "5" },
 						{ label: "4 sao", value: "4" },
@@ -498,18 +498,10 @@ export default function Product() {
 							},
 						},
 						1024: {
-							slidesPerView: 3,
-							spaceBetween: 40,
-							grid: {
-								rows: 2,
-								fill: "row",
-							},
-						},
-						1440: {
 							slidesPerView: 4,
 							spaceBetween: 40,
 							grid: {
-								rows: 2,
+								rows: 1,
 								fill: "row",
 							},
 						},

@@ -12,7 +12,7 @@ export default function QuantityBtn({ className, children }: Props) {
 	return (
 		<div
 			className={clsx(
-				"flex items-center border-2 border-gray-accent rounded-[32px] w-fit gap-x-8 py-2 px-4 md:gap-x-11 md:px-6 md:py-4 dark:border-black-dark-2",
+				"flex items-center border-2 border-gray-accent rounded-[32px] w-fit gap-x-8 py-2 px-4 md:gap-x-11 md:px-6 md:py-4 lg:px-5 lg:py-3 dark:border-black-dark-2",
 				className
 			)}
 		>

@@ -33,9 +33,14 @@ export default function Search() {
 	return (
 		<div>
 			<Breadcrumb className="hidden xl:block xl:mt-[93px]" items={["Trang chủ", "Kết quả tìm kiếm"]} />
-			<TitlePage className="mt-14 md:mt-16 xl:mt-12" subtitle="Kết quả tìm kiếm" title="Cocoon chăm sóc da mặt" />
-			<p className="text-paragraph-4 md:text-paragraph-2 mt-6 md:mt-12 dark:text-light-100">
-				<span className="text-heading-5 font-bold md:text-heading-4 dark:text-light-100">6</span> sản phẩm phù hợp
+			<TitlePage
+				className="mt-14 md:mt-16 xl:mt-12"
+				subtitle="Kết quả tìm kiếm"
+				title="Cocoon chăm sóc da mặt"
+			/>
+			<p className="mt-6 text-paragraph-4 md:text-paragraph-2 md:mt-12 dark:text-light-100">
+				<span className="font-bold text-heading-5 md:text-heading-4 dark:text-light-100">6</span> sản
+				phẩm phù hợp
 			</p>
 
 			<div className="space-y-4 xl:space-y-12 mt-14 md:mt-16 xl:mt-[72px] lg:mt-14">
@@ -134,7 +139,7 @@ export default function Search() {
 
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
-				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 gap-x-12 gap-y-16 lg:grid-cols-3 lg:gap-x-14">
+				<div className="space-y-14 md:grid md:grid-cols-3 md:space-y-0 gap-x-12 gap-y-16 lg:grid-cols-4 lg:gap-x-14">
 					<ProductCard />
 					<ProductCard />
 					<ProductCard />
