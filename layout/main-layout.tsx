@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch } from "../app/hooks";
 import Footer from "../components/footer";
 import Header from "../components/header";
+import { getCategories } from "../redux/actions/category-action";
 // import clsx from "clsx";
 
 interface Props {
@@ -9,10 +11,19 @@ interface Props {
 
 export default function MainLayout({ children }: Props) {
 	const [showNavbar, setShowNavbar] = useState<boolean>(false);
+	const dispatch = useAppDispatch();
+
+	const fetchCategories = () => {
+		dispatch(getCategories()).unwrap();
+	};
 
 	const handleShowNavbar = () => {
 		setShowNavbar(!showNavbar);
 	};
+
+	useEffect(() => {
+		fetchCategories();
+	}, []);
 
 	return (
 		<main

@@ -26,40 +26,41 @@ import Quality from "../components/icons/quality";
 import CommentCard from "../components/card/comment-card";
 import Button from "../components/buttons/button";
 
-const categories = [
-	{
-		icon: <ShoppingBag height={32} width={32} className="text-primary-100" />,
-		title: "giảm giá",
-	},
-	{
-		icon: <Skincare height={32} width={32} className="text-primary-100" />,
-		title: "mặt nạ",
-	},
-	{
-		icon: <EyeCare height={32} width={32} className="text-primary-100" />,
-		title: "chăm sóc mắt",
-	},
-	{
-		icon: <Natural height={32} width={32} className="text-primary-100" />,
-		title: "dưỡng ẩm",
-	},
-	{
-		icon: <Protection height={32} width={32} className="text-primary-100" />,
-		title: "điều trị",
-	},
-	{
-		icon: <NightCare height={32} width={32} className="text-primary-100" />,
-		title: "chăm sóc ban đêm",
-	},
-	{
-		icon: <AfterSun height={32} width={32} className="text-primary-100" />,
-		title: "chống nắng",
-	},
-];
+// const categories = [
+// 	{
+// 		icon: <ShoppingBag height={32} width={32} className="text-primary-100" />,
+// 		title: "giảm giá",
+// 	},
+// 	{
+// 		icon: <Skincare height={32} width={32} className="text-primary-100" />,
+// 		title: "mặt nạ",
+// 	},
+// 	{
+// 		icon: <EyeCare height={32} width={32} className="text-primary-100" />,
+// 		title: "chăm sóc mắt",
+// 	},
+// 	{
+// 		icon: <Natural height={32} width={32} className="text-primary-100" />,
+// 		title: "dưỡng ẩm",
+// 	},
+// 	{
+// 		icon: <Protection height={32} width={32} className="text-primary-100" />,
+// 		title: "điều trị",
+// 	},
+// 	{
+// 		icon: <NightCare height={32} width={32} className="text-primary-100" />,
+// 		title: "chăm sóc ban đêm",
+// 	},
+// 	{
+// 		icon: <AfterSun height={32} width={32} className="text-primary-100" />,
+// 		title: "chống nắng",
+// 	},
+// ];
 import ProductCard from "../components/card/product-card";
 import HyggeImage from "../components/Image/image";
 import { toast } from "react-hot-toast";
 import productApi from "../api/product-api";
+import { selectCategories } from "../redux/slices/category-slice";
 
 export default function Home() {
 	// ** State
@@ -69,6 +70,7 @@ export default function Home() {
 	const { data: session } = useSession();
 	console.log("session: ", session);
 	const { push } = useRouter();
+	const categories = useAppSelector(selectCategories).categories;
 	const user = useAppSelector(selectUser);
 
 	// ** Swiper
@@ -140,11 +142,7 @@ export default function Home() {
 								onClick={() => categoriesSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -159,12 +157,14 @@ export default function Home() {
 							}}
 							modules={[Pagination]}
 							className="w-full mySwiper"
-							loop
 							ref={categoriesSwiperRef}
 						>
 							{categories.map((cate) => (
-								<SwiperSlide key={cate.title}>
-									<CategoryBtn icon={cate.icon} title={cate.title} />
+								<SwiperSlide key={cate.name[0].value}>
+									<CategoryBtn
+										icon={cate.icon ? cate.icon : ""}
+										title={cate.name.filter((item) => item.language === "vi")[0].value}
+									/>
 								</SwiperSlide>
 							))}
 						</Swiper>
@@ -206,11 +206,7 @@ export default function Home() {
 								onClick={() => productsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -329,11 +325,7 @@ export default function Home() {
 								onClick={() => reviewsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full lg:border-2 lg:border-black lg:dark:border-none bg-gray-accent dark:bg-black-dark-2 lg:dark:bg-black-dark-4"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>

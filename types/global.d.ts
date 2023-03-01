@@ -7,7 +7,7 @@ declare interface IAdministrativeOption extends IOption {
 	id: string;
 }
 
-declare interface Itranslate {
+declare interface ITranslation {
 	language: "vi" | "en";
 	value: string;
 }
