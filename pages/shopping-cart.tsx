@@ -12,41 +12,54 @@ export default function ShoppingCart() {
 				<Button type="secondary">Xóa tất cả</Button>
 			</div>
 
-			<div className="justify-between xl:flex">
-				<div className="mb-10 space-y-10 md:mb-12 md:space-y-12 xl:mb-0 xl:w-[784px]">
+			<div className="lg:justify-between lg:flex">
+				<div className="mb-10 space-y-10 md:mb-12 md:space-y-12 lg:space-y-10 lg:mb-0 lg:w-[65%]">
+					<ItemCart sale={20} price={100} />
+					<ItemCart sale={20} price={100} />
+					<ItemCart sale={20} price={100} />
 					<ItemCart sale={20} price={100} />
 					<ItemCart sale={20} price={100} />
 				</div>
 
-				<div className="p-6 border-2 border-gray-accent rounded-4xl md:p-14 xl:w-[416px] dark:border-black-dark-2">
-					<h4 className="mb-10 font-semibold text-heading-4 md:text-heading-2 md:mb-12 dark:text-white">
+				<div className="p-6 border-2 border-gray-accent rounded-4xl md:p-14 lg:p-8 lg:h-fit dark:border-black-dark-2">
+					<h4 className="mb-10 font-semibold text-heading-4 md:text-heading-2 md:mb-12 lg:mb-10 dark:text-white">
 						Tổng số giỏ hàng
 					</h4>
-					<div className="space-y-10 mb-14 md:space-y-12 md:mb-20 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-24 lg:gap-y-12 lg:mb-12 xl:block xl:space-y-12 xl:mb-20">
+					<div className="space-y-10 mb-14 md:space-y-12 md:mb-20 lg:block lg:space-y-10 lg:mb-14">
 						<div className="flex justify-between">
-							<p className="text-heading-5 md:text-paragraph-1 dark:text-white">Tổng phụ:</p>
-							<p className="text-heading-5 md:text-paragraph-1 dark:text-white">$209</p>
+							<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
+								Tổng phụ:
+							</p>
+							<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
+								$209
+							</p>
 						</div>
 						<div className="flex justify-between">
-							<p className="text-heading-5 md:text-paragraph-1 dark:text-white">Thuế:</p>
-							<p className="text-heading-5 md:text-paragraph-1 dark:text-white">$209</p>
+							<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
+								Thuế:
+							</p>
+							<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
+								$209
+							</p>
 						</div>
 						<div className="flex justify-between">
-							<p className="text-heading-5 md:text-paragraph-1 dark:text-white">
+							<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
 								Phí giao hàng:
 							</p>
-							<p className="text-heading-5 md:text-paragraph-1 dark:text-white">$209</p>
+							<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
+								$209
+							</p>
 						</div>
 						<div className="flex justify-between">
-							<p className="font-semibold text-heading-5 md:text-paragraph-1 dark:text-white">
+							<p className="font-semibold text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
 								Tổng:
 							</p>
-							<p className="font-semibold text-heading-5 md:text-paragraph-1 dark:text-white">
+							<p className="font-semibold text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
 								$209
 							</p>
 						</div>
 					</div>
-					<Button className="w-full lg:w-fit xl:w-full" type="primary">
+					<Button className="w-full" type="primary">
 						Thanh toán
 					</Button>
 				</div>

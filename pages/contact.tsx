@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
+import { useForm } from "react-hook-form";
 import Button from "../components/buttons/button";
 import Dropdown from "../components/inputs/dropdown";
 import Input from "../components/inputs/input";
@@ -10,6 +11,7 @@ import { en, vi } from "../translation";
 export default function Contact() {
 	const router = useRouter();
 	const { locale } = router;
+	const { register } = useForm();
 
 	const content = locale === "en" ? en : vi;
 
@@ -112,6 +114,8 @@ export default function Contact() {
 						]}
 						onChange={(value: string) => {}}
 						error={""}
+						register={register}
+						name="subject"
 					/>
 
 					<div>
