@@ -15,7 +15,7 @@ const nextConfig = {
 		JWT_SECRET: process.env.JWT_SECRET,
 	},
 	images: {
-		domains: ["i.pinimg.com"],
+		domains: ["i.pinimg.com", "res.cloudinary.com"],
 	},
 	i18n: {
 		locales: ["en", "vi"],

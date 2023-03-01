@@ -3,3 +3,8 @@ export enum Gender {
 	Female = "female",
 	Other = "other",
 }
+
+export enum Language {
+	vi = "vi",
+	en = "en",
+}

@@ -12,12 +12,17 @@ export default function Price({ price, sale, isResponsive }: Props) {
 			<div className="flex items-center space-x-2">
 				{sale && (
 					<span className="font-semibold line-through text-heading-5 text-dark-24 md:text-heading-4 dark:text-light-24">
-						${price}
+						{price.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
 					</span>
 				)}
 
 				<span className="font-semibold text-paragraph-1 md:text-heading-2 dark:text-white-light">
-					${sale ? (price * (100 - sale)) / 100 : price}
+					{sale
+						? ((price * (100 - sale)) / 100).toLocaleString("it-IT", {
+								style: "currency",
+								currency: "VND",
+						  })
+						: price.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
 				</span>
 			</div>
 		);
@@ -27,12 +32,17 @@ export default function Price({ price, sale, isResponsive }: Props) {
 		<div className="flex items-center space-x-2">
 			{sale && (
 				<span className="font-semibold line-through text-heading-5 text-dark-24 dark:text-light-24">
-					${price}
+					{price.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
 				</span>
 			)}
 
 			<span className="font-semibold text-heading-4 dark:text-white-light">
-				${sale ? (price * (100 - sale)) / 100 : price}
+				{sale
+					? ((price * (100 - sale)) / 100).toLocaleString("it-IT", {
+							style: "currency",
+							currency: "VND",
+					  })
+					: price.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
 			</span>
 		</div>
 	);

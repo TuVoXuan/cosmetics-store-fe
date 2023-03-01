@@ -18,15 +18,13 @@ import "swiper/css/pagination";
 import { Grid, Pagination } from "swiper";
 import GoBack from "../components/icons/go-back";
 import GoForward from "../components/icons/go-forward";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Return from "../components/icons/return";
 import WhyUsCard from "../components/card/why-us-card";
 import Profile from "../components/icons/profile";
 import Quality from "../components/icons/quality";
-import Image from "next/image";
 import CommentCard from "../components/card/comment-card";
 import Button from "../components/buttons/button";
-import Input from "../components/inputs/input";
 
 const categories = [
 	{
@@ -60,18 +58,38 @@ const categories = [
 ];
 import ProductCard from "../components/card/product-card";
 import HyggeImage from "../components/Image/image";
+import { toast } from "react-hot-toast";
+import productApi from "../api/product-api";
 
 export default function Home() {
+	// ** State
+	const [products, setProducts] = useState<IProductItem[]>([]);
+
+	// ** Redux & Session
 	const { data: session } = useSession();
 	console.log("session: ", session);
 	const { push } = useRouter();
 	const user = useAppSelector(selectUser);
+
+	// ** Swiper
 	const categoriesSwiperRef = useRef<SwiperRef>(null);
 	const reviewsSwiperRef = useRef<SwiperRef>(null);
 	const productsSwiperRef = useRef<SwiperRef>(null);
 
 	const handleSignIn = () => push(`/auth/sign-in`);
 
+	const handleFetchProductItems = async () => {
+		try {
+			const response = await productApi.getProductItems();
+			setProducts(response.data.data);
+		} catch (error) {
+			toast.error((error as IResponseError).error);
+		}
+	};
+
+	useEffect(() => {
+		handleFetchProductItems();
+	}, []);
 	return (
 		<>
 			{session && (
@@ -206,72 +224,26 @@ export default function Home() {
 							breakpoints={{
 								1024: {
 									slidesPerView: 4,
-									spaceBetween: 48,
 								},
 							}}
-							spaceBetween={48}
 							modules={[Grid, Pagination]}
 							className="hidden mySwiper md:block"
 							ref={productsSwiperRef}
 						>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
-							<SwiperSlide>
-								<ProductCard />
-							</SwiperSlide>
+							{products.map((prod) => (
+								<SwiperSlide>
+									<ProductCard productItem={prod} />
+								</SwiperSlide>
+							))}
 						</Swiper>
 					</div>
 					<div
 						className="space-y-14 md:hidden md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 lg:gap-x-14 
 				md:space-y-0 md:gap-y-16 xl:grid-cols-4 xl:gap-x-12 xl:gap-y-[72px]"
 					>
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
+						{products.map((prod) => (
+							<ProductCard productItem={prod} />
+						))}
 					</div>
 					<div className="flex justify-center mt-14">
 						<Button type="primary">Xem tất cả</Button>
