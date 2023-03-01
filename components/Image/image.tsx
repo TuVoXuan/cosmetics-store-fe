@@ -10,7 +10,7 @@ interface Props {
 
 export default function HyggeImage({ className, src, alt }: Props) {
 	return (
-		<div className={clsx("relative dark:bg-light-40 rounded-xl", className !== undefined && className)}>
+		<div className={clsx("relative rounded-xl", className !== undefined && className)}>
 			<Image className="object-contain mx-auto" src={src} fill alt={alt} />
 		</div>
 	);
