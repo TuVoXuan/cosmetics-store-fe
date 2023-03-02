@@ -1,4 +1,7 @@
-import React, { useEffect, useImperativeHandle, useRef } from "react";
+import { useRouter } from "next/router";
+import React, { Fragment, useEffect, useImperativeHandle, useRef } from "react";
+import { useAppSelector } from "../../app/hooks";
+import { selectCategories } from "../../redux/slices/category-slice";
 import CategoryItem from "../category/category";
 import Delete from "../icons/delete";
 
@@ -12,7 +15,11 @@ interface Props {
 }
 
 const CategoriesWindow = React.forwardRef<CategoriesWindowRefType, Props>(({ overlay }, ref) => {
+	const router = useRouter();
+	const { id } = router.query;
+
 	const categoriesRef = useRef<HTMLDivElement>(null);
+	const categories = useAppSelector(selectCategories).categories;
 
 	const handleOpen = () => {
 		document.addEventListener("click", handleClickOutside, true);
@@ -63,19 +70,39 @@ const CategoriesWindow = React.forwardRef<CategoriesWindowRefType, Props>(({ ove
 				<Delete onClick={handleClose} width={20} height={20} className="text-light-100" />
 			</section>
 			<div className="px-2 mt-2 space-y-2 overflow-y-auto grow">
-				<CategoryItem level={1} name={"Trang điểm"} />
-				<CategoryItem level={2} active name={"Trang điểm mặt"} />
-				<CategoryItem level={3} name={"Kem nền"} />
-				<CategoryItem level={3} name={"Trang lót"} />
-				<CategoryItem level={3} name={"Phấn má"} />
-				<CategoryItem level={2} name={"Trang điểm mặt"} />
-				<CategoryItem level={3} name={"Kem nền"} />
-				<CategoryItem level={3} name={"Trang lót"} />
-				<CategoryItem level={3} name={"Phấn má"} />
-				<CategoryItem level={2} name={"Trang điểm mặt"} />
-				<CategoryItem level={3} name={"Kem nền"} />
-				<CategoryItem level={3} name={"Trang lót"} />
-				<CategoryItem level={3} name={"Phấn má"} />
+				{categories.length > 0 &&
+					categories.map((category) => (
+						<Fragment key={category._id}>
+							<CategoryItem
+								active={id === category._id}
+								key={category._id}
+								id={category._id}
+								level={1}
+								name={category.name.filter((item) => item.language === "vi")[0].value}
+							/>
+							{category.children &&
+								category.children.map((child) => (
+									<Fragment key={child._id}>
+										<CategoryItem
+											level={2}
+											id={child._id}
+											active={id === child._id}
+											name={child.name.filter((item) => item.language === "vi")[0].value}
+										/>
+										{child.children &&
+											child.children.map((grandChild) => (
+												<CategoryItem
+													key={grandChild._id}
+													id={grandChild._id}
+													active={id === grandChild._id}
+													level={3}
+													name={grandChild.name.filter((item) => item.language === "vi")[0].value}
+												/>
+											))}
+									</Fragment>
+								))}
+						</Fragment>
+					))}
 			</div>
 		</div>
 	);

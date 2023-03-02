@@ -22,23 +22,15 @@ export default function ProductImage({ src, className, sale, isTagResponsive = f
 				className
 			)}
 		>
-			<div className={clsx("relative", clsName)}>
-				<Image
-					className="z-10 object-contain object-bottom w-full h-full"
-					src={src}
-					alt="product"
-					width={200}
-					height={200}
-					// onLoadingComplete={({ naturalWidth, naturalHeight }) => {
-					// 	if (naturalWidth > naturalHeight) {
-					// 		setClsName("w-2/3 mx-auto");
-					// 	} else {
-					// 		setClsName("h-2/3 w-full");
-					// 	}
-					// 	setRatio(naturalWidth / naturalHeight);
-					// }}
-				/>
-				{/* <div className="absolute bottom-0 w-1/2 h-4 left-1/2 translate-y-1/4 -z-10">
+			<Image
+				className="z-10 object-contain object-bottom w-full h-full"
+				src={src}
+				alt="product"
+				width={200}
+				height={200}
+			/>
+			{/* <div className={clsx("relative", clsName)}>
+				<div className="absolute bottom-0 w-1/2 h-4 left-1/2 translate-y-1/4 -z-10">
 					<div className="relative w-full h-full">
 						<Image
 							className="object-contain w-full "
@@ -47,14 +39,10 @@ export default function ProductImage({ src, className, sale, isTagResponsive = f
 							alt="shadow"
 						/>
 					</div>
-				</div> */}
-			</div>
+				</div>
+			</div> */}
 			{sale && (
-				<Badge
-					className="absolute right-6 top-6 md:-right-6"
-					color="red_accent"
-					isResponsive={isTagResponsive}
-				>
+				<Badge className="absolute right-6 top-6 md:-right-6" color="red_accent" isResponsive={isTagResponsive}>
 					{sale}% off
 				</Badge>
 			)}
