@@ -19,8 +19,22 @@ import OptionButton from "../../components/buttons/option-button";
 import PriceRange, { PriceRangeRefType } from "../../components/model/price-range";
 import Overlay from "../../components/model/overlay";
 import CategoriesWindow, { CategoriesWindowRefType } from "../../components/model/categories-window";
+import { useRouter } from "next/router";
+import productApi from "../../api/product-api";
+import { useAppSelector } from "../../app/hooks";
+import { selectCategories } from "../../redux/slices/category-slice";
+import { brandApi } from "../../api/brand-api";
 
 export default function Category() {
+	const router = useRouter();
+	const { id } = router.query;
+
+	const categories = useAppSelector(selectCategories).categories;
+
+	const [products, setProducts] = useState<IProductItem[]>([]);
+	const [category, setCategory] = useState<ICategory>();
+	const [brands, setBrands] = useState<IBrand[]>([]);
+
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoriesRef = useRef<CategoriesWindowRefType>(null);
 	const priceRangRef = useRef<PriceRangeRefType>(null);
@@ -37,14 +51,79 @@ export default function Category() {
 		}
 	};
 
+	const fetchProductItems = async (previous?: string[]) => {
+		if (id) {
+			const body: IGetProductByCategory = {
+				id: id as string,
+				limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
+			};
+			if (previous) {
+				body.previous = previous;
+			}
+			const response = await productApi.getProductItemsByCategory(body);
+			setProducts((values) => [...values, ...response]);
+		}
+	};
+
+	const findCategory = (id: string) => {
+		for (const cate of categories) {
+			if (cate._id === id) {
+				setCategory(cate);
+				return;
+			}
+
+			if (!cate.children) {
+				continue;
+			}
+
+			for (const child of cate.children) {
+				if (child._id === id) {
+					setCategory(child);
+					return;
+				}
+
+				if (!child.children) {
+					continue;
+				}
+
+				for (const grandChild of child.children) {
+					if (grandChild._id === id) {
+						setCategory(grandChild);
+						return;
+					}
+				}
+			}
+		}
+	};
+
+	const loadMore = () => {
+		fetchProductItems(products.map((item) => item.itemId));
+	};
+
+	const fetchBrands = async (id: string) => {
+		if (id) {
+			const brands = await brandApi.getBrandsByCategory(id);
+			setBrands(brands);
+		}
+	};
+
+	useEffect(() => {
+		setProducts([]);
+		fetchProductItems();
+		fetchBrands(id as string);
+		findCategory(id as string);
+	}, [id]);
+
 	return (
 		<div>
 			<Breadcrumb className="hidden xl:block xl:mt-24" items={["Trang chủ", "Trang điểm"]} />
 
 			<TitlePage
 				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
-				subtitle="Trang điểm"
-				title="Khám phá các sản phẩm trang điểm"
+				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
+				title={`Khám phá các sản phẩm ${
+					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
+				}`}
 			/>
 
 			<div className="space-y-4 xl:space-y-12 mt-14 md:mt-16 xl:mt-[72px] lg:mt-14">
@@ -107,12 +186,16 @@ export default function Category() {
 					</p>
 
 					<div className="flex items-center overflow-x-auto xl:h-36 h-14 md:h-28 gap-x-4 md:gap-x-8 lg:gap-x-10">
-						<HyggeImage
-							className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-							src="/images/logo/Cocoon-Logo-PNG-3.png"
-							alt="cocoon"
-						/>
-						<HyggeImage
+						{brands.length > 0 &&
+							brands.map((brand) => (
+								<HyggeImage
+									key={brand._id}
+									className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
+									src={brand.logo}
+									alt={brand.name}
+								/>
+							))}
+						{/* <HyggeImage
 							className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
 							src="/images/logo/Eucerin_logo.png"
 							alt="eucerin"
@@ -136,25 +219,21 @@ export default function Category() {
 							className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
 							src="/images/logo/Vichy-Logo.png"
 							alt="vichy"
-						/>
+						/> */}
 					</div>
 				</div>
 			</div>
 
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
-				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 gap-x-12 gap-y-16 lg:grid-cols-4 lg:gap-x-14">
-					<ProductCard />
-					<ProductCard />
-					<ProductCard />
-					<ProductCard />
-					<ProductCard />
-					<ProductCard />
-					<ProductCard />
+				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 lg:grid-cols-4 ">
+					{products.length > 0 && products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>
 
 				<div className="flex justify-center mt-14 md:mt-16">
-					<Button type="primary">Xem thêm</Button>
+					<Button onClick={loadMore} type="primary">
+						Xem thêm
+					</Button>
 				</div>
 			</div>
 

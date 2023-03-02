@@ -25,37 +25,6 @@ import Profile from "../components/icons/profile";
 import Quality from "../components/icons/quality";
 import CommentCard from "../components/card/comment-card";
 import Button from "../components/buttons/button";
-
-// const categories = [
-// 	{
-// 		icon: <ShoppingBag height={32} width={32} className="text-primary-100" />,
-// 		title: "giảm giá",
-// 	},
-// 	{
-// 		icon: <Skincare height={32} width={32} className="text-primary-100" />,
-// 		title: "mặt nạ",
-// 	},
-// 	{
-// 		icon: <EyeCare height={32} width={32} className="text-primary-100" />,
-// 		title: "chăm sóc mắt",
-// 	},
-// 	{
-// 		icon: <Natural height={32} width={32} className="text-primary-100" />,
-// 		title: "dưỡng ẩm",
-// 	},
-// 	{
-// 		icon: <Protection height={32} width={32} className="text-primary-100" />,
-// 		title: "điều trị",
-// 	},
-// 	{
-// 		icon: <NightCare height={32} width={32} className="text-primary-100" />,
-// 		title: "chăm sóc ban đêm",
-// 	},
-// 	{
-// 		icon: <AfterSun height={32} width={32} className="text-primary-100" />,
-// 		title: "chống nắng",
-// 	},
-// ];
 import ProductCard from "../components/card/product-card";
 import HyggeImage from "../components/Image/image";
 import { toast } from "react-hot-toast";
@@ -142,11 +111,7 @@ export default function Home() {
 								onClick={() => categoriesSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -210,11 +175,7 @@ export default function Home() {
 								onClick={() => productsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -235,7 +196,7 @@ export default function Home() {
 							ref={productsSwiperRef}
 						>
 							{products.map((prod) => (
-								<SwiperSlide>
+								<SwiperSlide key={prod.itemId}>
 									<ProductCard productItem={prod} />
 								</SwiperSlide>
 							))}
@@ -246,7 +207,7 @@ export default function Home() {
 				md:space-y-0 md:gap-y-16 xl:grid-cols-4 xl:gap-x-12 xl:gap-y-[72px]"
 					>
 						{products.map((prod) => (
-							<ProductCard productItem={prod} />
+							<ProductCard key={prod.itemId} productItem={prod} />
 						))}
 					</div>
 					<div className="flex justify-center mt-14">
@@ -333,11 +294,7 @@ export default function Home() {
 								onClick={() => reviewsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full lg:border-2 lg:border-black lg:dark:border-none bg-gray-accent dark:bg-black-dark-2 lg:dark:bg-black-dark-4"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>

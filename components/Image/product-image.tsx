@@ -42,11 +42,7 @@ export default function ProductImage({ src, className, sale, isTagResponsive = f
 				</div>
 			</div> */}
 			{sale && (
-				<Badge
-					className="absolute right-6 top-6 md:-right-6"
-					color="red_accent"
-					isResponsive={isTagResponsive}
-				>
+				<Badge className="absolute right-6 top-6 md:-right-6" color="red_accent" isResponsive={isTagResponsive}>
 					{sale}% off
 				</Badge>
 			)}

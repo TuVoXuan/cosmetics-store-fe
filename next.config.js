@@ -13,6 +13,7 @@ const nextConfig = {
 		FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
 		MONGODB_URI: process.env.MONGODB_URI,
 		JWT_SECRET: process.env.JWT_SECRET,
+		LIIMIT_PRODUCTS_BY_CATEGORY: process.env.LIIMIT_PRODUCTS_BY_CATEGORY,
 	},
 	images: {
 		domains: ["i.pinimg.com", "res.cloudinary.com"],
