@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 
 interface Props {
-	defaultValue?: IOption;
+	defaultValue: IOption;
 	options: IOption[];
 	disable: IDisableVariationList;
 	onChange: (value: string) => void;
 }
 
 export default function Select({ options, disable, onChange, defaultValue }: Props) {
-	const [selected, setSelected] = useState<string | undefined>(defaultValue?.value);
+	const [selected, setSelected] = useState<string>(defaultValue?.value);
+	// console.log("selected: ", selected);
 
 	const handleClick = (value: string) => {
 		setSelected(value);
 	};
 
 	useEffect(() => {
-		onChange(selected || "");
+		onChange(selected);
 	}, [selected]);
 
 	return (
