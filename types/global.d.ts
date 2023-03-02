@@ -12,6 +12,21 @@ declare interface ITranslation {
 	value: string;
 }
 
+declare interface IOption {
+	value: string;
+	label: string;
+}
+
+declare interface IDisableVariationList {
+	_id: string;
+	value: string[];
+}
+
+declare interface ISeletedVariationList {
+	variationId: string;
+	optionId: string;
+}
+
 declare interface IRandomPagination {
 	previous?: string[];
 	limit: string;

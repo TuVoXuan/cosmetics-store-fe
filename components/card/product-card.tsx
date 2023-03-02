@@ -5,14 +5,25 @@ import { light, red_accent, yellow_tertiary } from "../../styles/color";
 import clsx from "clsx";
 import ProductImage from "../Image/product-image";
 import Price from "../badge/price";
+import { useRouter } from "next/router";
+import APP_PATH from "../../constants/app-path";
 
 interface Props {
 	productItem: IProductItem;
 }
 
 export default function ProductCard({ productItem }: Props) {
+	const router = useRouter();
+
+	const handleOnClick = () => {
+		router.push(`${APP_PATH.PRODUCT}/${productItem.productId}/${productItem.itemId}`);
+	};
+
 	return (
-		<div className="box-border p-3 overflow-hidden border-2 border-white dark:hover:border-primary-100 dark:border-black-dark-3 hover:border-primary-100 rounded-xl">
+		<div
+			onClick={handleOnClick}
+			className="box-border p-3 overflow-hidden border-2 border-white cursor-pointer dark:hover:border-primary-100 dark:border-black-dark-3 hover:border-primary-100 rounded-xl"
+		>
 			<ProductImage src={productItem.thumbnail} />
 			<div className="mt-8 space-y-2">
 				<p className="font-semibold text-paragraph-2 text-dark-100 dark:text-light-100 line-clamp-2">

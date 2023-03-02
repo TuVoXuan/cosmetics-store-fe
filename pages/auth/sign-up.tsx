@@ -171,7 +171,7 @@ export default function SignUp() {
 					option={{
 						required: {
 							value: true,
-							message: "Chọn tỉnh/thành phố",
+							message: "Chọn giới tính",
 						},
 					}}
 					error={errors.gender?.message}

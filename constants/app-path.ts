@@ -4,6 +4,7 @@ const APP_PATH = {
 	SIGN_IN: "/auth/sign-in",
 	ERROR: "/auth/error",
 	CATEGORY: "/category",
+	PRODUCT: "/product",
 };
 
 export default APP_PATH;

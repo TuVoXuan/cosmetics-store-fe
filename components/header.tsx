@@ -1,5 +1,7 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
+import APP_PATH from "../constants/app-path";
 import { black_dark, white_light } from "../styles/color";
 import Button from "./buttons/button";
 import CartIndicator from "./icons/cart-indicator";
@@ -29,6 +31,8 @@ export default function Header({ onShowNavbar }: Props) {
 	const [showNavbar, setShowNavbar] = useState<boolean>(false);
 	// const [showCategories, setShowCategories] = useState<boolean>(false);
 	const [search, setSearch] = useState<boolean>(false);
+
+	const router = useRouter();
 
 	const handleClickSearchIcon = () => {
 		setSearch(true);
@@ -155,7 +159,8 @@ export default function Header({ onShowNavbar }: Props) {
 				<div className="hidden h-12 lg:block">
 					{/* light logo */}
 					<Image
-						className="w-auto h-full aspect-auto dark:hidden"
+						onClick={() => router.push(APP_PATH.HOME)}
+						className="w-auto h-full cursor-pointer aspect-auto dark:hidden"
 						src={"/images/logo/light/logo-primary-lightBg.svg"}
 						height={100}
 						width={100}
@@ -164,7 +169,8 @@ export default function Header({ onShowNavbar }: Props) {
 
 					{/* dark logo */}
 					<Image
-						className="hidden w-auto h-full aspect-auto dark:lg:block"
+						onClick={() => router.push(APP_PATH.HOME)}
+						className="hidden w-auto h-full cursor-pointer aspect-auto dark:lg:block"
 						src={"/images/logo/dark/logo-primary-darkBg.svg"}
 						height={100}
 						width={100}
@@ -193,7 +199,8 @@ export default function Header({ onShowNavbar }: Props) {
 				<div ref={logoRef} className="absolute h-12 left-[50%] -translate-x-[50%] lg:hidden">
 					{/* light logo */}
 					<Image
-						className="w-auto h-full aspect-auto md:hidden dark:hidden"
+						onClick={() => router.push(APP_PATH.HOME)}
+						className="w-auto h-full cursor-pointer aspect-auto md:hidden dark:hidden"
 						src={"/images/logo/light/logo-secondary-lightBg.svg"}
 						height={100}
 						width={100}
@@ -201,7 +208,8 @@ export default function Header({ onShowNavbar }: Props) {
 					/>
 
 					<Image
-						className="hidden w-auto h-full aspect-auto md:block dark:hidden"
+						onClick={() => router.push(APP_PATH.HOME)}
+						className="hidden w-auto h-full cursor-pointer aspect-auto md:block dark:hidden"
 						src={"/images/logo/light/logo-primary-lightBg.svg"}
 						height={100}
 						width={100}
@@ -210,14 +218,16 @@ export default function Header({ onShowNavbar }: Props) {
 
 					{/* dark light */}
 					<Image
-						className="hidden w-auto h-full aspect-auto md:hidden dark:block md:dark:hidden"
+						onClick={() => router.push(APP_PATH.HOME)}
+						className="hidden w-auto h-full cursor-pointer aspect-auto md:hidden dark:block md:dark:hidden"
 						src={"/images/logo/dark/logo-secondary-darkBg.svg"}
 						height={100}
 						width={100}
 						alt="logo"
 					/>
 					<Image
-						className="hidden w-auto h-full aspect-auto dark:md:block"
+						onClick={() => router.push(APP_PATH.HOME)}
+						className="hidden w-auto h-full cursor-pointer aspect-auto dark:md:block"
 						src={"/images/logo/dark/logo-primary-darkBg.svg"}
 						height={100}
 						width={100}

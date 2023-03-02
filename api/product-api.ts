@@ -10,6 +10,10 @@ const productApi = {
 		return axiosService.get<IResponseSuccess<IProductItem[]>>(`${URL}/product-items`);
 	},
 
+	getProductDetal: (productId: string, itemId: string) => {
+		return axiosService.get<IResponseSuccess<IProductDetailInfo>>(`${URL}/product-detail/${productId}/${itemId}`);
+	},
+
 	getProductItemsByCategory: async (data: IGetProductByCategory) => {
 		const response = await axiosService.post<IResponseSuccess<IProductItem[]>>(
 			`${URL}/product-items/category/${data.id}`,
