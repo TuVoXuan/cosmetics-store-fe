@@ -25,21 +25,21 @@ const productApi = {
 	getProductItemsByCategoryAndOptions: async (data: IGetProductByCategoryAndOptioins) => {
 		let newURL = URL + `/product-items/category/${data.id}/options?`;
 		if (data.from) {
-			newURL += `from=${data.from}`;
+			newURL += `&from=${data.from}`;
 		}
 		if (data.to) {
-			newURL += `to=${data.to}`;
+			newURL += `&to=${data.to}`;
 		}
 		if (data.order) {
-			newURL += `order=${data.order}`;
+			newURL += `&order=${data.order}`;
 		}
 		if (data.brand) {
-			newURL += `brand=${data.brand}`;
+			newURL += `&brand=${data.brand}`;
 		}
 
 		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductItem[]>>>(newURL, {
 			limit: data.limit,
-			after: data.after,
+			after: data.after ? data.after : undefined,
 		});
 
 		return response.data.data;

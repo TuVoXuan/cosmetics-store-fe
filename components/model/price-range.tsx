@@ -1,5 +1,7 @@
+import { useRouter } from "next/router";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useForm } from "react-hook-form";
+import APP_PATH from "../../constants/app-path";
 import Button from "../buttons/button";
 import Delete from "../icons/delete";
 import Input from "../inputs/input";
@@ -21,6 +23,8 @@ interface FormValue {
 const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref) => {
 	const priceRangeRef = useRef<HTMLDivElement>(null);
 	const priceRangeChidrenRef = useRef<HTMLDivElement>(null);
+
+	const { push, query } = useRouter();
 
 	const {
 		register,
@@ -79,7 +83,17 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 	};
 
 	const onSubmit = (value: FormValue) => {
-		console.log("value: ", value);
+		let path = `${APP_PATH.CATEGORY}/${query.id}?from=${value.from}&to=${value.to}`;
+
+		if (query.brand) {
+			path += `&brand=${query.brand}`;
+		}
+
+		if (query.order) {
+			path += `&order=${query.order}`;
+		}
+		handleClose();
+		push(path);
 	};
 
 	useImperativeHandle(ref, () => ({
@@ -111,8 +125,8 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 						<Input
 							register={register}
 							name="from"
-							// type="number"
-							error={errors.from?.type === "validate" ? "Giá trị từ không lớn hơn giá trị đến" : errors.from?.message}
+							type="number"
+							error=""
 							option={{
 								required: {
 									value: true,
@@ -131,8 +145,8 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 						<Input
 							register={register}
 							name="to"
-							// type="number"
-							error={errors.to?.type === "validate" ? "Giá trị đến không nhỏ hơn giá trị từ" : errors.to?.message}
+							type="number"
+							error={""}
 							option={{
 								required: {
 									value: true,

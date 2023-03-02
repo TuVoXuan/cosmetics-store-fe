@@ -24,16 +24,18 @@ import productApi from "../../api/product-api";
 import { useAppSelector } from "../../app/hooks";
 import { selectCategories } from "../../redux/slices/category-slice";
 import { brandApi } from "../../api/brand-api";
+import APP_PATH from "../../constants/app-path";
 
 export default function Category() {
 	const router = useRouter();
-	const { id } = router.query;
+	const { id, from, to, brand, order } = router.query;
 
 	const categories = useAppSelector(selectCategories).categories;
 
 	const [products, setProducts] = useState<IProductItem[]>([]);
 	const [category, setCategory] = useState<ICategory>();
 	const [brands, setBrands] = useState<IBrand[]>([]);
+	const [after, setAfter] = useState<string>("");
 
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoriesRef = useRef<CategoriesWindowRefType>(null);
@@ -51,7 +53,7 @@ export default function Category() {
 		}
 	};
 
-	const fetchProductItems = async (previous?: string[]) => {
+	const fetchProductItemsRandom = async (previous?: string[]) => {
 		if (id) {
 			const body: IGetProductByCategory = {
 				id: id as string,
@@ -61,6 +63,9 @@ export default function Category() {
 				body.previous = previous;
 			}
 			const response = await productApi.getProductItemsByCategory(body);
+			if (response.length === 0) {
+				setAfter("end");
+			}
 			setProducts((values) => [...values, ...response]);
 		}
 	};
@@ -97,7 +102,11 @@ export default function Category() {
 	};
 
 	const loadMore = () => {
-		fetchProductItems(products.map((item) => item.itemId));
+		if (from || to || brand || order) {
+			fetchProductsLoadMore(after);
+		} else {
+			fetchProductItemsRandom(products.map((item) => item.itemId));
+		}
 	};
 
 	const fetchBrands = async (id: string) => {
@@ -107,12 +116,79 @@ export default function Category() {
 		}
 	};
 
+	const handleClickOrder = (order: "asc" | "desc") => () => {
+		let path = `${APP_PATH.CATEGORY}/${id}?order=${order}`;
+
+		if (from) {
+			path += `&from=${from}`;
+		}
+		if (to) {
+			path += `&to=${to}`;
+		}
+		if (brand) {
+			path += `&brand=${brand}`;
+		}
+
+		router.push(path);
+	};
+
+	const handleClickBrand = (brand: string) => () => {
+		let path = `${APP_PATH.CATEGORY}/${id}?brand=${brand}`;
+
+		if (from) {
+			path += `&from=${from}`;
+		}
+		if (to) {
+			path += `&to=${to}`;
+		}
+		if (order) {
+			path += `&order=${order}`;
+		}
+
+		router.push(path);
+	};
+
+	const fetchProductsLoadMore = async (after: string) => {
+		if (id && after !== "end") {
+			const data = await productApi.getProductItemsByCategoryAndOptions({
+				id: id as string,
+				limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
+				from: from as string,
+				to: to as string,
+				brand: brand as string,
+				after: after,
+				order: order ? (order as "desc" | "asc") : undefined,
+			});
+
+			setProducts((values) => [...values, ...data.data]);
+			setAfter(data.after);
+		}
+	};
+
 	useEffect(() => {
+		if (!from && !to && !brand && !order) {
+			fetchProductItemsRandom();
+		}
 		setProducts([]);
-		fetchProductItems();
+		setAfter("");
 		fetchBrands(id as string);
-		findCategory(id as string);
 	}, [id]);
+
+	useEffect(() => {
+		if (id) {
+			findCategory(id as string);
+		}
+	}, [categories, id]);
+
+	useEffect(() => {
+		if (from || to || brand || order) {
+			console.log("order: ", order);
+			console.log("brand: ", brand);
+			setProducts([]);
+			setAfter("");
+			fetchProductsLoadMore("");
+		}
+	}, [from, to, brand, order]);
 
 	return (
 		<div>
@@ -127,56 +203,58 @@ export default function Category() {
 			/>
 
 			<div className="space-y-4 xl:space-y-12 mt-14 md:mt-16 xl:mt-[72px] lg:mt-14">
-				<div className="space-y-2 md:space-y-4 xl:space-y-8">
-					<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-						Chọn tiêu chí
-					</p>
-					<div className="space-x-2 md:space-x-4 xl:space-x-8">
-						<OptionButton onClick={handleOpenCategories}>
-							<LayoutGrid
-								width={20}
-								height={20}
-								className="inline mr-1 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-							/>
-							Phân loại
-						</OptionButton>
-						<div className="inline lg:relative">
-							<OptionButton onClick={handleOpenPriceRange}>
-								<Wallet
+				<div className="space-y-4 lg:flex lg:space-y-0 lg:gap-x-8">
+					<div className="space-y-2 md:space-y-4 xl:space-y-8">
+						<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
+							Chọn tiêu chí
+						</p>
+						<div className="space-x-2 flex md:gap-x-4 xl:gap-x-8">
+							<OptionButton onClick={handleOpenCategories}>
+								<LayoutGrid
 									width={20}
 									height={20}
 									className="inline mr-1 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
 								/>
-								Khoảng giá
+								Phân loại
 							</OptionButton>
+							<div className="lg:relative">
+								<OptionButton onClick={handleOpenPriceRange}>
+									<Wallet
+										width={20}
+										height={20}
+										className="inline mr-1 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
+									/>
+									Khoảng giá
+								</OptionButton>
 
-							{/* price range */}
-							<PriceRange overlay={overlayRef} ref={priceRangRef} />
+								{/* price range */}
+								<PriceRange overlay={overlayRef} ref={priceRangRef} />
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<div className="space-y-2 md:space-y-4 xl:space-y-8">
-					<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-						Sắp xếp theo
-					</p>
-					<div className="flex overflow-x-auto gap-x-2 md:gap-x-4 xl:gap-x-8">
-						<OptionButton>
-							<BarCharUp
-								width={20}
-								height={20}
-								className="inline mr-1 -rotate-90 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-							/>
-							Giá tăng dần
-						</OptionButton>
-						<OptionButton>
-							<BarCharDown
-								width={20}
-								height={20}
-								className="inline mr-1 -rotate-90 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-							/>
-							Giá giảm dần
-						</OptionButton>
+					<div className="space-y-2 md:space-y-4 xl:space-y-8">
+						<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
+							Sắp xếp theo
+						</p>
+						<div className="flex overflow-x-auto gap-x-2 md:gap-x-4 xl:gap-x-8">
+							<OptionButton onClick={handleClickOrder("asc")}>
+								<BarCharDown
+									width={20}
+									height={20}
+									className="inline mr-1 -rotate-90 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
+								/>
+								Giá tăng dần
+							</OptionButton>
+							<OptionButton onClick={handleClickOrder("desc")}>
+								<BarCharUp
+									width={20}
+									height={20}
+									className="inline mr-1 -rotate-90 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
+								/>
+								Giá giảm dần
+							</OptionButton>
+						</div>
 					</div>
 				</div>
 				{/* brand logos */}
@@ -189,37 +267,13 @@ export default function Category() {
 						{brands.length > 0 &&
 							brands.map((brand) => (
 								<HyggeImage
+									onClick={handleClickBrand(brand._id)}
 									key={brand._id}
 									className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
 									src={brand.logo}
 									alt={brand.name}
 								/>
 							))}
-						{/* <HyggeImage
-							className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-							src="/images/logo/Eucerin_logo.png"
-							alt="eucerin"
-						/>
-						<HyggeImage
-							className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-							src="/images/logo/La-Roche-Posay-Logo-PNG-1.png"
-							alt="larocheposay"
-						/>
-						<HyggeImage
-							className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-							src="/images/logo/Laneige_Logo.svg.png"
-							alt="laneige"
-						/>
-						<HyggeImage
-							className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-							src="/images/logo/Pantene-Logo-2012-2016.png"
-							alt="pantene"
-						/>
-						<HyggeImage
-							className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-							src="/images/logo/Vichy-Logo.png"
-							alt="vichy"
-						/> */}
 					</div>
 				</div>
 			</div>
@@ -230,11 +284,13 @@ export default function Category() {
 					{products.length > 0 && products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>
 
-				<div className="flex justify-center mt-14 md:mt-16">
-					<Button onClick={loadMore} type="primary">
-						Xem thêm
-					</Button>
-				</div>
+				{after !== "end" && (
+					<div className="flex justify-center mt-14 md:mt-16">
+						<Button onClick={loadMore} type="primary">
+							Xem thêm
+						</Button>
+					</div>
+				)}
 			</div>
 
 			{/* categories */}

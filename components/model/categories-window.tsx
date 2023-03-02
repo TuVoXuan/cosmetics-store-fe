@@ -60,6 +60,10 @@ const CategoriesWindow = React.forwardRef<CategoriesWindowRefType, Props>(({ ove
 		};
 	}, []);
 
+	useEffect(() => {
+		handleClose();
+	}, [router.asPath]);
+
 	return (
 		<div
 			ref={categoriesRef}
