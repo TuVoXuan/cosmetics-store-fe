@@ -65,7 +65,7 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 		if (priceRangeRef.current && overlay && overlay.current) {
 			if (window.innerWidth >= 1024) {
 				if (priceRangeChidrenRef.current) {
-					priceRangeRef.current.style.height = priceRangeChidrenRef.current.clientHeight + 64 + "px";
+					priceRangeRef.current.style.height = priceRangeChidrenRef.current.clientHeight + "px";
 				}
 				overlay.current.classList.remove("bg-opacity-40");
 				overlay.current.classList.replace("bg-black-dark-4", "bg-transparent");
