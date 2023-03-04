@@ -41,3 +41,23 @@ declare interface ILoadMorePaginationRes<T> {
 	data: T;
 	after: string;
 }
+
+declare interface CartItem {
+	productId: string;
+	itemId: string;
+	price: number;
+	thumbnail: string;
+	name: ITranslation[];
+	quantity: number;
+}
+
+declare interface IChangeQuantityCartItem {
+	productId: string;
+	itemId: string;
+	quantity: number;
+}
+
+declare interface IDeleteCart {
+	productId: string;
+	itemId: string;
+}

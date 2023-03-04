@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import NProgress from "nprogress";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { getLocalData } from "../redux/slices/cart-slice";
 
 const montserrat = Montserrat({ subsets: ["latin", "vietnamese"] });
 
@@ -25,6 +26,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 			NProgress.done();
 		});
 		router.events.on("routeChangeError", () => NProgress.done());
+
+		const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
+		store.dispatch(getLocalData(cart));
 	}, []);
 
 	return (

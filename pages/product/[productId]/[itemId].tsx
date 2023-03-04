@@ -1,7 +1,6 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Pagination } from "swiper";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import Badge from "../../../components/badge/badge";
 import Price from "../../../components/badge/price";
 import Button from "../../../components/buttons/button";
 import QuantityBtn from "../../../components/buttons/quantity-btn";
@@ -21,11 +20,14 @@ import "swiper/css/pagination";
 import "react-quill/dist/quill.snow.css";
 import { useRouter } from "next/router";
 import { en, vi } from "../../../translation";
-import Select from "../../../components/inputs/select";
 import VariationOptions from "../../../components/variation-option/variationOptions";
 import Head from "next/head";
+import { useAppDispatch } from "../../../app/hooks";
+import { toastSuccess } from "../../../util/toast";
+import { addToCart } from "../../../redux/slices/cart-slice";
 
 interface Props {
+	productId: string;
 	selectedItem: IProductItemDetail | undefined;
 	productInfo: IProductBasicInfo;
 	productItems: IProductItemDetail[];
@@ -44,6 +46,7 @@ export const getServerSideProps = async (context: any) => {
 
 	return {
 		props: {
+			productId,
 			selectedItem,
 			productInfo,
 			productItems,
@@ -52,24 +55,41 @@ export const getServerSideProps = async (context: any) => {
 	};
 };
 
-export default function Product({ selectedItem, productInfo, productItems, variationList }: Props) {
+export default function Product({
+	productId,
+	selectedItem,
+	productInfo,
+	productItems,
+	variationList,
+}: Props) {
 	// State
 	const [currItem, setCurrItem] = useState<IProductItemDetail | undefined>(selectedItem);
+	const [displayImg, setDisplayImg] = useState<string | undefined>(currItem?.thumbnail);
+	const [quantity, setQuantity] = useState<number>(1);
 
 	// Ref
 	const prodImagesSwiperRef = useRef<SwiperRef>(null);
 	const relatedProdsSwiperRef = useRef<SwiperRef>(null);
 
-	// Router
+	// Router & Redux
 	const router = useRouter();
 	const { locale } = router;
 	const content = locale === "en" ? en : vi;
+	const dispatch = useAppDispatch();
 
 	// React Hook Form
 	const { register } = useForm();
 
 	const handleChangeCurrItem = (item: IProductItemDetail) => {
 		setCurrItem(item);
+	};
+
+	const handleClickImg = (url: string) => {
+		setDisplayImg(url);
+	};
+
+	const handleChangeQuantity = (value: number) => {
+		setQuantity(value);
 	};
 
 	const handleDescription = () => {
@@ -89,6 +109,27 @@ export default function Product({ selectedItem, productInfo, productItems, varia
 		}
 		return "";
 	};
+
+	const handleAddToCart = () => {
+		if (currItem) {
+			const cartItem: CartItem = {
+				itemId: currItem._id,
+				productId: productId,
+				name: currItem.name,
+				price: currItem.price,
+				thumbnail: currItem.thumbnail,
+				quantity,
+			};
+
+			dispatch(addToCart(cartItem));
+
+			toastSuccess("Add to cart success");
+		}
+	};
+
+	useEffect(() => {
+		setDisplayImg(currItem?.thumbnail);
+	}, [currItem]);
 
 	return (
 		<Fragment>
@@ -144,15 +185,17 @@ export default function Product({ selectedItem, productInfo, productItems, varia
 
 					<div className="hidden md:block md:mb-16 lg:mb-0 lg:col-span-4">
 						<div className="px-[84px] lg:px-0">
-							<ProductImage
-								src={currItem?.thumbnail || "/images/Product.png"}
-								className="mb-6 "
-							/>
+							<ProductImage src={displayImg || "/images/Product.png"} className="mb-6" />
 
-							<div className="grid grid-cols-3 gap-x-6 ">
-								{currItem?.images.map((url) => (
-									<ProductImage key={url} src={url} />
-								))}
+							<div className="grid grid-cols-4 gap-x-2 ">
+								{currItem &&
+									[currItem.thumbnail, ...currItem.images].map((url) => (
+										<ProductImage
+											onClick={() => handleClickImg(url)}
+											key={url}
+											src={url}
+										/>
+									))}
 							</div>
 						</div>
 					</div>
@@ -177,8 +220,10 @@ export default function Product({ selectedItem, productInfo, productItems, varia
 						/>
 
 						<div className="flex flex-col items-center gap-6 md:items-stretch md:flex-row md:justify-center">
-							<QuantityBtn />
-							<Button type="primary">Thêm vào giỏ</Button>
+							<QuantityBtn value={quantity} onChange={handleChangeQuantity} />
+							<Button onClick={handleAddToCart} type="primary">
+								Thêm vào giỏ
+							</Button>
 						</div>
 					</div>
 				</div>

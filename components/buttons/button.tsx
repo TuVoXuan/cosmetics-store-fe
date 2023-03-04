@@ -25,7 +25,7 @@ export default function Button({ children, type, className, form, btnType = "but
 			form={form}
 			type={btnType}
 			className={`rounded-[32px] font-bold px-6 py-3 text-heading-5 md:px-10 md:py-4 md:text-heading-4 
-			hover:border-primary-100 transition-colors ease-linear 
+			hover:border-primary-100 transition-colors ease-linear select-none
 			${getCSSType()} ${className}`}
 		>
 			{children}

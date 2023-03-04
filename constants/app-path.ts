@@ -5,6 +5,7 @@ const APP_PATH = {
 	ERROR: "/auth/error",
 	CATEGORY: "/category",
 	PRODUCT: "/product",
+	CART: "/shopping-cart",
 };
 
 export default APP_PATH;

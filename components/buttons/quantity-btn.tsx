@@ -4,23 +4,41 @@ import GoBack from "../icons/go-back";
 import GoForward from "../icons/go-forward";
 
 interface Props {
+	value: number;
+	onChange: (value: number) => void;
 	className?: string;
-	children?: React.ReactNode;
 }
 
-export default function QuantityBtn({ className, children }: Props) {
+export default function QuantityBtn({ value, onChange, className }: Props) {
+	const handlePlus = () => {
+		onChange(value + 1);
+	};
+
+	const handleMinus = () => {
+		if (value > 1) {
+			onChange(value - 1);
+		}
+	};
+
 	return (
 		<div
 			className={clsx(
-				"flex items-center border-2 border-gray-accent rounded-[32px] w-fit gap-x-8 py-2 px-4 md:gap-x-11 md:px-6 md:py-4 lg:px-5 lg:py-3 dark:border-black-dark-2",
+				"flex items-center justify-between border-2 border-gray-accent rounded-[32px] w-[136px] py-2 px-4 md:w-[176px] md:px-6 md:py-4 lg:px-5 lg:py-3 dark:border-black-dark-2",
 				className
 			)}
 		>
-			<GoBack className="cursor-pointer dark:text-white-light" width={16} height={16} color="#1A202C" />
-			<span className="font-bold text-dark-100 text-heading-4 md:text-heading-3 dark:text-white">
-				1
+			<GoBack
+				onClick={handleMinus}
+				className="cursor-pointer dark:text-white-light"
+				width={16}
+				height={16}
+				color="#1A202C"
+			/>
+			<span className="font-bold select-none text-dark-100 text-heading-4 md:text-heading-3 dark:text-white">
+				{value}
 			</span>
 			<GoForward
+				onClick={handlePlus}
 				className="cursor-pointer dark:text-white-light"
 				width={16}
 				height={16}

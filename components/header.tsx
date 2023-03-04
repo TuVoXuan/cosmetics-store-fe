@@ -249,6 +249,7 @@ export default function Header({ onShowNavbar }: Props) {
 					)}
 
 					<CartIndicator
+						onClick={() => router.push(APP_PATH.CART)}
 						className="cursor-pointer md:mr-6 md:ml-8 dark:text-light-100"
 						height={28}
 						width={32}
