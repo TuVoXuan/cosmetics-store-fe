@@ -5,6 +5,8 @@ const APP_PATH = {
 	ERROR: "/auth/error",
 	CATEGORY: "/category",
 	PRODUCT: "/product",
+	ACCOUNT: "/account/info",
+	ORDER_HISTORY: "/account/order-history",
 };
 
 export default APP_PATH;

@@ -73,6 +73,10 @@ export default function Dropdown({
 		setSelectedValue(undefined);
 	}, [watch]);
 
+	useEffect(() => {
+		setSelectedValue(options.find((item) => item.value === defaulValue));
+	}, [defaulValue]);
+
 	return (
 		<div>
 			<div className="hidden">
@@ -85,7 +89,7 @@ export default function Dropdown({
 							type="radio"
 							name={name}
 							id={item.value}
-							defaultChecked={defaulValue === item.value}
+							// defaultChecked={defaulValue === item.value}
 						/>
 					))
 				) : (
@@ -93,9 +97,7 @@ export default function Dropdown({
 				)}
 			</div>
 			{label && (
-				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
-					{label}
-				</p>
+				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
 			)}
 
 			<div className={clsx("relative", className)}>
@@ -136,20 +138,13 @@ export default function Dropdown({
 									key={item.value}
 									className={clsx(
 										"flex items-center justify-between font-semibold cursor-pointer select-none capitalize",
-										size === "large"
-											? "text-heading-5 mt-6 md:text-heading-4 md:mt-8"
-											: "text-heading-5 mt-6"
+										size === "large" ? "text-heading-5 mt-6 md:text-heading-4 md:mt-8" : "text-heading-5 mt-6"
 									)}
 								>
 									<label onClick={() => handleOnchange(item)} htmlFor={item.value}>
 										{item.label}
 									</label>
-									<Selected
-										width={16}
-										height={16}
-										color="#1A202C"
-										className="dark:text-light-100"
-									/>
+									<Selected width={16} height={16} color="#1A202C" className="dark:text-light-100" />
 								</li>
 							);
 						}
@@ -158,9 +153,7 @@ export default function Dropdown({
 								key={item.value}
 								className={clsx(
 									"flex items-center justify-between cursor-pointer select-none capitalize",
-									size === "large"
-										? "text-heading-5 mt-6 md:text-heading-4 md:mt-8"
-										: "text-heading-5 mt-6"
+									size === "large" ? "text-heading-5 mt-6 md:text-heading-4 md:mt-8" : "text-heading-5 mt-6"
 								)}
 							>
 								<label onClick={() => handleOnchange(item)} htmlFor={item.value}>
@@ -171,11 +164,7 @@ export default function Dropdown({
 					})}
 				</ul>
 			</div>
-			{error && (
-				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
-					{error}
-				</p>
-			)}
+			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
 		</div>
 	);
 }

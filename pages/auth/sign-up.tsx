@@ -53,7 +53,10 @@ export default function SignUp() {
 				code: data.code,
 			});
 
-			router.push(APP_PATH.SIGN_IN);
+			router.push({
+				pathname: APP_PATH.SIGN_IN,
+				query: router.query,
+			});
 		} catch (error) {
 			toastError((error as IResponseError).error);
 			console.log("error: ", error);
@@ -95,8 +98,7 @@ export default function SignUp() {
 						},
 						pattern: {
 							value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-							message:
-								"Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
+							message: "Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
 						},
 					}}
 					error={errors.password?.message}
@@ -193,12 +195,7 @@ export default function SignUp() {
 				</Checkbox>
 			</form>
 			<div className="grid grid-cols-1 gap-y-4 mt-14 md:grid-cols-2 md:gap-x-6 md:w-[496px] md:mx-auto">
-				<Button
-					form="registerForm"
-					onClick={handleSubmit(onSubmit)}
-					type="primary"
-					className="w-full"
-				>
+				<Button form="registerForm" onClick={handleSubmit(onSubmit)} type="primary" className="w-full">
 					Tại tài khoản
 				</Button>
 				<Button type="secondary" className="w-full">

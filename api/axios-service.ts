@@ -5,8 +5,9 @@ const axiosService = axios.create({
 	baseURL: "https://api.example.com",
 });
 axiosService.interceptors.request.use(
-	function (config) {
+	async function (config) {
 		const token = getCookie("Authorization");
+
 		if (token && config.headers) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}

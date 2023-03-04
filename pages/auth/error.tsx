@@ -14,9 +14,11 @@ export default function Error() {
 		EmailSignin: "Check your email address.",
 		CredentialsSignin: "Sign in failed. Check the details you provided are correct.",
 		default: "Unable to sign in.",
+		ERROR_ALREADY_LINKED_TO_ANOTHER_ACCOUNT: "Try using another account",
 	};
 
 	let { error } = useRouter().query;
+	console.log("error: ", error);
 
 	const errorMessage = error && (errors[error as keyof typeof errors] ?? errors.default);
 

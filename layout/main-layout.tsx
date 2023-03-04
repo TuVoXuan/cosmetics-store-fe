@@ -1,9 +1,10 @@
+import { setCookie } from "cookies-next";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../app/hooks";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import { getCategories } from "../redux/actions/category-action";
-// import clsx from "clsx";
 
 interface Props {
 	children?: React.ReactNode;
@@ -12,6 +13,7 @@ interface Props {
 export default function MainLayout({ children }: Props) {
 	const [showNavbar, setShowNavbar] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
+	const { data: session } = useSession();
 
 	const fetchCategories = () => {
 		dispatch(getCategories()).unwrap();
@@ -21,9 +23,23 @@ export default function MainLayout({ children }: Props) {
 		setShowNavbar(!showNavbar);
 	};
 
+	const handleSetToken = () => {
+		fetch("/api/user")
+			.then((data) => data.json())
+			.then((data: JWTToken | null) => {
+				if (data) {
+					setCookie("Authorization", data.jwtToken);
+				}
+			});
+	};
+
 	useEffect(() => {
 		fetchCategories();
 	}, []);
+
+	useEffect(() => {
+		handleSetToken();
+	}, [session]);
 
 	return (
 		<main
