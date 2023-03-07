@@ -151,7 +151,6 @@ export default function SignUp() {
 
 				<Dropdown
 					label="Giới tính"
-					size={"large"}
 					options={[
 						{
 							label: "Female",

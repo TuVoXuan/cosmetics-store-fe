@@ -8,9 +8,9 @@ import BarCharUp from "../components/icons/bar-char-up";
 import LayoutGrid from "../components/icons/layout-grid";
 import Wallet from "../components/icons/wallet";
 import HyggeImage from "../components/Image/image";
-import CategoriesWindow, { CategoriesWindowRefType } from "../components/model/categories-window";
-import Overlay from "../components/model/overlay";
-import PriceRange, { PriceRangeRefType } from "../components/model/price-range";
+import CategoriesWindow, { CategoriesWindowRefType } from "../components/modal/categories-window";
+import Overlay from "../components/modal/overlay";
+import PriceRange, { PriceRangeRefType } from "../components/modal/price-range";
 import TitlePage from "../components/title-page/title-page";
 
 export default function Search() {

@@ -381,7 +381,6 @@ export default function Product({ selectedItem, productInfo, productItems, varia
 
 					<Dropdown
 						className="md:w-1/4"
-						size="large"
 						options={[
 							{ label: "5 sao", value: "5" },
 							{ label: "4 sao", value: "4" },

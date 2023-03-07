@@ -21,7 +21,6 @@ export default function OrdersHistory() {
 					{ label: "Đã nhận hàng", value: "Đã nhận hàng" },
 					{ label: "Đã hủy", value: "Đã hủy" },
 				]}
-				size="large"
 			/>
 			<div className="lg:flex gap-x-12">
 				<div className="hidden w-1/4 mt-16 space-y-4 lg:block">

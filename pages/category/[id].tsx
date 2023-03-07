@@ -16,9 +16,9 @@ import BarCharUp from "../../components/icons/bar-char-up";
 import BarCharDown from "../../components/icons/bar-char-down";
 import ProductCard from "../../components/card/product-card";
 import OptionButton from "../../components/buttons/option-button";
-import PriceRange, { PriceRangeRefType } from "../../components/model/price-range";
-import Overlay from "../../components/model/overlay";
-import CategoriesWindow, { CategoriesWindowRefType } from "../../components/model/categories-window";
+import PriceRange, { PriceRangeRefType } from "../../components/modal/price-range";
+import Overlay from "../../components/modal/overlay";
+import CategoriesWindow, { CategoriesWindowRefType } from "../../components/modal/categories-window";
 import { useRouter } from "next/router";
 import productApi from "../../api/product-api";
 import { useAppSelector } from "../../app/hooks";
@@ -198,7 +198,9 @@ export default function Category() {
 				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
 				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
 				title={`Khám phá các sản phẩm ${
-					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
+					category
+						? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase()
+						: ""
 				}`}
 			/>
 
@@ -281,7 +283,8 @@ export default function Category() {
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
 				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 lg:grid-cols-4 ">
-					{products.length > 0 && products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+					{products.length > 0 &&
+						products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>
 
 				{after !== "end" && (

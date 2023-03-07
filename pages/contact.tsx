@@ -93,7 +93,6 @@ export default function Contact() {
 
 					<Dropdown
 						label={content.contact_page.subject}
-						size={"large"}
 						options={[
 							{
 								label: content.contact_page.select_subject,

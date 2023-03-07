@@ -30,7 +30,6 @@ export default function Info() {
 						<Dropdown
 							register={register}
 							name={"gender"}
-							size="large"
 							onChange={(value: string) => {
 								console.log("first");
 							}}

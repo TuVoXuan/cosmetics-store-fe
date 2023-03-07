@@ -6,7 +6,6 @@ import { RegisterOptions, UseFormRegister } from "react-hook-form";
 
 interface Props {
 	options: IOption[];
-	size: "large" | "small";
 	label?: string;
 	className?: string;
 	register: UseFormRegister<any>;
@@ -20,7 +19,6 @@ interface Props {
 
 export default function Dropdown({
 	options,
-	size,
 	className,
 	label,
 	error,
@@ -36,29 +34,25 @@ export default function Dropdown({
 	const listBoxRef = useRef<HTMLUListElement>(null);
 
 	const handleClick = () => {
-		if (listBoxRef.current) {
+		if (listBoxButtonRef.current && listBoxRef.current) {
 			if (listBoxRef.current.classList.contains("hidden")) {
 				listBoxRef.current.classList.remove("hidden");
 			} else {
 				listBoxRef.current.classList.add("hidden");
 			}
-		}
 
-		if (size === "large") {
-			if (listBoxButtonRef.current) {
-				if (listBoxButtonRef.current.classList.contains("rounded-[32px]")) {
-					listBoxButtonRef.current.classList.replace("rounded-[32px]", "rounded-t-[32px]");
-				} else {
-					listBoxButtonRef.current.classList.replace("rounded-t-[32px]", "rounded-[32px]");
-				}
+			if (listBoxButtonRef.current.classList.contains("rounded-[32px]")) {
+				listBoxButtonRef.current.classList.replace("rounded-[32px]", "rounded-t-[32px]");
+			} else {
+				listBoxButtonRef.current.classList.replace("rounded-t-[32px]", "rounded-[32px]");
 			}
-		} else {
-			if (listBoxButtonRef.current) {
-				if (listBoxButtonRef.current.classList.contains("rounded-[24px]")) {
-					listBoxButtonRef.current.classList.replace("rounded-[24px]", "rounded-t-[24px]");
-				} else {
-					listBoxButtonRef.current.classList.replace("rounded-t-[24px]", "rounded-[24px]");
-				}
+
+			if (listBoxButtonRef.current.classList.contains("border-2")) {
+				listBoxButtonRef.current.classList.remove("border-2");
+				listBoxButtonRef.current.classList.add("border-t-2", "border-x-2");
+			} else {
+				listBoxButtonRef.current.classList.remove("border-t-2", "border-x-2");
+				listBoxButtonRef.current.classList.add("border-2");
 			}
 		}
 	};
@@ -104,15 +98,14 @@ export default function Dropdown({
 					onClick={handleClick}
 					type="button"
 					className={clsx(
-						"flex items-center justify-between text-left w-full cursor-pointer border-2 border-gray-accent dark:border-black-dark-2",
-						size === "large" ? "py-3 px-6 rounded-[32px] md:py-4" : "px-4 py-3 rounded-3xl",
+						"flex items-center justify-between text-left w-full cursor-pointer border-2",
+						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px] md:py-4",
 						error && "border-red-accent"
 					)}
 				>
 					<p
 						className={clsx(
-							"select-none capitalize dark:text-white-light",
-							size === "large" ? "text-heading-5 md:text-heading-4" : "text-heading-5"
+							"select-none capitalize dark:text-white-light text-heading-5 md:text-heading-4"
 						)}
 					>
 						{selectedValue ? selectedValue.label : "Chọn giá trị"}
@@ -122,10 +115,8 @@ export default function Dropdown({
 				<ul
 					ref={listBoxRef}
 					className={clsx(
-						"hidden absolute left-0 right-0 z-[1] bg-white border-x-2 border-b-2 border-gray-accent dark:border-black-dark-2 dark:bg-black-dark-3 dark:text-white-light max-h-56 overflow-y-auto",
-						size === "large"
-							? "pb-3 px-6 top-[calc(100%-12px)] rounded-b-[32px] md:pb-4 md:top-[calc(100%-16px)]"
-							: "px-4 pb-3 top-[calc(100%-12px)] rounded-b-3xl",
+						"hidden py-3 px-6 md:pb-4 absolute left-0 right-0 z-[1] bg-white border-x-2 border-gray-accent dark:border-black-dark-2 dark:bg-black-dark-3 dark:text-white-light max-h-56 overflow-y-auto",
+						"top-[100%] rounded-b-[32px] border-b-2",
 						error && "border-red-accent"
 					)}
 				>
@@ -136,9 +127,7 @@ export default function Dropdown({
 									key={item.value}
 									className={clsx(
 										"flex items-center justify-between font-semibold cursor-pointer select-none capitalize",
-										size === "large"
-											? "text-heading-5 mt-6 md:text-heading-4 md:mt-8"
-											: "text-heading-5 mt-6"
+										"text-heading-5 mb-6 md:text-heading-4 md:mb-8"
 									)}
 								>
 									<label onClick={() => handleOnchange(item)} htmlFor={item.value}>
@@ -158,9 +147,7 @@ export default function Dropdown({
 								key={item.value}
 								className={clsx(
 									"flex items-center justify-between cursor-pointer select-none capitalize",
-									size === "large"
-										? "text-heading-5 mt-6 md:text-heading-4 md:mt-8"
-										: "text-heading-5 mt-6"
+									"text-heading-5 mb-6 md:text-heading-4 md:mb-8"
 								)}
 							>
 								<label onClick={() => handleOnchange(item)} htmlFor={item.value}>
