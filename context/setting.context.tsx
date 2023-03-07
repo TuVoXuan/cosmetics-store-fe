@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from "react";
-import { PaletteMode } from "../types/global";
+import { PaletteMode } from "../types/types";
 
 // Type
 export type Settings = {

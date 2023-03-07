@@ -15,6 +15,7 @@ const nextConfig = {
 		NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 		LIIMIT_PRODUCTS_BY_CATEGORY: process.env.LIIMIT_PRODUCTS_BY_CATEGORY,
 		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+		MAPQUEST_KEY: process.env.MAPQUEST_KEY,
 	},
 	images: {
 		domains: ["i.pinimg.com", "res.cloudinary.com"],

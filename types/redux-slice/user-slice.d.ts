@@ -3,4 +3,5 @@ declare interface IUserStore {
 	name: string;
 	email: string;
 	image: string;
+	address: IAddressExtract[];
 }

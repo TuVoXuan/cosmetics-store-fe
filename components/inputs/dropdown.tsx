@@ -119,7 +119,7 @@ export default function Dropdown({
 				<ul
 					ref={listBoxRef}
 					className={clsx(
-						"hidden py-3 px-6 md:pb-4 absolute left-0 right-0 z-[1] bg-white border-x-2 border-gray-accent dark:border-black-dark-2 dark:bg-black-dark-3 dark:text-white-light max-h-56 overflow-y-auto",
+						"hidden md:pb-4 absolute left-0 right-0 z-[1] bg-white border-x-2 border-gray-accent dark:border-black-dark-2 dark:bg-black-dark-3 dark:text-white-light max-h-56 overflow-y-auto",
 						"top-[100%] rounded-b-[32px] border-b-2",
 						error && "border-red-accent"
 					)}
@@ -130,11 +130,15 @@ export default function Dropdown({
 								<li
 									key={item.value}
 									className={clsx(
-										"flex items-center justify-between font-semibold cursor-pointer select-none capitalize",
-										"text-heading-5 mb-6 md:text-heading-4 md:mb-8"
+										"flex items-center justify-between font-semibold select-none capitalize",
+										"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent"
 									)}
 								>
-									<label onClick={() => handleOnchange(item)} htmlFor={item.value}>
+									<label
+										className="cursor-pointer"
+										onClick={() => handleOnchange(item)}
+										htmlFor={item.value}
+									>
 										{item.label}
 									</label>
 									<Selected
@@ -150,11 +154,15 @@ export default function Dropdown({
 							<li
 								key={item.value}
 								className={clsx(
-									"flex items-center justify-between cursor-pointer select-none capitalize",
-									"text-heading-5 mb-6 md:text-heading-4 md:mb-8"
+									"flex items-center justify-between select-none capitalize",
+									"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent"
 								)}
 							>
-								<label onClick={() => handleOnchange(item)} htmlFor={item.value}>
+								<label
+									className="cursor-pointer"
+									onClick={() => handleOnchange(item)}
+									htmlFor={item.value}
+								>
 									{item.label}
 								</label>
 							</li>
