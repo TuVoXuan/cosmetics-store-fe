@@ -10,8 +10,8 @@ import TitlePage from "../components/title-page/title-page";
 import { adminstrative } from "../constants/adminstrative";
 import Pin from "../components/icons/pin";
 import Badge from "../components/badge/badge";
-import AddressDictionary, { AddressDictRefType } from "../components/model/address-dictionary";
-import Overlay from "../components/model/overlay";
+import AddressDictionary, { AddressDictRefType } from "../components/modal/address-dictionary";
+import Overlay from "../components/modal/overlay";
 import Radio from "../components/inputs/radio";
 
 // type FormValues = {
@@ -28,7 +28,7 @@ type FormValues = {
 const paymentMethods = ["momo", "COD"];
 
 export default function Checkout() {
-	const addressDictModelRef = useRef<AddressDictRefType>(null);
+	const addressDictModalRef = useRef<AddressDictRefType>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const animatedFormRef = useRef<HTMLDivElement>(null);
 	const wrapStepFrom = useRef<HTMLDivElement>(null);
@@ -42,9 +42,9 @@ export default function Checkout() {
 		setPaymentMethod(value);
 	};
 
-	const handleOpenAddressDictModel = () => {
-		if (addressDictModelRef.current) {
-			addressDictModelRef.current.open();
+	const handleOpenAddressDictModal = () => {
+		if (addressDictModalRef.current) {
+			addressDictModalRef.current.open();
 		}
 	};
 
@@ -273,7 +273,7 @@ export default function Checkout() {
 									</Badge>
 								</div>
 								<Button
-									onClick={handleOpenAddressDictModel}
+									onClick={handleOpenAddressDictModal}
 									className="w-full lg:w-fit"
 									type="secondary"
 								>
@@ -363,7 +363,7 @@ export default function Checkout() {
 			</div>
 
 			{/* model address dictionary */}
-			<AddressDictionary overlay={overlayRef} ref={addressDictModelRef} />
+			<AddressDictionary overlay={overlayRef} ref={addressDictModalRef} />
 			<Overlay ref={overlayRef} />
 		</Fragment>
 	);

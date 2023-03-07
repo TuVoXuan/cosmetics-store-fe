@@ -41,3 +41,31 @@ declare interface ILoadMorePaginationRes<T> {
 	data: T;
 	after: string;
 }
+
+declare interface IAddressForm {
+	name: string;
+	phone: string;
+	province: string;
+	district: string;
+	ward: string;
+	specificAddress: string;
+}
+
+declare interface IAddressAPI extends IAddressForm {
+	coordinates: {
+		latitude: number;
+		longitude: number;
+	};
+}
+
+declare interface IAddress extends IAddressForm {
+	_id: string;
+	default: boolean;
+}
+
+declare interface IAddressExtract extends IAddress {
+	coordinates: {
+		latitude: number;
+		longitude: number;
+	};
+}

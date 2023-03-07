@@ -26,3 +26,8 @@ declare interface ChangePass {
 	oldPass: string;
 	newPass: string;
 }
+
+declare interface IUpdateAddress {
+	addressId: string;
+	addresss: IAddressAPI;
+}

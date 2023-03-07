@@ -5,6 +5,7 @@ const APP_PATH = {
 	ERROR: "/auth/error",
 	CATEGORY: "/category",
 	PRODUCT: "/product",
+	PROFILE: "/accout",
 	ACCOUNT: "/account/info",
 	ORDER_HISTORY: "/account/order-history",
 	SEARCH: "/search",

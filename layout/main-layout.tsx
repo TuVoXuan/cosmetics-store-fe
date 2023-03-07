@@ -5,6 +5,7 @@ import { useAppDispatch } from "../app/hooks";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import { getCategories } from "../redux/actions/category-action";
+import { getAddress } from "../redux/actions/user-action";
 
 interface Props {
 	children?: React.ReactNode;
@@ -26,10 +27,11 @@ export default function MainLayout({ children }: Props) {
 	const handleSetToken = () => {
 		fetch("/api/user")
 			.then((data) => data.json())
-			.then((data: JWTToken | null) => {
-				if (data) {
+			.then((data: JWTToken) => {
+				if (data.jwtToken) {
 					setCookie("Authorization", data.jwtToken);
 				}
+				return data;
 			});
 	};
 
@@ -39,6 +41,9 @@ export default function MainLayout({ children }: Props) {
 
 	useEffect(() => {
 		handleSetToken();
+		if (session?.user) {
+			dispatch(getAddress());
+		}
 	}, [session]);
 
 	return (

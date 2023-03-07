@@ -37,4 +37,24 @@ export const userApi = {
 
 		return response.data.data;
 	},
+
+	getAddresses: async () => {
+		return await axiosService.get<IResponseSuccess<IAddressExtract[]>>(`${URL}/address`);
+	},
+
+	createAddress: async (body: IAddressAPI) => {
+		return await axiosService.post<IResponseSuccess<IAddressExtract>>(`${URL}/address`, body);
+	},
+
+	deleteAddress: async (addressId: string) => {
+		return await axiosService.delete<IResponseSuccess<string>>(`${URL}/address/${addressId}`);
+	},
+
+	setDefaultAddress: async (addressId: string) => {
+		return await axiosService.put<IResponseSuccess<string>>(`${URL}/address/default/${addressId}`);
+	},
+
+	updateAddress: async (addressId: string, body: IAddressAPI) => {
+		return await axiosService.put<IResponseSuccess<IAddressExtract>>(`${URL}/address/${addressId}`, body);
+	},
 };
