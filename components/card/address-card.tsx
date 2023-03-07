@@ -70,12 +70,12 @@ export default function AddressCard({ address, onUpdate }: Props) {
 	};
 
 	return (
-		<div className="pb-6 space-y-4 border-b-2 md:grid md:grid-cols-3">
+		<div className="pb-6 space-y-4 border-b-2 border-gray-accent dark:border-black-dark-2 md:grid md:grid-cols-3">
 			<div className="space-y-2 md:col-span-2">
 				<h4 className="font-semibold capitalize lg:inline-block lg:pr-4 text-paragraph-3 dark:text-white">
 					{address.name}
 				</h4>
-				<h4 className="font-semibold capitalize lg:inline-block lg:pl-4 lg:border-l-2 text-paragraph-3 dark:text-white">
+				<h4 className="font-semibold capitalize lg:inline-block lg:pl-4 lg:border-l-2 lg:border-gray-accent lg:dark:border-black-dark-2 text-paragraph-3 dark:text-white">
 					{address.phone}
 				</h4>
 				<p className="text-paragraph-3 dark:text-white">

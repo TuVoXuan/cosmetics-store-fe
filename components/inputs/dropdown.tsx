@@ -104,7 +104,7 @@ export default function Dropdown({
 					className={clsx(
 						"flex items-center justify-between text-left w-full cursor-pointer border-2",
 						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px] md:py-4",
-						error && "border-red-accent"
+						error && "border-red-accent dark:border-red-accent"
 					)}
 				>
 					<p
@@ -121,7 +121,7 @@ export default function Dropdown({
 					className={clsx(
 						"hidden md:pb-4 absolute left-0 right-0 z-[1] bg-white border-x-2 border-gray-accent dark:border-black-dark-2 dark:bg-black-dark-3 dark:text-white-light max-h-56 overflow-y-auto",
 						"top-[100%] rounded-b-[32px] border-b-2",
-						error && "border-red-accent"
+						error && "border-red-accent dark:border-red-accent"
 					)}
 				>
 					{options.map((item) => {
@@ -131,7 +131,7 @@ export default function Dropdown({
 									key={item.value}
 									className={clsx(
 										"flex items-center justify-between font-semibold select-none capitalize",
-										"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent"
+										"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 									)}
 								>
 									<label
@@ -155,7 +155,7 @@ export default function Dropdown({
 								key={item.value}
 								className={clsx(
 									"flex items-center justify-between select-none capitalize",
-									"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent"
+									"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 								)}
 							>
 								<label
