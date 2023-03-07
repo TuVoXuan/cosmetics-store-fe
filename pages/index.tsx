@@ -141,6 +141,9 @@ export default function Home() {
 							{categories.map((cate) => (
 								<SwiperSlide key={cate.name[0].value}>
 									<CategoryBtn
+										onClick={() => {
+											push(`${APP_PATH.CATEGORY}/${cate._id}`);
+										}}
 										icon={cate.icon ? cate.icon : ""}
 										title={cate.name.filter((item) => item.language === "vi")[0].value}
 									/>

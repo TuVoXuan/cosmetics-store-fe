@@ -182,8 +182,6 @@ export default function Category() {
 
 	useEffect(() => {
 		if (from || to || brand || order) {
-			console.log("order: ", order);
-			console.log("brand: ", brand);
 			setProducts([]);
 			setAfter("");
 			fetchProductsLoadMore("");
@@ -208,7 +206,7 @@ export default function Category() {
 						<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
 							Chọn tiêu chí
 						</p>
-						<div className="space-x-2 flex md:gap-x-4 xl:gap-x-8">
+						<div className="flex space-x-2 md:gap-x-4 xl:gap-x-8">
 							<OptionButton onClick={handleOpenCategories}>
 								<LayoutGrid
 									width={20}
@@ -238,7 +236,7 @@ export default function Category() {
 							Sắp xếp theo
 						</p>
 						<div className="flex overflow-x-auto gap-x-2 md:gap-x-4 xl:gap-x-8">
-							<OptionButton onClick={handleClickOrder("asc")}>
+							<OptionButton actived={order === "asc"} onClick={handleClickOrder("asc")}>
 								<BarCharDown
 									width={20}
 									height={20}
@@ -246,7 +244,7 @@ export default function Category() {
 								/>
 								Giá tăng dần
 							</OptionButton>
-							<OptionButton onClick={handleClickOrder("desc")}>
+							<OptionButton actived={order === "desc"} onClick={handleClickOrder("desc")}>
 								<BarCharUp
 									width={20}
 									height={20}
@@ -265,13 +263,14 @@ export default function Category() {
 
 					<div className="flex items-center overflow-x-auto xl:h-36 h-14 md:h-28 gap-x-4 md:gap-x-8 lg:gap-x-10">
 						{brands.length > 0 &&
-							brands.map((brand) => (
+							brands.map((brd) => (
 								<HyggeImage
-									onClick={handleClickBrand(brand._id)}
-									key={brand._id}
+									onClick={handleClickBrand(brd._id)}
+									key={brd._id}
+									actived={brd._id === brand}
 									className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-									src={brand.logo}
-									alt={brand.name}
+									src={brd.logo}
+									alt={brd.name}
 								/>
 							))}
 					</div>
@@ -283,6 +282,26 @@ export default function Category() {
 				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 lg:grid-cols-4 ">
 					{products.length > 0 && products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>
+
+				{products.length === 0 && (
+					<>
+						<Image
+							src="/not_found_dark.png"
+							alt="not found"
+							width={200}
+							height={200}
+							className="hidden mx-auto dark:block"
+						/>
+
+						<Image
+							src="/not_found_light.png"
+							alt="not found"
+							width={200}
+							height={200}
+							className="mx-auto dark:hidden"
+						/>
+					</>
+				)}
 
 				{after !== "end" && (
 					<div className="flex justify-center mt-14 md:mt-16">

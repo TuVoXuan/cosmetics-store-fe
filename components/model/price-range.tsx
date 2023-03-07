@@ -83,7 +83,12 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 	};
 
 	const onSubmit = (value: FormValue) => {
-		let path = `${APP_PATH.CATEGORY}/${query.id}?from=${value.from}&to=${value.to}`;
+		let path = "";
+		if (query.search) {
+			path = `${APP_PATH.SEARCH}?search=${query.search}&from=${value.from}&to=${value.to}`;
+		} else {
+			path = `${APP_PATH.CATEGORY}/${query.id}?from=${value.from}&to=${value.to}`;
+		}
 
 		if (query.brand) {
 			path += `&brand=${query.brand}`;

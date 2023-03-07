@@ -41,5 +41,3 @@ declare interface ILoadMorePaginationRes<T> {
 	data: T;
 	after: string;
 }
-
-export type PaletteMode = "light" | "dark";

@@ -3,6 +3,7 @@ import Expand from "../icons/expand";
 import Selected from "../icons/selected";
 import clsx from "clsx";
 import { RegisterOptions, UseFormRegister } from "react-hook-form";
+import { IOption } from "../../types/global";
 
 interface Props {
 	options: IOption[];
