@@ -67,6 +67,10 @@ export default function Dropdown({
 		setSelectedValue(undefined);
 	}, [watch]);
 
+	useEffect(() => {
+		setSelectedValue(options.find((item) => item.value === defaulValue));
+	}, [defaulValue]);
+
 	return (
 		<div>
 			<div className="hidden">
@@ -79,7 +83,7 @@ export default function Dropdown({
 							type="radio"
 							name={name}
 							id={item.value}
-							defaultChecked={defaulValue === item.value}
+							// defaultChecked={defaulValue === item.value}
 						/>
 					))
 				) : (

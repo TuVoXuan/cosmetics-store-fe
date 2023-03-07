@@ -31,6 +31,8 @@ import { toast } from "react-hot-toast";
 import productApi from "../api/product-api";
 import { selectCategories } from "../redux/slices/category-slice";
 import Head from "next/head";
+import { deleteCookie } from "cookies-next";
+import APP_PATH from "../constants/app-path";
 
 export default function Home() {
 	// ** State
@@ -38,7 +40,6 @@ export default function Home() {
 
 	// ** Redux & Session
 	const { data: session } = useSession();
-	console.log("session: ", session);
 	const { push } = useRouter();
 	const categories = useAppSelector(selectCategories).categories;
 	const user = useAppSelector(selectUser);
@@ -65,7 +66,13 @@ export default function Home() {
 	return (
 		<>
 			{session && (
-				<button onClick={() => signOut()} className="bg-red-200">
+				<button
+					onClick={() => {
+						deleteCookie("Authorization", { path: "/", domain: "localhost" });
+						signOut({ callbackUrl: APP_PATH.HOME });
+					}}
+					className="bg-red-200"
+				>
 					sign out
 				</button>
 			)}
@@ -114,11 +121,7 @@ export default function Home() {
 								onClick={() => categoriesSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -182,11 +185,7 @@ export default function Home() {
 								onClick={() => productsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -305,11 +304,7 @@ export default function Home() {
 								onClick={() => reviewsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full lg:border-2 lg:border-black lg:dark:border-none bg-gray-accent dark:bg-black-dark-2 lg:dark:bg-black-dark-4"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>

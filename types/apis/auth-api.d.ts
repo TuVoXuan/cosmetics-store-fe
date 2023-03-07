@@ -26,17 +26,16 @@ declare interface ISignUp {
 
 declare interface ISignUpRes {
 	token: string;
-	user: {
-		_id: string;
-		email: string;
-		birthday: string;
-		gender: Gender;
-		name: string;
-	};
+	user: IUserBasicInfo;
 }
 
 declare interface ISignIn {
 	email: string;
 	password: string;
 	rememberMe?: boolean;
+}
+
+declare interface StatusSocialAccount {
+	facebook: boolean;
+	google: boolean;
 }

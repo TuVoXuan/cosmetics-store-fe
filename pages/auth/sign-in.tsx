@@ -9,6 +9,8 @@ import Google from "../../components/icons/google";
 import Input from "../../components/inputs/input";
 import Checkbox from "../../components/inputs/checkbox";
 import TitlePage from "../../components/title-page/title-page";
+import APP_PATH from "../../constants/app-path";
+import { toastError } from "../../util/toast";
 
 type FormValues = {
 	email: string;
@@ -17,6 +19,8 @@ type FormValues = {
 };
 
 export default function SignIn() {
+	const router = useRouter();
+	const { redirectURL } = router.query;
 	const errorsNextAuth = {
 		Signin: "Hãy thử lại với một tài khoản khác.",
 		OAuthSignin: "Hãy thử lại với một tài khoản khác.",
@@ -45,12 +49,30 @@ export default function SignIn() {
 	}
 
 	const onSubmit = async (data: FormValues) => {
-		const res = await signIn("credentials", {
-			redirect: false,
-			email: data.email,
-			password: data.password,
-			rememberMe: data.rememberMe,
-			callbackUrl: `${window.location.origin}`,
+		try {
+			console.log("data: ", data);
+
+			const res = await signIn("credentials", {
+				redirect: false,
+				email: data.email,
+				password: data.password,
+				rememberMe: data.rememberMe,
+				callbackUrl: redirectURL as string,
+			});
+			console.log("res: ", res);
+
+			if (res?.error) {
+				toastError(res.error);
+			}
+		} catch (error) {
+			console.log("error: ", error);
+		}
+	};
+
+	const handleSignUpClick = () => {
+		router.push({
+			pathname: APP_PATH.SIGN_UP,
+			query: router.query,
 		});
 	};
 
@@ -101,20 +123,32 @@ export default function SignIn() {
 					<Button btnType="submit" type="primary" className="w-full">
 						Đăng nhập
 					</Button>
-					<Button type="secondary" className="flex items-center justify-center w-full" onClick={() => signIn("google")}>
+					<Button
+						type="secondary"
+						className="flex items-center justify-center w-full"
+						onClick={() =>
+							signIn("google", {
+								callbackUrl: redirectURL as string,
+							})
+						}
+					>
 						<Google width={24} height={24} className="inline mr-4 text-black dark:text-light-100" />
 						Đăng nhập với Google
 					</Button>
 					<Button
 						type="secondary"
 						className="flex items-center justify-center w-full"
-						onClick={() => signIn("facebook")}
+						onClick={() =>
+							signIn("facebook", {
+								callbackUrl: redirectURL as string,
+							})
+						}
 					>
 						<BxlFacebook width={24} height={24} className="inline mr-4 text-black dark:text-light-100" />
 						Đăng nhập với Facebook
 					</Button>
 					<div className="space-y-6 md:grid md:grid-cols-2 md:items-center md:gap-y-6 md:gap-x-2 md:space-y-0">
-						<Button type="secondary" className="w-full">
+						<Button onClick={handleSignUpClick} type="secondary" className="w-full">
 							Tạo tài khoản
 						</Button>
 						<p className="font-normal text-center underline align-middle cursor-pointer md:text-paragraph-2 dark:text-white-light text-dark-100 text-heading-5">
