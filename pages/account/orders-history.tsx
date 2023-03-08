@@ -13,7 +13,7 @@ export default function OrdersHistory() {
 			<Dropdown
 				register={register}
 				name={"orderStatus"}
-				className="z-10 mt-14 md:mt-16 lg:hidden"
+				className="z-[1] mt-14 md:mt-16 lg:hidden"
 				onChange={(value: string) => console.log(value)}
 				options={[
 					{ label: "Đang xử lý", value: "Đang xử lý" },

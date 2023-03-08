@@ -25,7 +25,7 @@ export default function SocialMedia() {
 			if (statusSocialAccount) {
 				const response = await signIn("facebook", {
 					redirect: false,
-					callbackUrl: APP_PATH.ACCOUNT,
+					callbackUrl: APP_PATH.INFO,
 				});
 
 				if (response && response.ok) {
@@ -46,7 +46,7 @@ export default function SocialMedia() {
 			if (statusSocialAccount && !statusSocialAccount.google) {
 				const response = await signIn("google", {
 					redirect: false,
-					callbackUrl: APP_PATH.ACCOUNT,
+					callbackUrl: APP_PATH.INFO,
 				});
 
 				if (response && response.ok) {
