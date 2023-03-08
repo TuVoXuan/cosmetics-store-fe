@@ -11,4 +11,10 @@ export const brandApi = {
 
 		return response.data.data;
 	},
+
+	getBrandsBySearchKey: async (search: string) => {
+		const response = await axiosService.get<IResponseSuccess<IBrand[]>>(`${URL}?search=${search}`);
+
+		return response.data.data;
+	},
 };

@@ -49,3 +49,7 @@ declare interface IProductDetailInfo {
 	variationList: IVariationList[];
 	productInfo: IProductBasicInfo;
 }
+
+declare interface ISearchProduct extends Omit<IGetProductByCategoryAndOptioins, "id"> {
+	search: string;
+}

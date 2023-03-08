@@ -48,6 +48,29 @@ const productApi = {
 
 		return response.data.data;
 	},
+
+	search: async (data: ISearchProduct) => {
+		let newURL = URL + `/search?search=${data.search}`;
+		if (data.from) {
+			newURL += `&from=${data.from}`;
+		}
+		if (data.to) {
+			newURL += `&to=${data.to}`;
+		}
+		if (data.order) {
+			newURL += `&order=${data.order}`;
+		}
+		if (data.brand) {
+			newURL += `&brand=${data.brand}`;
+		}
+
+		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductItem[]>>>(newURL, {
+			limit: data.limit,
+			after: data.after ? data.after : undefined,
+		});
+
+		return response.data.data;
+	},
 };
 
 export default productApi;

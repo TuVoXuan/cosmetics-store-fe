@@ -8,6 +8,7 @@ const APP_PATH = {
 	PROFILE: "/accout",
 	ACCOUNT: "/account/info",
 	ORDER_HISTORY: "/account/order-history",
+	SEARCH: "/search",
 };
 
 export default APP_PATH;
