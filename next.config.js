@@ -12,8 +12,10 @@ const nextConfig = {
 		FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
 		FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
 		MONGODB_URI: process.env.MONGODB_URI,
-		JWT_SECRET: process.env.JWT_SECRET,
+		NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 		LIIMIT_PRODUCTS_BY_CATEGORY: process.env.LIIMIT_PRODUCTS_BY_CATEGORY,
+		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+		MAPQUEST_KEY: process.env.MAPQUEST_KEY,
 	},
 	images: {
 		domains: ["i.pinimg.com", "res.cloudinary.com"],

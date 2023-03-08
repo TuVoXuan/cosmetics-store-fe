@@ -7,6 +7,8 @@ function Profile(props: SVGProps<SVGSVGElement>) {
 			stroke="currentColor"
 			fill="none"
 			viewBox="0 0 32 32"
+			height={24}
+			width={24}
 			{...props}
 		>
 			<path

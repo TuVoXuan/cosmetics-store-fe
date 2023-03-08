@@ -1,11 +1,36 @@
 import Image from "next/image";
 import React from "react";
+import { useSettings } from "../app/hooks";
 import ToggleBtn from "./buttons/toggle-btn";
 import Facebook from "./icons/facebook";
 import Instargram from "./icons/instargram";
+import Moon from "./icons/moon";
+import Sun from "./icons/sun";
 import Twitter from "./icons/twitter";
 
 export default function Footer() {
+	const { settings, saveSettings } = useSettings();
+	const Toggle = () => {
+		if (
+			localStorage.theme === "dark" ||
+			(!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+		) {
+			document.documentElement.classList.add("dark");
+			localStorage.theme = "light";
+			saveSettings({
+				...settings,
+				mode: "dark",
+			});
+		} else {
+			document.documentElement.classList.remove("dark");
+			localStorage.theme = "dark";
+			saveSettings({
+				...settings,
+				mode: "light",
+			});
+		}
+	};
+
 	return (
 		<section className="grid grid-cols-2 mb-10 dark:bg-black-dark-3 bg-white-light gap-x-16 md:gap-x-28 gap-y-14 lg:flex lg:justify-between">
 			<div>
@@ -54,7 +79,12 @@ export default function Footer() {
 						<Facebook width={24} height={24} className="text-black dark:text-light-100" />
 					</div>
 				</div>
-				<ToggleBtn />
+				<ToggleBtn
+					value={settings.mode === "dark"}
+					toggle={Toggle}
+					childrenOn={<Moon width={16} height={16} color="#F7FAFC" />}
+					childrenOff={<Sun width={16} height={16} color="#F7FAFC" />}
+				/>
 			</div>
 			<div className="space-y-4">
 				<h4 className="dark:text-light-100 text-heading-4 md:text-heading-3">Categories</h4>

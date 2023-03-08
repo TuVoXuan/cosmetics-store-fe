@@ -6,10 +6,19 @@ interface Props {
 	className?: string;
 	btnType?: "submit" | "reset" | "button";
 	form?: string;
+	disable?: boolean;
 	onClick?: () => void;
 }
 
-export default function Button({ children, type, className, form, btnType = "button", onClick }: Props) {
+export default function Button({
+	children,
+	type,
+	className,
+	form,
+	disable = false,
+	btnType = "button",
+	onClick,
+}: Props) {
 	const getCSSType = () => {
 		if (type === "primary") {
 			return "bg-primary-100 text-light-100";
@@ -22,10 +31,12 @@ export default function Button({ children, type, className, form, btnType = "but
 	return (
 		<button
 			onClick={onClick}
+			disabled={disable}
 			form={form}
 			type={btnType}
 			className={`rounded-[32px] font-bold px-6 py-3 text-heading-5 md:px-10 md:py-4 md:text-heading-4 
 			hover:border-primary-100 transition-colors ease-linear select-none
+				disabled:cursor-not-allowed
 			${getCSSType()} ${className}`}
 		>
 			{children}

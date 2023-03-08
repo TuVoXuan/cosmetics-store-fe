@@ -31,6 +31,8 @@ import { toast } from "react-hot-toast";
 import productApi from "../api/product-api";
 import { selectCategories } from "../redux/slices/category-slice";
 import Head from "next/head";
+import { deleteCookie } from "cookies-next";
+import APP_PATH from "../constants/app-path";
 
 export default function Home() {
 	// ** State
@@ -38,7 +40,6 @@ export default function Home() {
 
 	// ** Redux & Session
 	const { data: session } = useSession();
-	console.log("session: ", session);
 	const { push } = useRouter();
 	const categories = useAppSelector(selectCategories).categories;
 	const user = useAppSelector(selectUser);
@@ -64,11 +65,17 @@ export default function Home() {
 	}, []);
 	return (
 		<>
-			{session && (
-				<button onClick={() => signOut()} className="bg-red-200">
+			{/* {session && (
+				<button
+					onClick={() => {
+						deleteCookie("Authorization", { path: "/", domain: "localhost" });
+						signOut({ callbackUrl: APP_PATH.HOME });
+					}}
+					className="bg-red-200"
+				>
 					sign out
 				</button>
-			)}
+			)} */}
 			<Head>
 				<title>Hygge</title>
 			</Head>
@@ -138,6 +145,9 @@ export default function Home() {
 							{categories.map((cate) => (
 								<SwiperSlide key={cate.name[0].value}>
 									<CategoryBtn
+										onClick={() => {
+											push(`${APP_PATH.CATEGORY}/${cate._id}`);
+										}}
 										icon={cate.icon ? cate.icon : ""}
 										title={cate.name.filter((item) => item.language === "vi")[0].value}
 									/>

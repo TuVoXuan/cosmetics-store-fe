@@ -1,20 +1,27 @@
+import { deleteCookie } from "cookies-next";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import APP_PATH from "../constants/app-path";
-import { black_dark, white_light } from "../styles/color";
 import Button from "./buttons/button";
 import CartIndicator from "./icons/cart-indicator";
+import ClipBoard from "./icons/clip-board";
 import Delete from "./icons/delete";
 import Facebook from "./icons/facebook";
 import GoBack24 from "./icons/go-back-24";
 import GoForward from "./icons/go-forward";
 import Instargram from "./icons/instargram";
 import Menu from "./icons/menu";
+import Pin from "./icons/pin";
+import PinLine from "./icons/pin-line";
 import Profile from "./icons/profile";
+import Return from "./icons/return";
 import Search from "./icons/search";
+import SignOut from "./icons/sign-out";
 import Twitter from "./icons/twitter";
 import SearchInput from "./inputs/search-input";
+import MyAccount from "./modal/my-account";
 
 interface Props {
 	onShowNavbar: () => void;
@@ -27,12 +34,15 @@ export default function Header({ onShowNavbar }: Props) {
 	const headerRef = useRef<HTMLElement>(null);
 	const categoriesRef = useRef<HTMLDivElement>(null);
 	const categoriesTagRef = useRef<HTMLParagraphElement>(null);
+	const myAccountTagRef = useRef<HTMLParagraphElement>(null);
+	const myAccountRef = useRef<HTMLDivElement>(null);
 
 	const [showNavbar, setShowNavbar] = useState<boolean>(false);
-	// const [showCategories, setShowCategories] = useState<boolean>(false);
 	const [search, setSearch] = useState<boolean>(false);
+	const [showMyAccountModal, setShowMyAccountModal] = useState<boolean>(false);
 
 	const router = useRouter();
+	const { data: session, status } = useSession();
 
 	const handleClickSearchIcon = () => {
 		setSearch(true);
@@ -46,6 +56,10 @@ export default function Header({ onShowNavbar }: Props) {
 		if (logoRef.current) {
 			logoRef.current.classList.remove("hidden");
 		}
+	};
+
+	const handleShowMyAccountModal = () => {
+		setShowMyAccountModal(!showMyAccountModal);
 	};
 
 	const handleClickNavBarBtn = () => {
@@ -153,6 +167,65 @@ export default function Header({ onShowNavbar }: Props) {
 		}
 	};
 
+	const handleShowMyAccount = (e: any) => {
+		e.stopPropagation();
+
+		if (myAccountRef.current) {
+			myAccountRef.current.classList.toggle("hidden");
+		}
+
+		if (headerRef.current) {
+			headerRef.current.classList.remove("z-[3]");
+		}
+
+		if (myAccountTagRef.current) {
+			if (!myAccountTagRef.current.classList.contains("text-primary-100")) {
+				myAccountTagRef.current.classList.add("text-primary-100", "dark:text-primary-100");
+			} else {
+				myAccountTagRef.current.classList.remove("text-primary-100", "dark:text-primary-100");
+			}
+		}
+	};
+
+	const handleBackFromMyAccount = (e: any) => {
+		e.stopPropagation();
+		if (myAccountRef.current) {
+			myAccountRef.current.classList.add("hidden");
+		}
+		if (window.innerWidth < 768) {
+			if (headerRef.current) {
+				headerRef.current.classList.add("z-[3]");
+			}
+		}
+	};
+
+	const handleRedirectToLoginPage = () => {
+		handleClickNavBarBtn();
+		router.push({
+			pathname: APP_PATH.SIGN_IN,
+			query: { redirectURL: router.asPath },
+		});
+	};
+
+	const handleIconUserClick = () => {
+		if (status !== "authenticated") {
+			router.push({
+				pathname: APP_PATH.SIGN_IN,
+				query: { redirectURL: router.asPath },
+			});
+		} else {
+			router.push(APP_PATH.INFO);
+		}
+	};
+
+	const handleMyAccount = (to: string) => {
+		handleClickNavBarBtn();
+		router.push({
+			pathname: to,
+			query: { redirectURL: router.asPath },
+		});
+	};
+
 	return (
 		<header className="relative bg-white-light dark:bg-black-dark-3">
 			<section ref={headerRef} className="relative z-[3] flex items-center justify-between">
@@ -255,12 +328,16 @@ export default function Header({ onShowNavbar }: Props) {
 						width={32}
 						color="#000"
 					/>
-					<Profile
-						className="hidden cursor-pointer md:block dark:text-light-100"
-						height={24}
-						width={24}
-						color="#000"
-					/>
+					<div className="relative">
+						<Profile
+							onClick={handleShowMyAccountModal}
+							className="hidden cursor-pointer shrink-0 md:block dark:text-light-100"
+							height={24}
+							width={24}
+							color="#000"
+						/>
+						{showMyAccountModal && <MyAccount onClose={handleShowMyAccountModal} />}
+					</div>
 				</div>
 			</section>
 
@@ -330,9 +407,57 @@ export default function Header({ onShowNavbar }: Props) {
 							</ul>
 						</div>
 					</div>
-					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
-						Blog
-					</li>
+					{status === "authenticated" && (
+						<div onClick={handleShowMyAccount} className="md:hidden dark:text-white-light">
+							<div
+								ref={myAccountTagRef}
+								className="flex items-center duration-300 ease-linear cursor-pointer text-paragraph-1 gap-x-4 hover:text-primary-100"
+							>
+								My Account
+								<GoForward height={16} width={16} />
+							</div>
+							<div
+								ref={myAccountRef}
+								className="hidden fixed z-[2] bg-white-light top-0 bottom-0 left-0 right-0 p-8 transition-all ease-linear duration-30"
+							>
+								<nav className="flex justify-between">
+									<button
+										onClick={handleBackFromMyAccount}
+										className="p-3 transition-colors duration-300 ease-linear rounded-full cursor-pointer bg-gray-accent w-fit hover:bg-primary-100 group dark:bg-black-dark-2"
+									>
+										<GoBack24 className="dark:text-light-100" height={24} width={24} />
+									</button>
+									<button
+										onClick={handleClickNavBarBtn}
+										className="p-3 transition-colors duration-300 ease-linear rounded-full cursor-pointer bg-gray-accent w-fit hover:bg-primary-100 group dark:bg-black-dark-2"
+									>
+										<Delete className="dark:text-light-100" height={24} width={24} />
+									</button>
+								</nav>
+								<ul className="space-y-6 text-center select-none text-paragraph-1">
+									<li
+										onClick={() => handleMyAccount(APP_PATH.ADDRESS)}
+										className="duration-300 ease-linear cursor-pointer hover:text-primary-100"
+									>
+										Address
+									</li>
+									<li
+										onClick={() => handleMyAccount(APP_PATH.INFO)}
+										className="duration-300 ease-linear cursor-pointer hover:text-primary-100"
+									>
+										Info
+									</li>
+									<li
+										onClick={() => handleMyAccount(APP_PATH.ORDER_HISTORY)}
+										className="duration-300 ease-linear cursor-pointer hover:text-primary-100"
+									>
+										Orders history
+									</li>
+								</ul>
+							</div>
+						</div>
+					)}
+
 					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
 						About
 					</li>
@@ -341,9 +466,26 @@ export default function Header({ onShowNavbar }: Props) {
 					</li>
 				</ul>
 
-				<Button type="primary" className="w-full mt-6 mb-[68px]">
-					Đăng nhập
-				</Button>
+				{session?.user ? (
+					<Button
+						onClick={() => {
+							deleteCookie("Authorization", { path: "/", domain: "localhost" });
+							signOut({ callbackUrl: APP_PATH.HOME });
+						}}
+						type="primary"
+						className="w-full mt-6 mb-[68px] md:hidden"
+					>
+						Đăng xuất
+					</Button>
+				) : (
+					<Button
+						onClick={handleRedirectToLoginPage}
+						type="primary"
+						className="w-full mt-6 mb-[68px] md:hidden"
+					>
+						Đăng nhập
+					</Button>
+				)}
 
 				<div className="fixed z-[2] flex gap-x-6 left-8 bottom-8 md:left-10 lg:left-12 lg:bottom-12 xl:left-24">
 					<div className="md:w-12 md:h-12 md:rounded-full md:bg-gray-accent md:dark:bg-black-dark-2 md:flex md:justify-center md:items-center">

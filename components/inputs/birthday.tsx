@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { UseFormRegister, RegisterOptions } from "react-hook-form";
 import Calendar from "../icons/calendar";
 
@@ -10,9 +10,10 @@ interface Props {
 	label?: string;
 	className?: string;
 	error?: string;
+	defaultValue?: string;
 }
 
-export default function Birthday({ className, error, label, name, option, register }: Props) {
+export default function Birthday({ className, error, label, defaultValue, name, option, register }: Props) {
 	const { ref, onChange, ...rest } = register(name, { ...option });
 
 	const inputDateRef = useRef<HTMLInputElement | null>(null);
@@ -34,11 +35,16 @@ export default function Birthday({ className, error, label, name, option, regist
 		}
 	};
 
+	useEffect(() => {
+		if (defaultValue) {
+			const date = new Date(defaultValue);
+			setSelectedDate(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`);
+		}
+	}, [defaultValue]);
+
 	return (
 		<div className="relative">
-			<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
-				{label}
-			</p>
+			<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
 
 			<input
 				{...rest}
@@ -73,11 +79,7 @@ export default function Birthday({ className, error, label, name, option, regist
 					className="absolute translate-y-1/2 text-dark-64 bottom-1/2 right-4 dark:text-white-light"
 				/>
 			</div>
-			{error && (
-				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
-					{error}
-				</p>
-			)}
+			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
 		</div>
 	);
 }
