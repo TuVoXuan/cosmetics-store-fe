@@ -31,9 +31,12 @@ export default function MainLayout({ children }: Props) {
 				if (data.jwtToken) {
 					setCookie("Authorization", data.jwtToken);
 				}
+				return data;
 			})
-			.then(() => {
-				dispatch(getAddress());
+			.then((data: JWTToken) => {
+				if (data.jwtToken) {
+					dispatch(getAddress());
+				}
 			});
 	};
 
