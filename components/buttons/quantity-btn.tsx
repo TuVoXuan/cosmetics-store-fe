@@ -27,23 +27,27 @@ export default function QuantityBtn({ value, onChange, className }: Props) {
 				className
 			)}
 		>
-			<GoBack
-				onClick={handleMinus}
-				className="cursor-pointer dark:text-white-light"
-				width={16}
-				height={16}
-				color="#1A202C"
-			/>
+			<button>
+				<GoBack
+					onClick={handleMinus}
+					className="dark:text-white-light"
+					width={16}
+					height={16}
+					color="#1A202C"
+				/>
+			</button>
 			<span className="font-bold select-none text-dark-100 text-heading-4 md:text-heading-3 dark:text-white">
 				{value}
 			</span>
-			<GoForward
-				onClick={handlePlus}
-				className="cursor-pointer dark:text-white-light"
-				width={16}
-				height={16}
-				color="#1A202C"
-			/>
+			<button>
+				<GoForward
+					onClick={handlePlus}
+					className="dark:text-white-light"
+					width={16}
+					height={16}
+					color="#1A202C"
+				/>
+			</button>
 		</div>
 	);
 }

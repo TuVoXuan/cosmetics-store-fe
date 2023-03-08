@@ -2,31 +2,79 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import React, { Fragment, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import adminstrativeApi from "../api/adminstrative-api";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Button from "../components/buttons/button";
 import ItemCart from "../components/card/item-cart";
+import Warning from "../components/icons/warning";
 import TitlePage from "../components/title-page/title-page";
 import { deleteAll, selectCart } from "../redux/slices/cart-slice";
+import { selectUser } from "../redux/slices/user-slice";
+import { toastError } from "../util/toast";
 
 export default function ShoppingCart() {
 	// State
-	const [total, setTotal] = useState<number>(0);
+	const [subTotal, setSubTotal] = useState<number>(0);
+	const [shippingFee, setShippingFee] = useState<number>(0);
 
 	// Redux
 	const dispatch = useAppDispatch();
 	const cart = useAppSelector(selectCart);
+	const addresses = useAppSelector(selectUser).address;
+	const defaultAddress = addresses.find((item) => item.default === true);
 
 	const handleTotal = () => {
-		setTotal(cart.reduce((prev, curr) => prev + curr.quantity * curr.price, 0));
+		setSubTotal(cart.reduce((prev, curr) => prev + curr.quantity * curr.price, 0));
 	};
 
 	const handleDeleteAll = () => {
 		dispatch(deleteAll());
 	};
 
+	const handleShippingFee = () => {
+		console.log("defaultAddress: ", defaultAddress);
+		if (defaultAddress) {
+			console.log("chay khong");
+			if (cart.length > 0) {
+				const shopLat = parseFloat(process.env.SHOP_LAT || "");
+				const shopLng = parseFloat(process.env.SHOP_LNG || "");
+				const shopCoordinates: ICoordinates = {
+					latitude: shopLat,
+					longitude: shopLng,
+				};
+				try {
+					const response = adminstrativeApi.getDirection(
+						shopCoordinates,
+						defaultAddress.coordinates
+					);
+					response
+						.then((data) => data.data)
+						.then((data) => {
+							const feePerKm = parseInt(process.env.SHIPPING_FEE_PER_KM || "");
+
+							setShippingFee(feePerKm * data.route.distance);
+						});
+				} catch (error) {
+					toastError("Xãy ra lỗi trong khi tính phí ship. Vui lòng thử lại sau.");
+				}
+			}
+		} else {
+			toast(
+				"Hiện tại bạn chưa có địa chỉ mặc định. Vui lòng vào trang cá nhân để thêm địa chỉ mặc định.",
+				{ duration: 10000, icon: <Warning className="text-yellow-tertiary-100 shrink-0" /> }
+			);
+		}
+	};
+
 	useEffect(() => {
 		handleTotal();
 	}, [cart]);
+
+	useEffect(() => {
+		handleShippingFee();
+		handleTotal();
+	}, [addresses]);
 
 	return (
 		<Fragment>
@@ -83,7 +131,7 @@ export default function ShoppingCart() {
 									Tổng phụ:
 								</p>
 								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									{total.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
+									{subTotal.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
 								</p>
 							</div>
 							<div className="flex justify-between">
@@ -91,7 +139,10 @@ export default function ShoppingCart() {
 									Phí giao hàng:
 								</p>
 								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									$209
+									{shippingFee.toLocaleString("it-IT", {
+										style: "currency",
+										currency: "VND",
+									})}
 								</p>
 							</div>
 							<div className="flex justify-between">
@@ -99,7 +150,10 @@ export default function ShoppingCart() {
 									Tổng:
 								</p>
 								<p className="font-semibold text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									{total.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
+									{(subTotal + shippingFee).toLocaleString("it-IT", {
+										style: "currency",
+										currency: "VND",
+									})}
 								</p>
 							</div>
 						</div>

@@ -20,6 +20,11 @@ const adminstrativeApi = {
 			`${API}/geocoding/v1/address?key=${MapQuestKey}&location=${location}`
 		);
 	},
+	getDirection: (from: ICoordinates, to: ICoordinates) => {
+		return axiosService.get<IDirectionMQ>(
+			`${API}/directions/v2/route?key=${MapQuestKey}&from=${from.latitude},${from.longitude}&to=${to.latitude},${to.longitude}&routeType=shortest&unit=k`
+		);
+	},
 };
 
 export default adminstrativeApi;

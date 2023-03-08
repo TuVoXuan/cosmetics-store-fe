@@ -16,6 +16,9 @@ const nextConfig = {
 		LIIMIT_PRODUCTS_BY_CATEGORY: process.env.LIIMIT_PRODUCTS_BY_CATEGORY,
 		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 		MAPQUEST_KEY: process.env.MAPQUEST_KEY,
+		SHOP_LAT: process.env.SHOP_LAT,
+		SHOP_LNG: process.env.SHOP_LNG,
+		SHIPPING_FEE_PER_KM: process.env.SHIPPING_FEE_PER_KM,
 	},
 	images: {
 		domains: ["i.pinimg.com", "res.cloudinary.com"],

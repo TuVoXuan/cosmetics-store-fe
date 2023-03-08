@@ -71,11 +71,13 @@ declare interface IAddressForm {
 	specificAddress: string;
 }
 
+declare interface ICoordinates {
+	latitude: number;
+	longitude: number;
+}
+
 declare interface IAddressAPI extends IAddressForm {
-	coordinates: {
-		latitude: number;
-		longitude: number;
-	};
+	coordinates: ICoordinates;
 }
 
 declare interface IAddress extends IAddressForm {
@@ -84,8 +86,5 @@ declare interface IAddress extends IAddressForm {
 }
 
 declare interface IAddressExtract extends IAddress {
-	coordinates: {
-		latitude: number;
-		longitude: number;
-	};
+	coordinates: ICoordinates;
 }
