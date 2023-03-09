@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Pagination } from "swiper";
+import { Grid, Pagination } from "swiper";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import Price from "../../../components/badge/price";
 import Button from "../../../components/buttons/button";
@@ -23,10 +23,11 @@ import { en, vi } from "../../../translation";
 import VariationOptions from "../../../components/variation-option/variationOptions";
 import Head from "next/head";
 import { useAppDispatch } from "../../../app/hooks";
-import { toastSuccess } from "../../../util/toast";
+import { toastError, toastSuccess } from "../../../util/toast";
 import { addToCart } from "../../../redux/slices/cart-slice";
 import { useSession } from "next-auth/react";
 import APP_PATH from "../../../constants/app-path";
+import ProductCard from "../../../components/card/product-card";
 
 interface Props {
 	productId: string;
@@ -68,6 +69,7 @@ export default function Product({
 	const [currItem, setCurrItem] = useState<IProductItemDetail | undefined>(selectedItem);
 	const [displayImg, setDisplayImg] = useState<string | undefined>(currItem?.thumbnail);
 	const [quantity, setQuantity] = useState<number>(1);
+	const [similarProds, setSimilarProds] = useState<IProductItem[]>([]);
 
 	// Ref
 	const prodImagesSwiperRef = useRef<SwiperRef>(null);
@@ -137,8 +139,21 @@ export default function Product({
 		}
 	};
 
+	const handleGetSimilarProds = async () => {
+		try {
+			if (currItem) {
+				const res = await productApi.recommendCF(currItem._id);
+				setSimilarProds(res);
+			}
+		} catch (error) {
+			console.log("error: ", error);
+			toastError("Have same errors when get similar produts");
+		}
+	};
+
 	useEffect(() => {
 		setDisplayImg(currItem?.thumbnail);
+		handleGetSimilarProds();
 	}, [currItem]);
 
 	return (
@@ -492,73 +507,45 @@ export default function Product({
 						</div>
 					</div>
 
-					{/* <Swiper
-					slidesPerView="auto"
-					spaceBetween={40}
-					breakpoints={{
-						0: {
-							slidesPerView: 1,
-							spaceBetween: 40,
-							grid: {
-								rows: 1,
+					<Swiper
+						slidesPerView="auto"
+						spaceBetween={40}
+						breakpoints={{
+							0: {
+								slidesPerView: 1,
+								spaceBetween: 40,
+								grid: {
+									rows: 1,
+								},
 							},
-						},
-						768: {
-							slidesPerView: 2,
-							spaceBetween: 40,
-							grid: {
-								rows: 2,
-								fill: "row",
+							768: {
+								slidesPerView: 2,
+								spaceBetween: 40,
+								grid: {
+									rows: 2,
+									fill: "row",
+								},
 							},
-						},
-						1024: {
-							slidesPerView: 4,
-							spaceBetween: 40,
-							grid: {
-								rows: 1,
-								fill: "row",
+							1024: {
+								slidesPerView: 4,
+								spaceBetween: 40,
+								grid: {
+									rows: 1,
+									fill: "row",
+								},
 							},
-						},
-					}}
-					modules={[Grid, Pagination]}
-					className="mb-10 md:mb-0"
-					loop
-					ref={relatedProdsSwiperRef}
-				>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard />
-					</SwiperSlide>
-				</Swiper> */}
+						}}
+						modules={[Grid, Pagination]}
+						className="mb-10 md:mb-0"
+						loop
+						ref={relatedProdsSwiperRef}
+					>
+						{similarProds.map((item) => (
+							<SwiperSlide key={item.itemId}>
+								<ProductCard productItem={item} />
+							</SwiperSlide>
+						))}
+					</Swiper>
 
 					{/* navigate button */}
 					<nav className="flex justify-center gap-x-4 mb-14 md:hidden">
