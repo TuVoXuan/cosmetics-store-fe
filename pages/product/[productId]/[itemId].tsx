@@ -25,6 +25,8 @@ import Head from "next/head";
 import { useAppDispatch } from "../../../app/hooks";
 import { toastSuccess } from "../../../util/toast";
 import { addToCart } from "../../../redux/slices/cart-slice";
+import { useSession } from "next-auth/react";
+import APP_PATH from "../../../constants/app-path";
 
 interface Props {
 	productId: string;
@@ -76,6 +78,7 @@ export default function Product({
 	const { locale } = router;
 	const content = locale === "en" ? en : vi;
 	const dispatch = useAppDispatch();
+	const { data: session, status } = useSession();
 
 	// React Hook Form
 	const { register } = useForm();
@@ -111,19 +114,26 @@ export default function Product({
 	};
 
 	const handleAddToCart = () => {
-		if (currItem) {
-			const cartItem: CartItem = {
-				itemId: currItem._id,
-				productId: productId,
-				name: currItem.name,
-				price: currItem.price,
-				thumbnail: currItem.thumbnail,
-				quantity,
-			};
+		if (status === "authenticated") {
+			if (currItem) {
+				const cartItem: CartItem = {
+					itemId: currItem._id,
+					productId: productId,
+					name: currItem.name,
+					price: currItem.price,
+					thumbnail: currItem.thumbnail,
+					quantity,
+				};
 
-			dispatch(addToCart(cartItem));
+				dispatch(addToCart(cartItem));
 
-			toastSuccess("Add to cart success");
+				toastSuccess("Add to cart success");
+			}
+		} else {
+			router.push({
+				pathname: APP_PATH.SIGN_IN,
+				query: { redirectURL: router.asPath },
+			});
 		}
 	};
 

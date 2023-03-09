@@ -418,7 +418,7 @@ export default function Header({ onShowNavbar }: Props) {
 							</div>
 							<div
 								ref={myAccountRef}
-								className="hidden fixed z-[2] bg-white-light top-0 bottom-0 left-0 right-0 p-8 transition-all ease-linear duration-30"
+								className="hidden fixed z-[2] bg-white-light dark:bg-black-dark-3 top-0 bottom-0 left-0 right-0 p-8 transition-all ease-linear duration-30"
 							>
 								<nav className="flex justify-between">
 									<button

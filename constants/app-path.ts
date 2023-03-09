@@ -11,6 +11,9 @@ const APP_PATH = {
 	ORDER_HISTORY: "/account/orders-history",
 	ADDRESS: "/account/address",
 	SEARCH: "/search",
+	LEGAL: "/legal",
+	CONTACT: "/contact",
+	ABOUT: "/about",
 };
 
 export default APP_PATH;

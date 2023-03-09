@@ -42,11 +42,12 @@ export default function SignIn() {
 	const { data: session, status } = useSession();
 	const { push } = useRouter();
 	let { error } = useRouter().query;
-	const errorMessage = error && (errorsNextAuth[error as keyof typeof errorsNextAuth] ?? errorsNextAuth.default);
+	const errorMessage =
+		error && (errorsNextAuth[error as keyof typeof errorsNextAuth] ?? errorsNextAuth.default);
 
-	if (session) {
-		push("/");
-	}
+	// if (session) {
+	// 	push("/");
+	// }
 
 	const onSubmit = async (data: FormValues) => {
 		try {
@@ -63,6 +64,8 @@ export default function SignIn() {
 
 			if (res?.error) {
 				toastError(res.error);
+			} else if (res) {
+				router.push(res.url || "/");
 			}
 		} catch (error) {
 			console.log("error: ", error);
@@ -80,7 +83,9 @@ export default function SignIn() {
 		<div className="pb-[104px] dark:bg-black-dark-3">
 			<TitlePage className="py-14" subtitle="Đăng nhập" title="Đăng nhập tài khoản của bạn" />
 			{errorMessage && (
-				<p className="lg:w-[536px] lg:mx-auto px-4 py-2 mb-2 text-white bg-red-400 rounded-md">{errorMessage}</p>
+				<p className="lg:w-[536px] lg:mx-auto px-4 py-2 mb-2 text-white bg-red-400 rounded-md">
+					{errorMessage}
+				</p>
 			)}
 			<form className="space-y-10 lg:w-[536px] lg:mx-auto" onSubmit={handleSubmit(onSubmit)}>
 				<Input
@@ -132,7 +137,11 @@ export default function SignIn() {
 							})
 						}
 					>
-						<Google width={24} height={24} className="inline mr-4 text-black dark:text-light-100" />
+						<Google
+							width={24}
+							height={24}
+							className="inline mr-4 text-black dark:text-light-100"
+						/>
 						Đăng nhập với Google
 					</Button>
 					<Button
@@ -144,7 +153,11 @@ export default function SignIn() {
 							})
 						}
 					>
-						<BxlFacebook width={24} height={24} className="inline mr-4 text-black dark:text-light-100" />
+						<BxlFacebook
+							width={24}
+							height={24}
+							className="inline mr-4 text-black dark:text-light-100"
+						/>
 						Đăng nhập với Facebook
 					</Button>
 					<div className="space-y-6 md:grid md:grid-cols-2 md:items-center md:gap-y-6 md:gap-x-2 md:space-y-0">
