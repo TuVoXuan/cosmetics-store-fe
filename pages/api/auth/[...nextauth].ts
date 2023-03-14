@@ -175,7 +175,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 			maxAge,
 		},
 		jwt: {
-			secret: process.env.NEXTAUTH_SECRET,
 			maxAge,
 		},
 	});

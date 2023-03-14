@@ -14,6 +14,7 @@ const APP_PATH = {
 	LEGAL: "/legal",
 	CONTACT: "/contact",
 	ABOUT: "/about",
+	CHECKOUT: "/checkout",
 };
 
 export default APP_PATH;

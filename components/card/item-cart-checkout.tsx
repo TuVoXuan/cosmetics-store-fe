@@ -1,26 +1,35 @@
+import router from "next/router";
 import React from "react";
+import { en, vi } from "../../translation";
+import { convertPrice } from "../../util/product";
 import Delete from "../icons/delete";
 import ProductImage from "../Image/product-image";
 
-export default function ItemCartCheckout() {
+interface Props {
+	item: CartItem;
+}
+
+export default function ItemCartCheckout({ item }: Props) {
+	const { name, thumbnail, price, quantity } = item;
+
 	return (
 		<div className="flex flex-col items-center md:flex-row">
-			<ProductImage className="h-24 w-24 !rounded-2xl mb-6 md:mb-0" />
-			<div className="mb-10 ml-6 md:mb-0 md:grow">
+			<ProductImage src={thumbnail} className="h-24 w-24 shrink-0 !rounded-2xl mb-6 md:mb-0" />
+			<div className="mb-10 md:ml-6 md:mb-0 md:grow">
 				<h4 className="mb-4 font-semibold text-center md:text-left text-heading-4 dark:text-white">
-					Sleepless Night 10 g
+					{name.filter((e) => e.language === "vi")[0].value}
 				</h4>
 				<div className="flex flex-wrap justify-center md:justify-start gap-y-3 gap-x-4">
 					<p className="flex items-center gap-x-3">
-						<span className="font-semibold line-through text-heading-6 text-dark-24 dark:text-light-24">
-							$24
-						</span>
+						{/* <span className="font-semibold line-through text-heading-6 text-dark-24 dark:text-light-24">
+							{convertPrice(price)}
+						</span> */}
 						<span className="font-semibold text-heading-5 text-dark-100 dark:text-light-100">
-							$24
+							{convertPrice(price)}
 						</span>
 					</p>
 					<p className="font-semibold text-heading-5 dark:text-light-100">
-						SL: <span>1</span>
+						SL: <span>{quantity}</span>
 					</p>
 				</div>
 			</div>

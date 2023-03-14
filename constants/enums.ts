@@ -8,3 +8,8 @@ export enum Language {
 	vi = "vi",
 	en = "en",
 }
+
+export enum PaymentMethod {
+	COD = "CODE",
+	MOMO = "MOMO",
+}

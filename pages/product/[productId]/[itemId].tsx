@@ -58,13 +58,7 @@ export const getServerSideProps = async (context: any) => {
 	};
 };
 
-export default function Product({
-	productId,
-	selectedItem,
-	productInfo,
-	productItems,
-	variationList,
-}: Props) {
+export default function Product({ productId, selectedItem, productInfo, productItems, variationList }: Props) {
 	// State
 	const [currItem, setCurrItem] = useState<IProductItemDetail | undefined>(selectedItem);
 	const [displayImg, setDisplayImg] = useState<string | undefined>(currItem?.thumbnail);
@@ -199,11 +193,7 @@ export default function Product({
 								onClick={() => prodImagesSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</nav>
 					</div>
@@ -215,11 +205,7 @@ export default function Product({
 							<div className="grid grid-cols-4 gap-x-2 ">
 								{currItem &&
 									[currItem.thumbnail, ...currItem.images].map((url) => (
-										<ProductImage
-											onClick={() => handleClickImg(url)}
-											key={url}
-											src={url}
-										/>
+										<ProductImage onClick={() => handleClickImg(url)} key={url} src={url} />
 									))}
 							</div>
 						</div>
@@ -255,11 +241,7 @@ export default function Product({
 
 				{/* product info */}
 				<div>
-					<TitlePage
-						className="text-center xl:text-left "
-						subtitle="Đặc điểm sản phẩm"
-						title="Khám phá các đặc điểm"
-					/>
+					<TitlePage className="text-center xl:text-left " subtitle="Đặc điểm sản phẩm" title="Khám phá các đặc điểm" />
 					<div
 						className="mt-8 text-paragraph-4 md:text-paragraph-2 dark:text-white"
 						dangerouslySetInnerHTML={{
@@ -270,180 +252,49 @@ export default function Product({
 
 				{/* comments */}
 				<div className="space-y-4">
-					<TitlePage
-						className="text-center xl:text-left"
-						subtitle="Đánh giá"
-						title="Khác hàng của chúng tôi nói gì"
-					/>
+					<TitlePage className="text-center xl:text-left" subtitle="Đánh giá" title="Khác hàng của chúng tôi nói gì" />
 
 					<div className="flex justify-between md:justify-evenly">
-						<h3 className="grid content-center md:text-heading-1 text-heading-2 dark:text-light-100">
-							4.9 / 5
-						</h3>
+						<h3 className="grid content-center md:text-heading-1 text-heading-2 dark:text-light-100">4.9 / 5</h3>
 						<div className="space-y-1">
 							<div className="flex items-center justify-start gap-x-1">
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full lg:w-7 lg:h-7 text-primary-100"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
+								<Quality width={20} height={20} fill={primary[100]} className="h-full lg:w-7 lg:h-7 text-primary-100" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
 								<p className="ml-2 dark:text-light-100 lg:text-heading-3">120</p>
 							</div>
 							<div className="flex items-center justify-start gap-x-1">
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
 								<p className="ml-2 dark:text-light-100 lg:text-heading-3">45</p>
 							</div>
 							<div className="flex items-center justify-start gap-x-1">
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
 								<p className="ml-2 dark:text-light-100 lg:text-heading-3">12</p>
 							</div>
 							<div className="flex items-center justify-start gap-x-1">
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
 								<p className="ml-2 dark:text-light-100 lg:text-heading-3">4</p>
 							</div>
 							<div className="flex items-center justify-start gap-x-1">
-								<Quality
-									width={20}
-									height={20}
-									fill={primary[100]}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
-								<Quality
-									width={20}
-									height={20}
-									fill={"none"}
-									className="h-full text-primary-100 lg:w-7 lg:h-7"
-								/>
+								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
+								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
 								<p className="ml-2 dark:text-light-100 lg:text-heading-3">1</p>
 							</div>
 						</div>
@@ -471,9 +322,7 @@ export default function Product({
 					</div>
 					<div className="flex items-center justify-center gap-x-2">
 						<GoBack className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
-						<p className="font-semibold text-paragraph-5 md:text-paragraph-4 dark:text-light-100">
-							1 / 1
-						</p>
+						<p className="font-semibold text-paragraph-5 md:text-paragraph-4 dark:text-light-100">1 / 1</p>
 						<GoForward className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
 					</div>
 				</div>
@@ -498,11 +347,7 @@ export default function Product({
 								onClick={() => relatedProdsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>

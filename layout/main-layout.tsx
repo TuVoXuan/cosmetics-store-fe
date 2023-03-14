@@ -1,4 +1,4 @@
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../app/hooks";
@@ -24,20 +24,29 @@ export default function MainLayout({ children }: Props) {
 		setShowNavbar(!showNavbar);
 	};
 
-	const handleSetToken = () => {
-		fetch("/api/user")
-			.then((data) => data.json())
-			.then((data: JWTToken) => {
-				if (data.jwtToken) {
-					setCookie("Authorization", data.jwtToken);
-				}
-				return data;
-			})
-			.then((data: JWTToken) => {
-				if (data.jwtToken) {
-					dispatch(getAddress());
-				}
-			});
+	const handleSetToken = async () => {
+		// const authorization = getCookie("Authorization");
+		if (session) {
+			// fetch("/api/user")
+			// 	.then((data) => data.json())
+			// 	.then((data: JWTToken) => {
+			// 		if (data.jwtToken) {
+			// 			setCookie("Authorization", data.jwtToken);
+			// 		}
+			// 		return data;
+			// 	})
+			// 	.then((data: JWTToken) => {
+			// 		if (data.jwtToken) {
+			// 			dispatch(getAddress());
+			// 		}
+			// 	});
+			setCookie("Authorization", session.user.token);
+			try {
+				await dispatch(getAddress());
+			} catch (error) {
+				console.log("error: ", error);
+			}
+		}
 	};
 
 	useEffect(() => {

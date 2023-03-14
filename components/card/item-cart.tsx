@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { changeQuantity, deleteFromCart } from "../../redux/slices/cart-slice";
+import { convertPrice } from "../../util/product";
 import Price from "../badge/price";
 import QuantityBtn from "../buttons/quantity-btn";
 import Delete from "../icons/delete";
@@ -27,10 +28,7 @@ export default function ItemCart({ sale, item }: Props) {
 
 	return (
 		<div className="p-6 border-2 f rounded-4xl border-gray-accent md:p-14 md:grid md:grid-cols-3 lg:p-8 dark:border-black-dark-2">
-			<ProductImage
-				src={item.thumbnail}
-				className="w-full mb-6 select-none aspect-square md:h-48 md:w-48 md:mb-0"
-			/>
+			<ProductImage src={item.thumbnail} className="w-full mb-6 select-none aspect-square md:h-48 md:w-48 md:mb-0" />
 			<div className="md:col-span-2 md:pl-14 lg:pl-0">
 				<h4 className="mb-4 font-semibold text-heading-4 md:text-heading-3 dark:text-white line-clamp-2">
 					{item?.name.find((item) => item.language == locale)?.value}
@@ -39,17 +37,12 @@ export default function ItemCart({ sale, item }: Props) {
 				<div className="flex items-center justify-center mb-10 space-x-2 md:justify-start md:mb-6">
 					{sale && (
 						<span className="font-semibold line-through text-heading-6 md:text-heading-4 lg:text-paragraph-3 text-dark-24 dark:text-light-24">
-							{item.price.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
+							{convertPrice(item.price)}
 						</span>
 					)}
 
 					<span className="font-semibold text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white-light">
-						{sale
-							? ((item.price * (100 - sale)) / 100).toLocaleString("it-IT", {
-									style: "currency",
-									currency: "VND",
-							  })
-							: item.price.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
+						{sale ? convertPrice((item.price * (100 - sale)) / 100) : convertPrice(item.price)}
 					</span>
 				</div>
 
@@ -60,11 +53,7 @@ export default function ItemCart({ sale, item }: Props) {
 						onClick={handleDelete}
 						className="top-0 p-3 transition-colors duration-300 ease-linear border-2 rounded-full border-gray-accent md:p-4 dark:border-black-dark-2 hover:border-dark-100 dark:hover:border-white"
 					>
-						<Delete
-							height={24}
-							width={24}
-							className="dark:text-white md:w-8 md:h-8 lg:w-6 lg:h-6"
-						/>
+						<Delete height={24} width={24} className="dark:text-white md:w-8 md:h-8 lg:w-6 lg:h-6" />
 					</button>
 				</div>
 			</div>

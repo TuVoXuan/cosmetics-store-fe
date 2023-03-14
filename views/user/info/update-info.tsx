@@ -89,7 +89,6 @@ export default function UpdateInfo() {
 					<Dropdown
 						register={register}
 						name={"gender"}
-						size="large"
 						error={errors.gender?.message}
 						option={{
 							required: {

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { Fragment, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import adminstrativeApi from "../api/adminstrative-api";
@@ -9,6 +10,7 @@ import Button from "../components/buttons/button";
 import ItemCart from "../components/card/item-cart";
 import Warning from "../components/icons/warning";
 import TitlePage from "../components/title-page/title-page";
+import APP_PATH from "../constants/app-path";
 import { deleteAll, selectCart } from "../redux/slices/cart-slice";
 import { selectUser } from "../redux/slices/user-slice";
 import { toastError } from "../util/toast";
@@ -20,6 +22,7 @@ export default function ShoppingCart() {
 
 	// Redux
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 	const cart = useAppSelector(selectCart);
 	const addresses = useAppSelector(selectUser).address;
 	const defaultAddress = addresses.find((item) => item.default === true);
@@ -44,10 +47,7 @@ export default function ShoppingCart() {
 					longitude: shopLng,
 				};
 				try {
-					const response = adminstrativeApi.getDirection(
-						shopCoordinates,
-						defaultAddress.coordinates
-					);
+					const response = adminstrativeApi.getDirection(shopCoordinates, defaultAddress.coordinates);
 					response
 						.then((data) => data.data)
 						.then((data) => {
@@ -60,11 +60,15 @@ export default function ShoppingCart() {
 				}
 			}
 		} else {
-			toast(
-				"Hiện tại bạn chưa có địa chỉ mặc định. Vui lòng vào trang cá nhân để thêm địa chỉ mặc định.",
-				{ duration: 10000, icon: <Warning className="text-yellow-tertiary-100 shrink-0" /> }
-			);
+			toast("Hiện tại bạn chưa có địa chỉ mặc định. Vui lòng vào trang cá nhân để thêm địa chỉ mặc định.", {
+				duration: 10000,
+				icon: <Warning className="text-yellow-tertiary-100 shrink-0" />,
+			});
 		}
+	};
+
+	const handleCheckout = () => {
+		router.push(APP_PATH.CHECKOUT);
 	};
 
 	useEffect(() => {
@@ -127,17 +131,13 @@ export default function ShoppingCart() {
 						</h4>
 						<div className="space-y-10 mb-14 md:space-y-12 md:mb-20 lg:block lg:space-y-10 lg:mb-14">
 							<div className="flex justify-between">
-								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									Tổng phụ:
-								</p>
+								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">Tổng phụ:</p>
 								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
 									{subTotal.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
 								</p>
 							</div>
 							<div className="flex justify-between">
-								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									Phí giao hàng:
-								</p>
+								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">Phí giao hàng:</p>
 								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
 									{shippingFee.toLocaleString("it-IT", {
 										style: "currency",
@@ -157,7 +157,7 @@ export default function ShoppingCart() {
 								</p>
 							</div>
 						</div>
-						<Button className="w-full" type="primary">
+						<Button className="w-full" type="primary" onClick={handleCheckout}>
 							Thanh toán
 						</Button>
 					</div>
