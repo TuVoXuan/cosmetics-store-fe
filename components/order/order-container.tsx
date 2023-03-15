@@ -1,33 +1,69 @@
+import { useRouter } from "next/router";
 import React from "react";
+import APP_PATH from "../../constants/app-path";
+import { OrderStatus } from "../../constants/enums";
+import { IOrder } from "../../types/apis/order-api";
+import { convertDate, convertPrice } from "../../util/product";
+import { hashCode } from "../../util/short-hash";
 import Badge from "../badge/badge";
 import Button from "../buttons/button";
 import OrderItem from "./order-item";
 
-export default function OrderContainer() {
+interface Props {
+	order: IOrder;
+	status: OrderStatus;
+}
+
+export default function OrderContainer({ order, status }: Props) {
+	const router = useRouter();
+
+	const handleTotal: () => number = () => {
+		let sum = 0;
+		for (const item of order.orderItems) {
+			sum += item.price * item.quantity;
+		}
+
+		return sum;
+	};
+
+	const handleOnClick = () => {
+		router.push(`${APP_PATH.ORDER_HISTORY}/${order._id}`);
+	};
+
 	return (
-		<div className="p-4 space-y-8 border-2 md:p-8 lg:px-12 lg:py-8 border-gray-accent rounded-3xl dark:border-black-dark-2">
+		<div
+			onClick={handleOnClick}
+			className="p-4 space-y-8 border-2 md:p-8 lg:px-12 lg:py-8 border-gray-accent rounded-3xl dark:border-black-dark-2"
+		>
 			<div className="flex items-end justify-between">
-				<h2 className="text-heading-4 md:text-heading-3 dark:text-light-100">#123456789</h2>
-				<p className="font-semibold text-paragraph-5 md:text-heading-5 text-dark-40 dark:text-light-100">11/2/2023</p>
+				<h2 className="text-heading-4 md:text-heading-3 dark:text-light-100">{hashCode(order._id)}</h2>
+				<p className="font-semibold text-paragraph-5 md:text-heading-5 text-dark-40 dark:text-light-100">
+					{convertDate(order.date)}
+				</p>
 			</div>
 			<div className="space-y-8">
-				<OrderItem />
-				<OrderItem />
+				<OrderItem key={order.orderItems[0]._id} item={order.orderItems[0]} />
 			</div>
 			<div>
-				<p className="text-paragraph-5 md:text-paragraph-3 dark:text-light-100">
-					và <span className="font-semibold">3</span> sản phẩm khác
-				</p>
+				{order.orderItems.length > 1 && (
+					<p className="text-paragraph-5 md:text-paragraph-3 dark:text-light-100">
+						và <span className="font-semibold">{order.orderItems.length - 1}</span> sản phẩm khác
+					</p>
+				)}
 				<div className="flex justify-between">
 					<p className="font-semibold text-paragraph-5 md:text-paragraph-3 dark:text-light-100">Tổng đơn hàng:</p>
-					<p className="font-semibold text-paragraph-5 md:text-paragraph-3 dark:text-light-100">499.000đ</p>
+					<p className="font-semibold text-paragraph-5 md:text-paragraph-3 dark:text-light-100">
+						{convertPrice(handleTotal())}
+					</p>
 				</div>
 			</div>
-			<div className="md:flex md:justify-end">
-				<Button className="w-full md:w-fit md:ml" type="danger">
-					Hủy đơn hàng
-				</Button>
-			</div>
+			{status === OrderStatus.Pending && (
+				<div className="md:flex md:justify-end">
+					<Button className="w-full md:w-fit md:ml" type="danger">
+						Hủy đơn hàng
+					</Button>
+				</div>
+			)}
 		</div>
 	);
 }

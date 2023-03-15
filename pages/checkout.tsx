@@ -8,8 +8,8 @@ import Badge from "../components/badge/badge";
 import AddressDictionary, { AddressDictRefType } from "../components/modal/address-dictionary";
 import Overlay from "../components/modal/overlay";
 import Radio from "../components/inputs/radio";
-import { useAppSelector } from "../app/hooks";
-import { selectCart } from "../redux/slices/cart-slice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { deleteAll, selectCart } from "../redux/slices/cart-slice";
 import { convertPrice } from "../util/product";
 import { selectUser } from "../redux/slices/user-slice";
 import { ICreateOrder, ICreateOrderItem } from "../types/apis/order-api";
@@ -19,6 +19,8 @@ import toast from "react-hot-toast";
 import Warning from "../components/icons/warning";
 import { toastError, toastSuccess } from "../util/toast";
 import { orderApi } from "../api/order-api";
+import { useRouter } from "next/dist/client/router";
+import APP_PATH from "../constants/app-path";
 
 type FormValues = {
 	paymentMethod: string;
@@ -28,6 +30,8 @@ const paymentMethods = ["momo", "COD"];
 
 export default function Checkout() {
 	const { register } = useForm<FormValues>();
+	const dispatch = useAppDispatch();
+	const router = useRouter();
 
 	const addressDictModalRef = useRef<AddressDictRefType>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
@@ -100,12 +104,13 @@ export default function Checkout() {
 			shippingFee: shippingFee,
 		};
 
-		const response = orderApi.createOrder(body);
-		toast.promise(response, {
-			loading: "Đang tạo đơn hàng...",
-			success: "Tạo đơn hàng thành công.",
-			error: "Xảy ra lỗi trong quá trình tạo đơn hàng.",
-		});
+		try {
+			await orderApi.createOrder(body);
+			toastSuccess("Tạo đơn hàng thành công");
+			dispatch(deleteAll());
+		} catch (error) {
+			toastError("Đã xảy ra lỗi trong quá trình tạo đơn hàng.");
+		}
 	};
 
 	useEffect(() => {
@@ -118,6 +123,9 @@ export default function Checkout() {
 
 	useEffect(() => {
 		handleTotal();
+		if (cart.length === 0) {
+			router.push(APP_PATH.CART);
+		}
 	}, [cart]);
 
 	return (

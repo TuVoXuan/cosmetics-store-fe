@@ -3,7 +3,6 @@ import Expand from "../icons/expand";
 import Selected from "../icons/selected";
 import clsx from "clsx";
 import { RegisterOptions, UseFormRegister } from "react-hook-form";
-import { IOption } from "../../types/global";
 
 interface Props {
 	options: IOption[];
@@ -92,9 +91,7 @@ export default function Dropdown({
 				)}
 			</div>
 			{label && (
-				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
-					{label}
-				</p>
+				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
 			)}
 
 			<div className={clsx("relative", className)}>
@@ -108,11 +105,7 @@ export default function Dropdown({
 						error && "border-red-accent dark:border-red-accent"
 					)}
 				>
-					<p
-						className={clsx(
-							"select-none capitalize dark:text-white-light text-heading-5 md:text-heading-4"
-						)}
-					>
+					<p className={clsx("select-none capitalize dark:text-white-light text-heading-5 md:text-heading-4")}>
 						{selectedValue ? selectedValue.label : "Chọn giá trị"}
 					</p>
 					<Expand width={16} height={16} className="dark:text-light-100" />
@@ -135,19 +128,10 @@ export default function Dropdown({
 										"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 									)}
 								>
-									<label
-										className="cursor-pointer"
-										onClick={() => handleOnchange(item)}
-										htmlFor={item.value}
-									>
+									<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
 										{item.label}
 									</label>
-									<Selected
-										width={16}
-										height={16}
-										color="#1A202C"
-										className="dark:text-light-100"
-									/>
+									<Selected width={16} height={16} color="#1A202C" className="dark:text-light-100" />
 								</li>
 							);
 						}
@@ -159,11 +143,7 @@ export default function Dropdown({
 									"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 								)}
 							>
-								<label
-									className="cursor-pointer"
-									onClick={() => handleOnchange(item)}
-									htmlFor={item.value}
-								>
+								<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
 									{item.label}
 								</label>
 							</li>
@@ -171,11 +151,7 @@ export default function Dropdown({
 					})}
 				</ul>
 			</div>
-			{error && (
-				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
-					{error}
-				</p>
-			)}
+			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
 		</div>
 	);
 }

@@ -13,3 +13,10 @@ export enum PaymentMethod {
 	COD = "CODE",
 	MOMO = "MOMO",
 }
+
+export enum OrderStatus {
+	Pending = "pending",
+	Delivering = "delivering",
+	Completed = "completed",
+	Cancelled = "cancelled",
+}

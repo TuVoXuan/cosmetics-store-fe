@@ -1,5 +1,7 @@
 import router from "next/router";
 import React from "react";
+import { useAppDispatch } from "../../app/hooks";
+import { deleteFromCart } from "../../redux/slices/cart-slice";
 import { en, vi } from "../../translation";
 import { convertPrice } from "../../util/product";
 import Delete from "../icons/delete";
@@ -10,7 +12,17 @@ interface Props {
 }
 
 export default function ItemCartCheckout({ item }: Props) {
-	const { name, thumbnail, price, quantity } = item;
+	const { name, thumbnail, price, quantity, itemId, productId } = item;
+	const dispatch = useAppDispatch();
+
+	const handleDelete = () => {
+		dispatch(
+			deleteFromCart({
+				itemId,
+				productId,
+			})
+		);
+	};
 
 	return (
 		<div className="flex flex-col items-center md:flex-row">
@@ -33,7 +45,10 @@ export default function ItemCartCheckout({ item }: Props) {
 					</p>
 				</div>
 			</div>
-			<button className="flex items-center justify-center w-12 h-12 border-2 rounded-full md:shrink-0 border-gray-accent dark:border-black-dark-2">
+			<button
+				onClick={handleDelete}
+				className="flex items-center justify-center w-12 h-12 border-2 rounded-full md:shrink-0 border-gray-accent dark:border-black-dark-2"
+			>
 				<Delete height={24} width={24} className="dark:text-white xl:w-4 xl:h-4" />
 			</button>
 		</div>
