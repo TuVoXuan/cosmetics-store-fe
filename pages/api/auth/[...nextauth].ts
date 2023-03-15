@@ -141,12 +141,14 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 			async jwt({ token, user, account, profile, isNewUser }) {
 				if (user && user.token) {
 					token.jwtToken = user.token;
+					token.id = user.id;
 				}
 				return token;
 			},
 			async session({ session, token, user }) {
 				if (token && token.jwtToken) {
 					session.user.token = (token.jwtToken as string).toString();
+					session.user.id = token.id as string;
 				}
 				return session; // The return type will match the one returned in `useSession()`
 			},

@@ -12,4 +12,10 @@ export const orderApi = {
 
 		return response.data.data;
 	},
+
+	checkOrder: async (orderId: string) => {
+		const response = await axiosService.get<IResponseSuccess<boolean>>(`${URL}/${orderId}`);
+
+		return response.data.data;
+	},
 };

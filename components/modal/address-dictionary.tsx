@@ -1,4 +1,12 @@
-import React, { Fragment, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, {
+	Fragment,
+	SetStateAction,
+	useEffect,
+	useImperativeHandle,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "../../app/hooks";
 import { selectUser } from "../../redux/slices/user-slice";
@@ -25,7 +33,6 @@ interface Props {
 
 const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 	({ overlay, onChangeValue, defaultValue }, ref) => {
-		console.log("defaultValue: ", defaultValue);
 		const [selectedValue, setSelectedValue] = useState<string>("");
 		const addressDictRef = useRef<HTMLDivElement>(null);
 		const address = useAppSelector(selectUser).address;
@@ -137,7 +144,11 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 										{`${item.specificAddress}, ${item.ward}, ${item.district}, ${item.province}`}
 									</p>
 									{item.default && (
-										<Badge className="w-fit shrink-0" isResponsive={false} color="pink_tertiary">
+										<Badge
+											className="w-fit shrink-0"
+											isResponsive={false}
+											color="pink_tertiary"
+										>
 											Mặc định
 										</Badge>
 									)}
