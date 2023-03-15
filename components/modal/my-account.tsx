@@ -41,7 +41,6 @@ export default function MyAccount({ onClose }: Props) {
 		onClose();
 		router.push({
 			pathname: to,
-			query: { redirectURL: router.asPath },
 		});
 	};
 
@@ -71,7 +70,7 @@ export default function MyAccount({ onClose }: Props) {
 						<p>Address</p>
 					</button>
 					<button
-						onClick={() => handleMyAccount(APP_PATH.ORDER_HISTORY)}
+						onClick={() => handleMyAccount(`${APP_PATH.ORDER_HISTORY}?status=pending`)}
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<ClipBoard className="text-black shrink-0 dark:text-light-100" />

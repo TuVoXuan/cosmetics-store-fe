@@ -15,6 +15,7 @@ const APP_PATH = {
 	CONTACT: "/contact",
 	ABOUT: "/about",
 	CHECKOUT: "/checkout",
+	LOADING_CHECKOUT: "/checkout/loading",
 };
 
 export default APP_PATH;

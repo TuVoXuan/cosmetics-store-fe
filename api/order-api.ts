@@ -15,13 +15,19 @@ export const orderApi = {
 	},
 
 	getOrders: async (param: OrderStatus) => {
-		const response = await axiosService.get<IResponseSuccess<IOrder[]>>(`${URL}/${param}`);
+		const response = await axiosService.get<IResponseSuccess<IOrder[]>>(`${URL}/status/${param}`);
 
 		return response.data.data;
 	},
 
 	getOrdersById: async (id: string) => {
 		const response = await axiosService.get<IResponseSuccess<IOrderDetail>>(`${URL}/detail/${id}`);
+
+		return response.data.data;
+	},
+
+	checkOrder: async (orderId: string) => {
+		const response = await axiosService.get<IResponseSuccess<boolean>>(`${URL}/${orderId}`);
 
 		return response.data.data;
 	},

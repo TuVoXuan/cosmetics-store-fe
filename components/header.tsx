@@ -193,6 +193,7 @@ export default function Header({ onShowNavbar }: Props) {
 	};
 
 	const handleRedirectToLoginPage = () => {
+		console.log("lsdkjfoij");
 		handleClickNavBarBtn();
 		router.push({
 			pathname: APP_PATH.SIGN_IN,
@@ -212,9 +213,7 @@ export default function Header({ onShowNavbar }: Props) {
 
 	const handleMyAccount = (to: string) => {
 		handleClickNavBarBtn();
-		router.push({
-			pathname: to,
-		});
+		router.push(to);
 	};
 
 	return (

@@ -47,13 +47,13 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 							<Component {...pageProps} />
 						</MainLayout>
 					</main>
-					<Toaster
-						toastOptions={{
-							className: "z-[500]",
-						}}
-					/>
 				</SessionProvider>
 			</SettingProvider>
+			<Toaster
+				toastOptions={{
+					className: "z-[500]",
+				}}
+			/>
 		</Provider>
 	);
 }
