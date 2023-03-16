@@ -1,4 +1,4 @@
-import { PaymentMethod } from "../../constants/enums";
+import { OrderStatus, PaymentMethod } from "../../constants/enums";
 
 declare interface ICreateOrderItem {
 	productItem: string;
@@ -31,4 +31,9 @@ declare interface IOrder {
 
 declare interface IOrderDetail extends IOrder {
 	address: IAddress;
+}
+
+declare interface ICancelOrder {
+	orderId: string;
+	status: OrderStatus;
 }

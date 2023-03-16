@@ -39,9 +39,7 @@ export default function MyAccount({ onClose }: Props) {
 
 	const handleMyAccount = (to: string) => {
 		onClose();
-		router.push({
-			pathname: to,
-		});
+		router.push(to);
 	};
 
 	useEffect(() => {

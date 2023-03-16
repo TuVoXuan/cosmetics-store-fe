@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 
 interface Props {
 	children?: React.ReactNode | React.ReactNode[];
@@ -7,7 +7,7 @@ interface Props {
 	btnType?: "submit" | "reset" | "button";
 	form?: string;
 	disable?: boolean;
-	onClick?: () => void;
+	onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default function Button({

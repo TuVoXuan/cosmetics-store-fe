@@ -1,5 +1,5 @@
 import { OrderStatus } from "../constants/enums";
-import { ICreateOrder, IOrder, IOrderDetail } from "../types/apis/order-api";
+import { ICancelOrder, ICreateOrder, IOrder, IOrderDetail } from "../types/apis/order-api";
 import axiosService from "./axios-service";
 
 const API = process.env.API_URL;
@@ -28,6 +28,14 @@ export const orderApi = {
 
 	checkOrder: async (orderId: string) => {
 		const response = await axiosService.get<IResponseSuccess<boolean>>(`${URL}/${orderId}`);
+
+		return response.data.data;
+	},
+
+	cancelOrder: async (orderId: string) => {
+		const response = await axiosService.put<IResponseSuccess<ICancelOrder>>(`${URL}/status/${orderId}`, {
+			status: OrderStatus.Cancelled,
+		});
 
 		return response.data.data;
 	},
