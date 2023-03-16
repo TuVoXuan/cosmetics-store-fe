@@ -55,7 +55,10 @@ export default function Checkout() {
 					longitude: shopLng,
 				};
 				try {
-					const response = adminstrativeApi.getDirection(shopCoordinates, selectedAddress.coordinates);
+					const response = adminstrativeApi.getDirection(
+						shopCoordinates,
+						selectedAddress.coordinates
+					);
 					response
 						.then((data) => data.data)
 						.then((data) => {
@@ -81,10 +84,14 @@ export default function Checkout() {
 	};
 
 	const handleTotal = () => {
-		let sum = 0;
-		cart.forEach((item) => (sum += item.price));
+		if (cart.length > 0) {
+			let sum = 0;
+			cart.forEach((item) => (sum += item.price));
 
-		setTotal(sum);
+			setTotal(sum);
+		} else {
+			router.push(APP_PATH.CART);
+		}
 	};
 
 	const handleCheckout = async () => {
@@ -120,6 +127,10 @@ export default function Checkout() {
 		});
 	};
 
+	const handleEditCart = () => {
+		router.push(APP_PATH.CART);
+	};
+
 	useEffect(() => {
 		setSelectedAddress(address.find((item) => item.default));
 	}, [address]);
@@ -134,58 +145,63 @@ export default function Checkout() {
 
 	return (
 		<Fragment>
-			<div className="space-y-14 mt-14 mb-14 md:mb-[112px] xl:mb-[144px]">
+			<div className="space-y-14 mt-14 mb-14 md:mb-[112px] lg:px-28 xl:mb-[144px]">
 				<TitlePage subtitle="Gần hoàn thành" title="Thanh toán" />
-				<div className="space-y-10 md:space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8">
+				<div className="space-y-10 md:space-y-12">
 					{/* cart section */}
-					<div className="p-6 space-y-10 border-2 lg:h-fit lg:row-start-1 lg:col-start-1 md:p-8 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-12">
+					<div className="p-6 space-y-10 border-2 md:p-8 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-12">
 						<p className="font-semibold capitalize text-heading-4 md:text-heading-2 text-dark-100 dark:text-light-100">
 							Giỏ hàng
 						</p>
-						<div className="lg:max-h-[400px] lg:overflow-y-auto space-y-10 md:space-y-6">
-							{cart.length > 0 && cart.map((item) => <ItemCartCheckout key={item.itemId} item={item} />)}
+						<div className="space-y-10 md:space-y-6">
+							{cart.length > 0 &&
+								cart.map((item) => <ItemCartCheckout key={item.itemId} item={item} />)}
 						</div>
-						<div className="flex justify-between font-semibold md:text-heading-3 text-heading-5 xl:text-paragraph-1">
-							<p className="dark:text-light-100">Tổng:</p>
-							<p className="dark:text-light-100">{convertPrice(total + shippingFee)}</p>
-						</div>
-						<Button className="w-full !mt-14 md:!mt-20 dark:text-light-100" type="secondary">
+						<Button
+							onClick={handleEditCart}
+							className="w-full !mt-14 md:!mt-20 lg:w-fit dark:text-light-100"
+							type="secondary"
+						>
 							Chỉnh sửa giỏ hàng
 						</Button>
 					</div>
-					<div className="space-y-10 md:space-y-12">
-						{/* address section */}
-						<div className="p-6 space-y-6 border-2 lg:col-start-2 h-fit md:p-8 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-8">
-							<div className="flex items-center gap-x-4">
-								<Pin height={24} width={24} className="text-primary-100" />
-								<h4 className="font-semibold capitalize text-heading-4 md:text-heading-2 text-primary-100 dark:text-light-100">
-									Địa chỉ nhận hàng
-								</h4>
-							</div>
-
-							<div className="md:flex md:items-center xl:block xl:space-y-4">
-								<div className="mb-4 space-y-4 md:mb-0 md:grow md:space-y-0">
-									<p className="font-semibold capitalize text-paragraph-3 md:text-heading-4 md:inline-block dark:text-white">
-										{selectedAddress ? selectedAddress.name : "nguyen thi my duyen"}
-									</p>
-									<p className="font-semibold text-paragraph-3 md:text-heading-4 md:inline-block md:pl-4 dark:text-white">
-										{selectedAddress ? selectedAddress.phone : "0987654321"}
-									</p>
-									<p className="text-paragraph-3 md:text-heading-4 md:pr-4 dark:text-white">
-										{selectedAddress
-											? `${selectedAddress.specificAddress}, ${selectedAddress.ward}, ${selectedAddress.district}, ${selectedAddress.province}`
-											: "Kí túc xá khu A, khu phố 6, Phường Linh Trung, Thành Phố Thủ Đức, TP. Hồ Chí Minh"}
-									</p>
-								</div>
-								<Badge className="w-fit md:shrink-0" color="primary" isResponsive={false}>
-									Mặc định
-								</Badge>
-							</div>
-							<Button onClick={handleOpenAddressDictModal} className="w-full lg:w-fit" type="secondary">
-								Thay đổi
-							</Button>
+					{/* address section */}
+					<div className="p-6 space-y-6 border-2 h-fit md:p-8 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-8">
+						<div className="flex items-center gap-x-4">
+							<Pin height={24} width={24} className="text-primary-100" />
+							<h4 className="font-semibold capitalize text-heading-4 md:text-heading-2 text-primary-100 dark:text-light-100">
+								Địa chỉ nhận hàng
+							</h4>
 						</div>
 
+						<div className="md:flex md:items-center xl:block xl:space-y-4">
+							<div className="mb-4 space-y-4 md:mb-0 md:grow md:space-y-0">
+								<p className="font-semibold capitalize text-paragraph-3 md:text-heading-4 md:inline-block dark:text-white">
+									{selectedAddress ? selectedAddress.name : "nguyen thi my duyen"}
+								</p>
+								<p className="font-semibold text-paragraph-3 md:text-heading-4 md:inline-block md:pl-4 dark:text-white">
+									{selectedAddress ? selectedAddress.phone : "0987654321"}
+								</p>
+								<p className="text-paragraph-3 md:text-heading-4 md:pr-4 dark:text-white">
+									{selectedAddress
+										? `${selectedAddress.specificAddress}, ${selectedAddress.ward}, ${selectedAddress.district}, ${selectedAddress.province}`
+										: "Kí túc xá khu A, khu phố 6, Phường Linh Trung, Thành Phố Thủ Đức, TP. Hồ Chí Minh"}
+								</p>
+							</div>
+							<Badge className="w-fit md:shrink-0" color="primary" isResponsive={false}>
+								Mặc định
+							</Badge>
+						</div>
+						<Button
+							onClick={handleOpenAddressDictModal}
+							className="w-full lg:w-fit"
+							type="secondary"
+						>
+							Thay đổi
+						</Button>
+					</div>
+
+					<div className="lg:grid lg:grid-cols-2 lg: gap-x-10">
 						{/* payment method section */}
 						<div className="p-6 space-y-6 border-2 border-gray-accent rounded-4xl dark:border-black-dark-2">
 							<h4 className="font-semibold text-heading-4 md:text-heading-2 dark:text-light-100">
@@ -224,11 +240,31 @@ export default function Checkout() {
 								})}
 							</div>
 						</div>
+						{/* order info section */}
+						<div className="p-6 space-y-6 border-2 border-gray-accent rounded-4xl dark:border-black-dark-2">
+							<h4 className="font-semibold text-heading-4 md:text-heading-2 dark:text-light-100">
+								Thông tin đơn hàng
+							</h4>
 
-						<Button onClick={handleCheckout} type="primary" className="w-full">
-							submit
-						</Button>
+							<div className="flex justify-between md:text-heading-4 text-heading-5 xl:text-paragraph-1">
+								<p className="dark:text-light-100">Tổng phụ:</p>
+								<p className="dark:text-light-100">{convertPrice(total)}</p>
+							</div>
+							<div className="flex justify-between md:text-heading-4 text-heading-5 xl:text-paragraph-1">
+								<p className="dark:text-light-100">Phí ship:</p>
+								<p className="dark:text-light-100">{convertPrice(shippingFee)}</p>
+							</div>
+
+							<div className="flex justify-between md:text-heading-4 text-heading-5 xl:text-paragraph-1">
+								<p className="dark:text-light-100">Tổng:</p>
+								<p className="dark:text-light-100">{convertPrice(total + shippingFee)}</p>
+							</div>
+						</div>
 					</div>
+
+					<Button onClick={handleCheckout} type="primary" className="w-full">
+						submit
+					</Button>
 				</div>
 			</div>
 

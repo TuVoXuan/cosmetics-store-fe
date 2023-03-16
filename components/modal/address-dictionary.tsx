@@ -111,17 +111,17 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 				ref={addressDictRef}
 				className="fixed -left-[100%] z-20 w-[100%] md:w-4/5 lg:w-3/5 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-black-dark-3 rounded-3xl top-1/2 transition-all duration-300 ease-out"
 			>
-				<div className="relative flex justify-between p-6 border-b-2">
-					<h3 className="text-heading-4 md:text-heading-2 dark:text-white">Địa chỉ của tôi</h3>
+				<div className="relative flex justify-between p-4 border-b-2 md:p-5">
+					<h3 className="text-heading-4 md:text-heading-3 dark:text-white">Địa chỉ của tôi</h3>
 
 					<button
 						onClick={handleClose}
-						className="absolute top-[50%] -translate-y-1/2 p-2 md:p-3 border-2 rounded-full right-6 border-gray-accent dark:border-black-dark-2"
+						className="absolute top-[50%] -translate-y-1/2 p-1 md:p-2 border-2 rounded-full right-6 border-gray-accent dark:border-black-dark-2"
 					>
-						<Delete className="w-6 h-6 md:h-8 md:w-8 dark:text-white" />
+						<Delete className="w-6 h-6 dark:text-white" />
 					</button>
 				</div>
-				<form className="p-6 space-y-6 h-[400px] overflow-y-auto">
+				<form className="p-4 space-y-4 md:p-5 md:space-y-5 h-[350px] overflow-y-auto">
 					{address.map((item) => {
 						return (
 							<Radio
@@ -134,13 +134,13 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 								register={register}
 							>
 								<div className="space-y-2">
-									<h4 className="inline-block pr-4 font-semibold capitalize text-paragraph-3 md:text-heading-3 dark:text-white">
+									<h4 className="inline-block pr-4 font-semibold capitalize text-paragraph-5 md:text-heading-4 dark:text-white">
 										{item.name}
 									</h4>
-									<h4 className="inline-block pl-4 font-semibold capitalize border-l-2 text-paragraph-3 md:text-heading-3 dark:text-white">
+									<h4 className="inline-block pl-4 font-semibold capitalize border-l-2 text-paragraph-5 md:text-heading-4 dark:text-white">
 										{item.phone}
 									</h4>
-									<p className="text-paragraph-3 md:text-heading-3 dark:text-white">
+									<p className="text-paragraph-5 md:text-heading-4 dark:text-white">
 										{`${item.specificAddress}, ${item.ward}, ${item.district}, ${item.province}`}
 									</p>
 									{item.default && (
@@ -157,11 +157,21 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 						);
 					})}
 				</form>
-				<div className="p-6 space-x-6">
-					<Button onClick={handleSubmit(onSubmit)} type="secondary" btnType="submit">
+				<div className="p-4 space-x-4 md:p-5 md:space-x-5">
+					<Button
+						className="!py-2 md:!py-3"
+						onClick={handleSubmit(onSubmit)}
+						type="secondary"
+						btnType="submit"
+					>
 						Thêm địa chỉ
 					</Button>
-					<Button onClick={handleSubmit(onSubmit)} type="primary" btnType="submit">
+					<Button
+						className="!py-2 md:!py-3"
+						onClick={handleSubmit(onSubmit)}
+						type="primary"
+						btnType="submit"
+					>
 						Lưu
 					</Button>
 				</div>

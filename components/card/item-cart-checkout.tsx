@@ -26,8 +26,11 @@ export default function ItemCartCheckout({ item }: Props) {
 
 	return (
 		<div className="flex flex-col items-center md:flex-row">
-			<ProductImage src={thumbnail} className="h-24 w-24 shrink-0 !rounded-2xl mb-6 md:mb-0" />
-			<div className="mb-10 md:ml-6 md:mb-0 md:grow">
+			<ProductImage
+				src={thumbnail}
+				className="h-24 w-24 md:h-32 md:w-32 shrink-0 !rounded-2xl mb-6 md:mb-0"
+			/>
+			<div className="mb-10 md:mx-6 md:mb-0 md:grow">
 				<h4 className="mb-4 font-semibold text-center md:text-left text-heading-4 dark:text-white">
 					{name.filter((e) => e.language === "vi")[0].value}
 				</h4>
