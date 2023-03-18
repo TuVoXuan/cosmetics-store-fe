@@ -53,3 +53,17 @@ declare interface IProductDetailInfo {
 declare interface ISearchProduct extends Omit<IGetProductByCategoryAndOptioins, "id"> {
 	search: string;
 }
+
+declare interface ICreateComment {
+	rate: number;
+	content: string;
+	productItemId: string;
+	orderItemId: string;
+}
+
+declare interface IUpdateComment {
+	_id: string;
+	rate: number;
+	content: string;
+	productItemId: string;
+}
