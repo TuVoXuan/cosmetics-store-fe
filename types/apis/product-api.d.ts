@@ -38,16 +38,10 @@ declare interface IProductItemDetail {
 	configurations: string[];
 }
 
-declare interface IProductBasicInfo {
-	descriptions: ITranslation[];
-	rating: number;
-	comments: string[];
-}
-
 declare interface IProductDetailInfo {
 	productItems: IProductItemDetail[];
 	variationList: IVariationList[];
-	productInfo: IProductBasicInfo;
+	descriptions: ITranslation[];
 }
 
 declare interface ISearchProduct extends Omit<IGetProductByCategoryAndOptioins, "id"> {
@@ -66,4 +60,30 @@ declare interface IUpdateComment {
 	rate: number;
 	content: string;
 	productItemId: string;
+}
+
+declare interface IRateType {
+	rate: number;
+	count: number;
+}
+
+declare interface IRatingProductItem {
+	rating: number;
+	rateType: IRateType[];
+}
+
+declare interface ICommentProdItem {
+	_id: string;
+	content: string;
+	user: {
+		_id: string;
+		name: string;
+	};
+	rate: number;
+	createdAt: string;
+}
+
+declare interface ICommentPagination {
+	data: ICommentProdItem[];
+	totalPage: number;
 }

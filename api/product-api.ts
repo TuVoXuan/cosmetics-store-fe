@@ -103,6 +103,27 @@ const productApi = {
 
 		return response.data.data;
 	},
+
+	getRatingType: async (prodItemId: string) => {
+		const response = await axiosService.get<IResponseSuccess<IRatingProductItem>>(
+			`${URL}/product-detail/${prodItemId}/rating`
+		);
+
+		return response.data.data;
+	},
+
+	getCommentPagination: async (prodItemId: string, page: number, limit: number, rate?: number) => {
+		let reqUrl = "";
+		if (rate) {
+			reqUrl = `${URL}/product-detail/${prodItemId}/comment/pagination?page=${page}&limit=${limit}&rate=${rate}`;
+		} else {
+			reqUrl = `${URL}/product-detail/${prodItemId}/comment/pagination?page=${page}&limit=${limit}`;
+		}
+
+		const response = await axiosService.get<IResponseSuccess<ICommentPagination>>(reqUrl);
+
+		return response.data.data;
+	},
 };
 
 export default productApi;
