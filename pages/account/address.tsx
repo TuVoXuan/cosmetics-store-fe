@@ -313,8 +313,8 @@ export default function Address() {
 				/>
 			</form>
 			<p className="font-semibold text-red-accent">
-				*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy "Click" nút "Xem vị trí trên map" để xem
-				vị trí nhận hàng của bạn có chính xác không.
+				*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy Click nút Xem vị trí trên map để xem vị
+				trí nhận hàng của bạn có chính xác không.
 			</p>
 			<Button
 				onClick={handleGetPosition}
