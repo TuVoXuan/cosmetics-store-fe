@@ -1,3 +1,4 @@
+import { IComment } from "../types/apis/order-api";
 import axiosService from "./axios-service";
 
 const API = process.env.API_URL;
@@ -83,6 +84,43 @@ const productApi = {
 		const response = await axiosService.get<IResponseSuccess<IProductItem[]>>(
 			`${URL}/recommend/cf/${itemId}`
 		);
+
+		return response.data.data;
+	},
+
+	createComment: async (body: ICreateComment) => {
+		const response = await axiosService.post<IResponseSuccess<IComment>>(`${URL}/comment`, body);
+
+		return response.data.data;
+	},
+
+	updateComment: async (body: IUpdateComment) => {
+		const response = await axiosService.put<IResponseSuccess<IComment>>(`${URL}/comment/${body._id}`, {
+			rate: body.rate,
+			content: body.content,
+			productItemId: body.productItemId,
+		});
+
+		return response.data.data;
+	},
+
+	getRatingType: async (prodItemId: string) => {
+		const response = await axiosService.get<IResponseSuccess<IRatingProductItem>>(
+			`${URL}/product-detail/${prodItemId}/rating`
+		);
+
+		return response.data.data;
+	},
+
+	getCommentPagination: async (prodItemId: string, page: number, limit: number, rate?: number) => {
+		let reqUrl = "";
+		if (rate) {
+			reqUrl = `${URL}/product-detail/${prodItemId}/comment/pagination?page=${page}&limit=${limit}&rate=${rate}`;
+		} else {
+			reqUrl = `${URL}/product-detail/${prodItemId}/comment/pagination?page=${page}&limit=${limit}`;
+		}
+
+		const response = await axiosService.get<IResponseSuccess<ICommentPagination>>(reqUrl);
 
 		return response.data.data;
 	},

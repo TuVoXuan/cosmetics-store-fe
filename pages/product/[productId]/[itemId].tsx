@@ -28,11 +28,13 @@ import { addToCart } from "../../../redux/slices/cart-slice";
 import { useSession } from "next-auth/react";
 import APP_PATH from "../../../constants/app-path";
 import ProductCard from "../../../components/card/product-card";
+import GroupStars from "../../../components/comment/group-stars";
+import Image from "next/image";
 
 interface Props {
 	productId: string;
 	selectedItem: IProductItemDetail | undefined;
-	productInfo: IProductBasicInfo;
+	descriptions: ITranslation[];
 	productItems: IProductItemDetail[];
 	variationList: IVariationList[];
 }
@@ -43,7 +45,7 @@ export const getServerSideProps = async (context: any) => {
 
 	// fetch product
 	const response = await productApi.getProductDetal(productId, itemId);
-	const { productInfo, productItems, variationList } = response.data.data;
+	const { descriptions, productItems, variationList } = response.data.data;
 
 	const selectedItem = productItems.find((item) => item._id === itemId);
 
@@ -51,19 +53,23 @@ export const getServerSideProps = async (context: any) => {
 		props: {
 			productId,
 			selectedItem,
-			productInfo,
+			descriptions,
 			productItems,
 			variationList,
 		},
 	};
 };
 
-export default function Product({ productId, selectedItem, productInfo, productItems, variationList }: Props) {
+export default function Product({ productId, selectedItem, descriptions, productItems, variationList }: Props) {
 	// State
 	const [currItem, setCurrItem] = useState<IProductItemDetail | undefined>(selectedItem);
 	const [displayImg, setDisplayImg] = useState<string | undefined>(currItem?.thumbnail);
 	const [quantity, setQuantity] = useState<number>(1);
 	const [similarProds, setSimilarProds] = useState<IProductItem[]>([]);
+	const [ratingProdItem, setRatingProdItem] = useState<IRatingProductItem>();
+	const [commentPagination, setCommentPagination] = useState<ICommentPagination>();
+	const [currPage, setCurrPage] = useState<number>(1);
+	const [seletedStar, setSelectedStar] = useState<number>();
 
 	// Ref
 	const prodImagesSwiperRef = useRef<SwiperRef>(null);
@@ -92,7 +98,7 @@ export default function Product({ productId, selectedItem, productInfo, productI
 	};
 
 	const handleDescription = () => {
-		const description = productInfo.descriptions.find((des) => des.language === locale);
+		const description = descriptions.find((des) => des.language === locale);
 		if (description) {
 			let descipt = description.value;
 			descipt = descipt.replaceAll("<h1>", '<h1 class="py-2 text-heading-1 dark:text-white">');
@@ -145,9 +151,44 @@ export default function Product({ productId, selectedItem, productInfo, productI
 		}
 	};
 
+	const handleGetRatingProdItem = async () => {
+		try {
+			if (currItem) {
+				const response = await productApi.getRatingType(currItem._id);
+				setRatingProdItem(response);
+			}
+		} catch (error) {
+			toastError((error as IResponseError).error);
+		}
+	};
+
+	const handleSelecteStar = (value: string) => {
+		const star = parseInt(value);
+		if (star === 0) {
+			setSelectedStar(undefined);
+		} else {
+			setSelectedStar(star);
+		}
+		handleGetCommentPagination(1, star);
+	};
+
+	const handleGetCommentPagination = async (page: number, star?: number) => {
+		try {
+			if (currItem) {
+				const limit = parseInt(process.env.LIMI_COMMENT as string);
+				const response = await productApi.getCommentPagination(currItem._id, page, limit, star);
+				setCommentPagination(response);
+			}
+		} catch (error) {
+			toastError((error as IResponseError).error);
+		}
+	};
+
 	useEffect(() => {
 		setDisplayImg(currItem?.thumbnail);
 		handleGetSimilarProds();
+		handleGetRatingProdItem();
+		handleGetCommentPagination(1);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currItem]);
 
@@ -252,81 +293,90 @@ export default function Product({ productId, selectedItem, productInfo, productI
 				</div>
 
 				{/* comments */}
-				<div className="space-y-4">
-					<TitlePage className="text-center xl:text-left" subtitle="Đánh giá" title="Khác hàng của chúng tôi nói gì" />
+				{ratingProdItem && commentPagination && (
+					<div className="space-y-4">
+						<TitlePage
+							className="text-center xl:text-left"
+							subtitle="Đánh giá"
+							title="Khác hàng của chúng tôi nói gì"
+						/>
 
-					<div className="flex justify-between md:justify-evenly">
-						<h3 className="grid content-center md:text-heading-1 text-heading-2 dark:text-light-100">4.9 / 5</h3>
-						<div className="space-y-1">
-							<div className="flex items-center justify-start gap-x-1">
-								<Quality width={20} height={20} fill={primary[100]} className="h-full lg:w-7 lg:h-7 text-primary-100" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<p className="ml-2 dark:text-light-100 lg:text-heading-3">120</p>
-							</div>
-							<div className="flex items-center justify-start gap-x-1">
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<p className="ml-2 dark:text-light-100 lg:text-heading-3">45</p>
-							</div>
-							<div className="flex items-center justify-start gap-x-1">
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<p className="ml-2 dark:text-light-100 lg:text-heading-3">12</p>
-							</div>
-							<div className="flex items-center justify-start gap-x-1">
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<p className="ml-2 dark:text-light-100 lg:text-heading-3">4</p>
-							</div>
-							<div className="flex items-center justify-start gap-x-1">
-								<Quality width={20} height={20} fill={primary[100]} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<Quality width={20} height={20} fill={"none"} className="h-full text-primary-100 lg:w-7 lg:h-7" />
-								<p className="ml-2 dark:text-light-100 lg:text-heading-3">1</p>
+						<div className="flex justify-between md:justify-evenly">
+							<h3 className="grid content-center md:text-heading-1 text-heading-2 dark:text-light-100">
+								{`${ratingProdItem.rating} / 5`}
+							</h3>
+							<div className="space-y-1">
+								{[...Array(5)]
+									.map((value, index) => {
+										const rateTypeFound = ratingProdItem.rateType.find((r) => r.rate === index + 1);
+										return (
+											<div key={index} className="flex items-center justify-start gap-x-1">
+												<GroupStars stars={index + 1} />
+												<p className="ml-2 dark:text-light-100 lg:text-heading-3">{rateTypeFound?.count || 0}</p>
+											</div>
+										);
+									})
+									.reverse()}
 							</div>
 						</div>
-					</div>
 
-					<Dropdown
-						className="md:w-1/4"
-						options={[
-							{ label: "5 sao", value: "5" },
-							{ label: "4 sao", value: "4" },
-							{ label: "3 sao", value: "3" },
-							{ label: "2 sao", value: "2" },
-							{ label: "1 sao", value: "1" },
-						]}
-						onChange={(value: string) => console.log(value)}
-						register={register}
-						name="star"
-					/>
+						<Dropdown
+							className="md:w-1/4"
+							options={[
+								{ label: "Tất cả", value: "0" },
+								{ label: "5 sao", value: "5" },
+								{ label: "4 sao", value: "4" },
+								{ label: "3 sao", value: "3" },
+								{ label: "2 sao", value: "2" },
+								{ label: "1 sao", value: "1" },
+							]}
+							onChange={handleSelecteStar}
+							register={register}
+							name="star"
+						/>
 
-					<div className="lg:grid lg:grid-cols-2">
-						<Comment />
-						<Comment />
-						<Comment />
-						<Comment />
+						{commentPagination.totalPage > 0 ? (
+							<Fragment>
+								<div className="lg:grid lg:grid-cols-2">
+									{commentPagination.data.map((item) => (
+										<Comment key={item._id} comment={item} />
+									))}
+								</div>
+								<div className="flex items-center justify-center gap-x-2">
+									<button
+										disabled={currPage - 1 < 1}
+										onClick={() => {
+											handleGetCommentPagination(currPage - 1, seletedStar);
+											setCurrPage(currPage - 1);
+										}}
+										className="disabled:cursor-not-allowed"
+									>
+										<GoBack className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
+									</button>
+
+									<p className="font-semibold text-paragraph-5 md:text-paragraph-4 dark:text-light-100">
+										{`${currPage} / ${commentPagination.totalPage}`}
+									</p>
+
+									<button
+										disabled={currPage + 1 > commentPagination.totalPage}
+										onClick={() => {
+											handleGetCommentPagination(currPage + 1, seletedStar);
+											setCurrPage(currPage + 1);
+										}}
+										className="disabled:cursor-not-allowed"
+									>
+										<GoForward className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
+									</button>
+								</div>
+							</Fragment>
+						) : (
+							<div className="flex flex-col items-center pt-[60px] md:pt-[40px] gap-y-4">
+								<p className="text-paragraph-4 md:text-paragraph-2">Không có đánh giá nào</p>
+							</div>
+						)}
 					</div>
-					<div className="flex items-center justify-center gap-x-2">
-						<GoBack className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
-						<p className="font-semibold text-paragraph-5 md:text-paragraph-4 dark:text-light-100">1 / 1</p>
-						<GoForward className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
-					</div>
-				</div>
+				)}
 
 				{/* relative product */}
 				<div>
