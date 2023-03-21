@@ -108,10 +108,12 @@ export default function Search() {
 			setAfter("");
 			fetchProductsLoadMore("");
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [search, from, to, brand, order]);
 
 	useEffect(() => {
 		fetchBrands();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [search]);
 
 	return (

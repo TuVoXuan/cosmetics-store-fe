@@ -40,6 +40,7 @@ export default function SearchInput({ onClose, className }: Props) {
 
 	useEffect(() => {
 		document.addEventListener("click", handleClickOutside, true);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

@@ -49,9 +49,7 @@ export default function Address() {
 	// Function
 	const availabelDistricts = adminstrative.find((item) => item.provinceName === selectedProvince);
 
-	const availableWards = availabelDistricts?.districts.find(
-		(item) => item.districtName === selectedDistrict
-	);
+	const availableWards = availabelDistricts?.districts.find((item) => item.districtName === selectedDistrict);
 
 	const scrollToForm = () => {
 		if (addressFormRef.current) {
@@ -168,6 +166,7 @@ export default function Address() {
 			}
 		});
 		return () => subscription.unsubscribe();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [watch]);
 
 	return (
@@ -181,9 +180,7 @@ export default function Address() {
 			<div>
 				<div className="space-y-4">
 					{addresses.length > 0 ? (
-						addresses.map((item) => (
-							<AddressCard onUpdate={handleSetUpdate} key={item._id} address={item} />
-						))
+						addresses.map((item) => <AddressCard onUpdate={handleSetUpdate} key={item._id} address={item} />)
 					) : (
 						<p>No address</p>
 					)}
@@ -192,11 +189,7 @@ export default function Address() {
 
 			<TitlePage className="mt-14 md-16" subtitle="Cá nhân" title="Địa chỉ mới" />
 
-			<form
-				ref={addressFormRef}
-				id="addressForm"
-				className="space-y-6 md:grid md:grid-cols-2 md:space-y-0 md:gap-6"
-			>
+			<form ref={addressFormRef} id="addressForm" className="space-y-6 md:grid md:grid-cols-2 md:space-y-0 md:gap-6">
 				<Input
 					name="name"
 					register={register}
@@ -313,15 +306,10 @@ export default function Address() {
 				/>
 			</form>
 			<p className="font-semibold text-red-accent">
-				*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy Click nút Xem vị trí trên map để xem vị
+				*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy &quotClick&quot nút &quotXem vị trí trên map&quot để xem vị
 				trí nhận hàng của bạn có chính xác không.
 			</p>
-			<Button
-				onClick={handleGetPosition}
-				className="self-end w-full lg:w-fit"
-				btnType="submit"
-				type="primary"
-			>
+			<Button onClick={handleGetPosition} className="self-end w-full lg:w-fit" btnType="submit" type="primary">
 				Xem vị trí trên map
 			</Button>
 			{/* Map React Leaflet */}
@@ -334,11 +322,7 @@ export default function Address() {
 				>
 					Xác nhận vị trí
 				</Button>
-				<AddressMap
-					position={position}
-					markerDraggable={markerDraggable}
-					onPositionChange={handleChangePosition}
-				/>
+				<AddressMap position={position} markerDraggable={markerDraggable} onPositionChange={handleChangePosition} />
 			</div>
 			<Button
 				form="addressForm"

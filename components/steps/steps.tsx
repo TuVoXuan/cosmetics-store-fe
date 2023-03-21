@@ -16,6 +16,7 @@ export default function Steps({ totalSteps, currentStep, className }: Props) {
 			st.push(index);
 		}
 		setSteps(st);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

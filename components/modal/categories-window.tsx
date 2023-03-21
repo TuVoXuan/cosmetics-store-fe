@@ -58,10 +58,12 @@ const CategoriesWindow = React.forwardRef<CategoriesWindowRefType, Props>(({ ove
 		return () => {
 			document.removeEventListener("click", handleClickOutside, true);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		handleClose();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.asPath]);
 
 	return (

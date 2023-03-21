@@ -29,6 +29,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
 		const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
 		store.dispatch(getLocalData(cart));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {

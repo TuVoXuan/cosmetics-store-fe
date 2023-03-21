@@ -55,10 +55,7 @@ export default function Checkout() {
 					longitude: shopLng,
 				};
 				try {
-					const response = adminstrativeApi.getDirection(
-						shopCoordinates,
-						selectedAddress.coordinates
-					);
+					const response = adminstrativeApi.getDirection(shopCoordinates, selectedAddress.coordinates);
 					response
 						.then((data) => data.data)
 						.then((data) => {
@@ -137,10 +134,12 @@ export default function Checkout() {
 
 	useEffect(() => {
 		handleShippingFee();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedAddress]);
 
 	useEffect(() => {
 		handleTotal();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cart]);
 
 	return (
@@ -154,8 +153,7 @@ export default function Checkout() {
 							Giỏ hàng
 						</p>
 						<div className="space-y-10 md:space-y-6">
-							{cart.length > 0 &&
-								cart.map((item) => <ItemCartCheckout key={item.itemId} item={item} />)}
+							{cart.length > 0 && cart.map((item) => <ItemCartCheckout key={item.itemId} item={item} />)}
 						</div>
 						<Button
 							onClick={handleEditCart}
@@ -192,11 +190,7 @@ export default function Checkout() {
 								Mặc định
 							</Badge>
 						</div>
-						<Button
-							onClick={handleOpenAddressDictModal}
-							className="w-full lg:w-fit"
-							type="secondary"
-						>
+						<Button onClick={handleOpenAddressDictModal} className="w-full lg:w-fit" type="secondary">
 							Thay đổi
 						</Button>
 					</div>
@@ -242,9 +236,7 @@ export default function Checkout() {
 						</div>
 						{/* order info section */}
 						<div className="p-6 space-y-6 border-2 border-gray-accent rounded-4xl dark:border-black-dark-2">
-							<h4 className="font-semibold text-heading-4 md:text-heading-2 dark:text-light-100">
-								Thông tin đơn hàng
-							</h4>
+							<h4 className="font-semibold text-heading-4 md:text-heading-2 dark:text-light-100">Thông tin đơn hàng</h4>
 
 							<div className="flex justify-between md:text-heading-4 text-heading-5 xl:text-paragraph-1">
 								<p className="dark:text-light-100">Tổng phụ:</p>

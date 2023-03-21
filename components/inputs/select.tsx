@@ -17,6 +17,7 @@ export default function Select({ options, disable, onChange, defaultValue }: Pro
 
 	useEffect(() => {
 		onChange(selected);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selected]);
 
 	return (
