@@ -148,6 +148,7 @@ export default function Product({ productId, selectedItem, productInfo, productI
 	useEffect(() => {
 		setDisplayImg(currItem?.thumbnail);
 		handleGetSimilarProds();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currItem]);
 
 	return (

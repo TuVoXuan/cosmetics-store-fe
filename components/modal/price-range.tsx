@@ -107,6 +107,7 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 		return () => {
 			document.removeEventListener("click", handleClickOutside, true);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

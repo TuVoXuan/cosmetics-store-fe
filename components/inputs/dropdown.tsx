@@ -69,6 +69,7 @@ export default function Dropdown({
 
 	useEffect(() => {
 		setSelectedValue(options.find((item) => item.value === defaulValue));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [defaulValue]);
 
 	return (

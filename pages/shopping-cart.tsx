@@ -73,11 +73,13 @@ export default function ShoppingCart() {
 
 	useEffect(() => {
 		handleTotal();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cart]);
 
 	useEffect(() => {
 		handleShippingFee();
 		handleTotal();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addresses]);
 
 	return (

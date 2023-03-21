@@ -35,6 +35,7 @@ export default function Loading() {
 		}, 2000);
 
 		return () => clearTimeout(timeOut);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [orderId]);
 
 	return (

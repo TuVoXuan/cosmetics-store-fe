@@ -35,6 +35,7 @@ export default function Map({ position, markerDraggable, onPositionChange }: Pro
 				}
 			},
 		}),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[]
 	);
 

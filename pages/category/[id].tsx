@@ -172,12 +172,14 @@ export default function Category() {
 		setProducts([]);
 		setAfter("");
 		fetchBrands(id as string);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
 
 	useEffect(() => {
 		if (id) {
 			findCategory(id as string);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categories, id]);
 
 	useEffect(() => {
@@ -186,6 +188,7 @@ export default function Category() {
 			setAfter("");
 			fetchProductsLoadMore("");
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [from, to, brand, order]);
 
 	return (
@@ -196,9 +199,7 @@ export default function Category() {
 				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
 				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
 				title={`Khám phá các sản phẩm ${
-					category
-						? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase()
-						: ""
+					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
 				}`}
 			/>
 
@@ -282,8 +283,7 @@ export default function Category() {
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
 				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 lg:grid-cols-4 ">
-					{products.length > 0 &&
-						products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+					{products.length > 0 && products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>
 
 				{products.length === 0 && (
