@@ -32,9 +32,9 @@ export function middleware(request: NextRequest) {
 		APP_PATH.PRODUCT,
 	];
 
-	if (cookie && noAuthPage.includes(pathname)) {
-		return NextResponse.redirect(new URL("/", request.url));
-	}
+	// if (cookie && noAuthPage.includes(pathname)) {
+	// 	return NextResponse.redirect(new URL("/", request.url));
+	// }
 
 	// console.log("isNoAuthPage: ", checkIfStringStartsWith(pathname, noAuthPage));
 	if (!cookie && !checkIfStringStartsWith(pathname, noAuthPage)) {

@@ -10,8 +10,8 @@ import Trash from "../icons/trash";
 import Warning from "../icons/warning";
 
 interface Props {
-	address: IAddress;
-	onUpdate: (value: IAddress) => void;
+	address: IAddressExtract;
+	onUpdate: (value: IAddressExtract) => void;
 }
 
 export default function AddressCard({ address, onUpdate }: Props) {

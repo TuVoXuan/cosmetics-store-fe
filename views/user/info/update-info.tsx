@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { userApi } from "../../../api/user-api";
 import Button from "../../../components/buttons/button";
 import Birthday from "../../../components/inputs/birthday";
@@ -40,13 +41,16 @@ export default function UpdateInfo() {
 
 	const onSubmit = async (value: FormValue) => {
 		try {
+			toast.loading("Đang cập nhập thông tin...", { id: "updateUserInfo" });
 			const updatedUser = await userApi.updateUser({
 				name: value.name,
 				gender: value.gender,
 				birthday: new Date(value.birthday).toISOString(),
 			});
 
-			setUser(updatedUser);
+			setUser({ ...updatedUser, birthday: updatedUser.birthday.split("T")[0] });
+			toast.dismiss("updateUserInfo");
+			toast.success("Cập nhập thông tin thành công");
 		} catch (error) {
 			toastError((error as IResponseError).error);
 		}

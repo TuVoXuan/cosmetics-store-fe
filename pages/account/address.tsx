@@ -59,7 +59,7 @@ export default function Address() {
 		}
 	};
 
-	const handleSetUpdate = (value: IAddress) => {
+	const handleSetUpdate = (value: IAddressExtract) => {
 		console.log("value: ", value);
 		setUpdateAddressId(value._id);
 		setValue("name", value.name);
@@ -73,7 +73,8 @@ export default function Address() {
 		setSelectedDistrict(value.district);
 		setSelectedWard(value.ward);
 		// chưa làm cái update address vơi map
-		handleGetPosition();
+		// handleGetPosition();
+		setPosition({ lat: value.coordinates.latitude, lng: value.coordinates.longitude });
 		scrollToForm();
 	};
 

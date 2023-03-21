@@ -17,7 +17,7 @@ export default function Loading() {
 		try {
 			const existOrder = await orderApi.checkOrder(orderId);
 			if (existOrder) {
-				router.push(APP_PATH.ORDER_HISTORY);
+				router.push({ pathname: APP_PATH.ORDER_HISTORY, query: { status: "pending" } });
 				dispatch(deleteAll());
 			} else {
 				router.push(APP_PATH.CART);

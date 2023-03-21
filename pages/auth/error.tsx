@@ -22,5 +22,5 @@ export default function Error() {
 
 	const errorMessage = error && (errors[error as keyof typeof errors] ?? errors.default);
 
-	return <div>{errorMessage}</div>;
+	return <div className="flex items-center justify-center h-96 w-ful">{errorMessage}</div>;
 }

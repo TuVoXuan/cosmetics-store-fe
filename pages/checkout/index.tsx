@@ -117,7 +117,7 @@ export default function Checkout() {
 				router.push(momoUrl);
 			} else {
 				dispatch(deleteAll());
-				router.push(APP_PATH.ORDER_HISTORY);
+				router.push({ pathname: APP_PATH.ORDER_HISTORY, query: { status: "pending" } });
 			}
 		});
 		toast.promise(response, {
