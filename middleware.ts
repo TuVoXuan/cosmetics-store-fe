@@ -7,37 +7,21 @@ function checkIfStringStartsWith(str: string, arr: string[]) {
 
 export function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-	// if (
-	// 	pathname.startsWith("/_next") ||
-	// 	pathname.startsWith("/image") ||
-	// 	pathname.startsWith("/emoji-gif") ||
-	// 	pathname.startsWith("/emoji") ||
-	// 	pathname.startsWith("/favicon.ico") ||
-	// 	pathname.startsWith("/logo.svg") ||
-	// 	pathname.startsWith("/logo-and-brand-name.svg")
-	// ) {
-	// 	return NextResponse.next();
-	// }
+	console.log("pathname: ", pathname);
 
 	const cookie = request.cookies.get("Authorization");
 	const noAuthPage = [
-		APP_PATH.SIGN_IN,
-		APP_PATH.SIGN_UP,
-		// APP_PATH.HOME,
-		APP_PATH.LEGAL,
-		APP_PATH.CONTACT,
-		APP_PATH.SEARCH,
-		APP_PATH.CATEGORY,
-		APP_PATH.ABOUT,
-		APP_PATH.PRODUCT,
+		APP_PATH.ADDRESS,
+		APP_PATH.CART,
+		APP_PATH.CHECKOUT,
+		APP_PATH.LOADING_CHECKOUT,
+		APP_PATH.ORDER_HISTORY,
+		APP_PATH.PROFILE,
+		APP_PATH.INFO,
+		APP_PATH.ORDER_HISTORY,
 	];
 
-	// if (cookie && noAuthPage.includes(pathname)) {
-	// 	return NextResponse.redirect(new URL("/", request.url));
-	// }
-
-	// console.log("isNoAuthPage: ", checkIfStringStartsWith(pathname, noAuthPage));
-	if (!cookie && !checkIfStringStartsWith(pathname, noAuthPage)) {
+	if (cookie && !cookie.value && checkIfStringStartsWith(pathname, noAuthPage)) {
 		return NextResponse.redirect(new URL(APP_PATH.SIGN_IN, request.url));
 	}
 
