@@ -17,6 +17,7 @@ const nextConfig = {
 		SHIPPING_FEE_PER_KM: process.env.SHIPPING_FEE_PER_KM,
 		API_HOST: process.env.API_HOST,
 		LIMI_COMMENT: process.env.LIMI_COMMENT,
+		DOMAIN: process.env.DOMAIN,
 	},
 	images: {
 		domains: ["i.pinimg.com", "res.cloudinary.com"],

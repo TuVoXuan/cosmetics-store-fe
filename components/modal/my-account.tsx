@@ -77,7 +77,7 @@ export default function MyAccount({ onClose }: Props) {
 					</button>
 					<button
 						onClick={() => {
-							deleteCookie("Authorization", { path: "/", domain: "localhost" });
+							deleteCookie("Authorization", { path: "/", domain: process.env.DOMAIN });
 							signOut({ callbackUrl: APP_PATH.HOME });
 						}}
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
