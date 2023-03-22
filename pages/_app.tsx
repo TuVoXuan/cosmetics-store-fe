@@ -1,5 +1,5 @@
-import "../styles/globals.css";
-import "../styles/nprogress.css";
+import "@/styles/globals.css";
+import "@/styles/nprogress.css";
 import type { AppProps } from "next/app";
 import { Montserrat } from "@next/font/google";
 import MainLayout from "../layout/main-layout";
