@@ -1,3 +1,4 @@
+import "@/styles/dummy.css";
 import "@/styles/globals.css";
 import "@/styles/nprogress.css";
 import type { AppProps } from "next/app";
