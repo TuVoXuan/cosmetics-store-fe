@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "react-hot-toast";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../store/hooks";
 import { deleteAddress, setDefaultAddress } from "../../redux/actions/user-action";
 import { toastError, toastSuccess } from "../../util/toast";
 import Badge from "../badge/badge";

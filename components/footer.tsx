@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { useSettings } from "../app/hooks";
+import { useSettings } from "../store/hooks";
 import ToggleBtn from "./buttons/toggle-btn";
 import Facebook from "./icons/facebook";
 import Instargram from "./icons/instargram";
@@ -88,33 +88,67 @@ export default function Footer() {
 			</div>
 			<div className="space-y-4">
 				<h4 className="dark:text-light-100 text-heading-4 md:text-heading-3">Categories</h4>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">On Sale</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Featured</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					On Sale
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Featured
+				</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Masks</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Moisturizers</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Treatments</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Night Care</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Sun Care</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Moisturizers
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Treatments
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Night Care
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Sun Care
+				</p>
 			</div>
 			<div className="space-y-4">
 				<h4 className="dark:text-light-100 text-heading-4 md:text-heading-3">Legal</h4>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Terms of Service</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Privacy Policy</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Return Policy</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Shipping</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Data Protection</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Night Care</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Sun Care</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Terms of Service
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Privacy Policy
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Return Policy
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Shipping
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Data Protection
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Night Care
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Sun Care
+				</p>
 			</div>
 			<div className="space-y-4">
 				<h4 className="dark:text-light-100 text-heading-4 md:text-heading-3">Company</h4>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">About</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Team</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Contact</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Careers</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Contact
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Careers
+				</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Vision</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Culture</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Sun Care</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Culture
+				</p>
+				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
+					Sun Care
+				</p>
 			</div>
 		</section>
 	);

@@ -21,7 +21,7 @@ import Overlay from "../../components/modal/overlay";
 import CategoriesWindow, { CategoriesWindowRefType } from "../../components/modal/categories-window";
 import { useRouter } from "next/router";
 import productApi from "../../api/product-api";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../store/hooks";
 import { selectCategories } from "../../redux/slices/category-slice";
 import { brandApi } from "../../api/brand-api";
 import APP_PATH from "../../constants/app-path";
@@ -199,7 +199,9 @@ export default function Category() {
 				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
 				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
 				title={`Khám phá các sản phẩm ${
-					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
+					category
+						? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase()
+						: ""
 				}`}
 			/>
 
@@ -283,7 +285,8 @@ export default function Category() {
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
 				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 lg:grid-cols-4 ">
-					{products.length > 0 && products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+					{products.length > 0 &&
+						products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>
 
 				{products.length === 0 && (

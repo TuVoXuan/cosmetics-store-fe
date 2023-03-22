@@ -9,7 +9,7 @@ import {
 	updateAddress,
 } from "../actions/user-action";
 import { ISignInWithSocialMediaRes } from "../../types/apis/auth-api";
-import { RootState } from "../../app/store";
+import { RootState } from "../../store/store";
 
 const initialState: IUserStore = {
 	_id: "",

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { Fragment, useEffect, useImperativeHandle, useRef } from "react";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../store/hooks";
 import { selectCategories } from "../../redux/slices/category-slice";
 import CategoryItem from "../category/category";
 import Delete from "../icons/delete";
@@ -93,7 +93,9 @@ const CategoriesWindow = React.forwardRef<CategoriesWindowRefType, Props>(({ ove
 											level={2}
 											id={child._id}
 											active={id === child._id}
-											name={child.name.filter((item) => item.language === "vi")[0].value}
+											name={
+												child.name.filter((item) => item.language === "vi")[0].value
+											}
 										/>
 										{child.children &&
 											child.children.map((grandChild) => (
@@ -102,7 +104,11 @@ const CategoriesWindow = React.forwardRef<CategoriesWindowRefType, Props>(({ ove
 													id={grandChild._id}
 													active={id === grandChild._id}
 													level={3}
-													name={grandChild.name.filter((item) => item.language === "vi")[0].value}
+													name={
+														grandChild.name.filter(
+															(item) => item.language === "vi"
+														)[0].value
+													}
 												/>
 											))}
 									</Fragment>

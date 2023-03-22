@@ -1,6 +1,6 @@
 import router from "next/router";
 import React from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../store/hooks";
 import { deleteFromCart } from "../../redux/slices/cart-slice";
 import { en, vi } from "../../translation";
 import { convertPrice } from "../../util/product";

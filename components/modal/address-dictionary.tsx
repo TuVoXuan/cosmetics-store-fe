@@ -1,6 +1,14 @@
-import React, { Fragment, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, {
+	Fragment,
+	SetStateAction,
+	useEffect,
+	useImperativeHandle,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { useForm } from "react-hook-form";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../store/hooks";
 import { selectUser } from "../../redux/slices/user-slice";
 import Badge from "../badge/badge";
 import Button from "../buttons/button";
@@ -137,7 +145,11 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 										{`${item.specificAddress}, ${item.ward}, ${item.district}, ${item.province}`}
 									</p>
 									{item.default && (
-										<Badge className="w-fit shrink-0" isResponsive={false} color="pink_tertiary">
+										<Badge
+											className="w-fit shrink-0"
+											isResponsive={false}
+											color="pink_tertiary"
+										>
 											Mặc định
 										</Badge>
 									)}
@@ -147,10 +159,20 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 					})}
 				</form>
 				<div className="p-4 space-x-4 md:p-5 md:space-x-5">
-					<Button className="!py-2 md:!py-3" onClick={handleSubmit(onSubmit)} type="secondary" btnType="submit">
+					<Button
+						className="!py-2 md:!py-3"
+						onClick={handleSubmit(onSubmit)}
+						type="secondary"
+						btnType="submit"
+					>
 						Thêm địa chỉ
 					</Button>
-					<Button className="!py-2 md:!py-3" onClick={handleSubmit(onSubmit)} type="primary" btnType="submit">
+					<Button
+						className="!py-2 md:!py-3"
+						onClick={handleSubmit(onSubmit)}
+						type="primary"
+						btnType="submit"
+					>
 						Lưu
 					</Button>
 				</div>

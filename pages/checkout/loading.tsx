@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { orderApi } from "../../api/order-api";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../store/hooks";
 import LoadingHorizontal from "../../components/icons/loading";
 import APP_PATH from "../../constants/app-path";
 import { deleteAll } from "../../redux/slices/cart-slice";

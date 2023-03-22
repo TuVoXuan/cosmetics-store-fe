@@ -6,7 +6,7 @@ import { Montserrat } from "@next/font/google";
 import MainLayout from "../layout/main-layout";
 import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
-import { store } from "../app/store";
+import { store } from "../store/store";
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
 import NProgress from "nprogress";
 import { useRouter } from "next/router";

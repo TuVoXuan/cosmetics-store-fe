@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../store/hooks";
 import { changeQuantity, deleteFromCart } from "../../redux/slices/cart-slice";
 import { convertPrice } from "../../util/product";
 import Price from "../badge/price";
@@ -28,7 +28,10 @@ export default function ItemCart({ sale, item }: Props) {
 
 	return (
 		<div className="p-6 border-2 f rounded-4xl border-gray-accent md:p-14 md:grid md:grid-cols-3 lg:p-8 dark:border-black-dark-2">
-			<ProductImage src={item.thumbnail} className="w-full mb-6 select-none aspect-square md:h-48 md:w-48 md:mb-0" />
+			<ProductImage
+				src={item.thumbnail}
+				className="w-full mb-6 select-none aspect-square md:h-48 md:w-48 md:mb-0"
+			/>
 			<div className="md:col-span-2 md:pl-14 lg:pl-0">
 				<h4 className="mb-4 font-semibold text-heading-4 md:text-heading-3 dark:text-white line-clamp-2">
 					{item?.name.find((item) => item.language == locale)?.value}
@@ -53,7 +56,11 @@ export default function ItemCart({ sale, item }: Props) {
 						onClick={handleDelete}
 						className="top-0 p-3 transition-colors duration-300 ease-linear border-2 rounded-full border-gray-accent md:p-4 dark:border-black-dark-2 hover:border-dark-100 dark:hover:border-white"
 					>
-						<Delete height={24} width={24} className="dark:text-white md:w-8 md:h-8 lg:w-6 lg:h-6" />
+						<Delete
+							height={24}
+							width={24}
+							className="dark:text-white md:w-8 md:h-8 lg:w-6 lg:h-6"
+						/>
 					</button>
 				</div>
 			</div>

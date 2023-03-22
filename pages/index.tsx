@@ -1,6 +1,6 @@
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../store/hooks";
 import { selectUser } from "../redux/slices/user-slice";
 import TitlePage from "../components/title-page/title-page";
 import CategoryBtn from "../components/buttons/category-btn";

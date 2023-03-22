@@ -1,7 +1,7 @@
 import { getCookie, setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../store/hooks";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import { getCategories } from "../redux/actions/category-action";
