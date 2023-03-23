@@ -284,7 +284,7 @@ export default function Category() {
 
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
-				<div className="space-y-14 md:grid md:grid-cols-2 md:space-y-0 lg:grid-cols-4 ">
+				<div className="grid grid-cols-2 lg:grid-cols-4 ">
 					{products.length > 0 &&
 						products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>

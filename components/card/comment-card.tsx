@@ -17,10 +17,10 @@ export default function CommentCard() {
 				</div>
 			</div>
 
-			<p className="mb-4 font-semibold text-center text-paragraph-1 dark:text-white-light lg:text-left">
+			<p className="mb-4 font-semibold text-center text-paragraph-3 dark:text-white-light lg:text-left">
 				Amy Smith
 			</p>
-			<p className="text-center text-paragraph-2 dark:text-white-light lg:text-left">
+			<p className="text-center text-paragraph-5 dark:text-white-light lg:text-left">
 				Đây là trang web tốt nhất mà tôi đã đặt hàng từ đó. Tôi rất khuyến khích.
 			</p>
 		</div>

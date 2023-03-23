@@ -59,7 +59,7 @@ export default function MainLayout({ children }: Props) {
 
 	return (
 		<main
-			className={`overflow-hidden p-8 md:pt-8 md:px-10 lg:pt-12 lg:px-12 lg:pb-16 xl:px-24 xl:pt-12 xl:pb-[72px] dark:bg-black-dark-3 ${
+			className={`overflow-hidden p-4 md:pt-8 md:px-8 lg:pt-12 lg:px-12 lg:pb-16 xl:px-24 xl:pt-12 xl:pb-[72px] dark:bg-black-dark-3 ${
 				showNavbar && "h-screen overflow-hidden"
 			}`}
 		>

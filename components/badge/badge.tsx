@@ -45,7 +45,7 @@ export default function Badge({ color, isResponsive, className, children }: IBad
 	return (
 		<p
 			className={clsx(
-				"px-4 py-2 text-heading-6 capitalize font-bold rounded-3xl",
+				"px-3 py-1 text-paragraph-7 lg:text-paragraph-5 capitalize font-bold rounded-3xl",
 				handleColor(),
 				className
 			)}

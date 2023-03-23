@@ -51,17 +51,19 @@ module.exports = {
 			},
 
 			fontSize: {
-				"heading-1": ["2.5rem", "3.5rem"],
-				"heading-2": ["2rem", "3rem"],
-				"heading-3": ["1.5rem", "2rem"],
-				"heading-4": ["1.25rem", "2rem"],
-				"heading-5": ["1rem", "1.5rem"],
-				"heading-6": ["0.875rem", "1.5rem"],
-				"paragraph-1": ["1.5rem", "2.5rem"],
-				"paragraph-2": ["1.25rem", "2rem"],
-				"paragraph-3": ["1.125rem", "2rem"],
-				"paragraph-4": ["1rem", "2rem"],
-				"paragraph-5": ["0.875rem", "1.5rem"],
+				"heading-1": ["2.5rem", "3.5rem"], //40px
+				"heading-2": ["2rem", "3rem"], //32px
+				"heading-3": ["1.5rem", "2rem"], //24px
+				"heading-4": ["1.25rem", "2rem"], //20px
+				"heading-5": ["1rem", "1.5rem"], //16px
+				"heading-6": ["0.875rem", "1.5rem"], //14px
+				"paragraph-1": ["1.5rem", "2.5rem"], //24px
+				"paragraph-2": ["1.25rem", "2rem"], //20px
+				"paragraph-3": ["1.125rem", "2rem"], //18px
+				"paragraph-4": ["1rem", "2rem"], //16px
+				"paragraph-5": ["0.875rem", "1.5rem"], //14px
+				"paragraph-6": ["0.75rem", "1.125rem"], //12px
+				"paragraph-7": ["0.625rem", "1.125rem"], //10px
 			},
 
 			borderRadius: {
