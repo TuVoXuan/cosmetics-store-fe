@@ -1,12 +1,4 @@
-import React, {
-	Fragment,
-	SetStateAction,
-	useEffect,
-	useImperativeHandle,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import React, { Fragment, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "../../store/hooks";
 import { selectUser } from "../../redux/slices/user-slice";
@@ -66,14 +58,18 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 		const handleOpen = () => {
 			document.addEventListener("click", handleClickOutside, true);
 			if (addressDictRef.current && overlay && overlay.current) {
-				addressDictRef.current.classList.replace("-left-[100%]", "left-1/2");
+				addressDictRef.current.classList.replace("md:-translate-x-full", "md:translate-x-1/2");
+				addressDictRef.current.classList.replace("translate-y-full", "translate-y-0");
 				overlay.current.classList.replace("hidden", "block");
 			}
 		};
 
 		const handleClose = () => {
 			if (addressDictRef.current && overlay && overlay.current) {
-				addressDictRef.current.classList.replace("left-1/2", "-left-[100%]");
+				addressDictRef.current.classList.replace("md:translate-x-1/2", "md:-translate-x-full");
+
+				addressDictRef.current.classList.replace("translate-y-0", "translate-y-full");
+
 				overlay.current.classList.replace("block", "hidden");
 			}
 			document.removeEventListener("click", handleClickOutside, true);
@@ -110,16 +106,18 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 		return (
 			<div
 				ref={addressDictRef}
-				className="fixed -left-[100%] z-20 w-[100%] md:w-4/5 lg:w-3/5 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-black-dark-3 rounded-3xl top-1/2 transition-all duration-300 ease-out"
+				className="fixed md:right-1/2 z-20 w-[100%] md:w-4/5 lg:w-3/5 md:left-auto md:-translate-x-full md:-translate-y-1/2
+				 bg-white dark:bg-black-dark-3 md:rounded-3xl rounded-tl-3xl rounded-tr-3xl md:top-1/2 md:bottom-auto bottom-0 left-0 translate-y-full
+				  transition-transform duration-500 ease-in-out"
 			>
 				<div className="relative flex justify-between p-4 border-b-2 md:p-5">
-					<h3 className="text-heading-4 md:text-heading-3 dark:text-white">Địa chỉ của tôi</h3>
+					<h3 className="text-heading-5 lg:text-heading-4 dark:text-white">Địa chỉ của tôi</h3>
 
 					<button
 						onClick={handleClose}
-						className="absolute top-[50%] -translate-y-1/2 p-1 md:p-2 border-2 rounded-full right-6 border-gray-accent dark:border-black-dark-2"
+						className="absolute top-[50%] -translate-y-1/2 p-2 border-2 rounded-full right-6 border-gray-accent dark:border-black-dark-2"
 					>
-						<Delete className="w-6 h-6 dark:text-white" />
+						<Delete width={20} height={20} className="dark:text-white" />
 					</button>
 				</div>
 				<form className="p-4 space-y-4 md:p-5 md:space-y-5 h-[350px] overflow-y-auto">
@@ -135,21 +133,17 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 								register={register}
 							>
 								<div className="space-y-2">
-									<h4 className="inline-block pr-4 font-semibold capitalize text-paragraph-5 md:text-heading-4 dark:text-white">
+									<h4 className="inline-block pr-4 font-semibold capitalize text-paragraph-5 lg:text-paragraph-4 dark:text-white">
 										{item.name}
 									</h4>
-									<h4 className="inline-block pl-4 font-semibold capitalize border-l-2 text-paragraph-5 md:text-heading-4 dark:text-white">
+									<h4 className="inline-block pl-4 !mt-0 font-semibold capitalize border-l-2 text-paragraph-5 lg:text-paragraph-4 dark:text-white">
 										{item.phone}
 									</h4>
-									<p className="text-paragraph-5 md:text-heading-4 dark:text-white">
+									<p className="text-paragraph-5 lg:text-paragraph-4 dark:text-white">
 										{`${item.specificAddress}, ${item.ward}, ${item.district}, ${item.province}`}
 									</p>
 									{item.default && (
-										<Badge
-											className="w-fit shrink-0"
-											isResponsive={false}
-											color="pink_tertiary"
-										>
+										<Badge className="w-fit shrink-0" isResponsive={false} color="pink_tertiary">
 											Mặc định
 										</Badge>
 									)}
@@ -159,20 +153,10 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 					})}
 				</form>
 				<div className="p-4 space-x-4 md:p-5 md:space-x-5">
-					<Button
-						className="!py-2 md:!py-3"
-						onClick={handleSubmit(onSubmit)}
-						type="secondary"
-						btnType="submit"
-					>
+					<Button className="!py-2 md:!py-3" onClick={handleSubmit(onSubmit)} type="secondary" btnType="submit">
 						Thêm địa chỉ
 					</Button>
-					<Button
-						className="!py-2 md:!py-3"
-						onClick={handleSubmit(onSubmit)}
-						type="primary"
-						btnType="submit"
-					>
+					<Button className="!py-2 md:!py-3" onClick={handleSubmit(onSubmit)} type="primary" btnType="submit">
 						Lưu
 					</Button>
 				</div>

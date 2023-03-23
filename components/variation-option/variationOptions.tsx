@@ -39,9 +39,7 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 				if (variation) {
 					const hasOption = variation.values.findIndex((item) => item._id === value);
 					if (hasOption === -1) {
-						curr.value = variation.values
-							.filter((x) => !enableOption.includes(x._id))
-							.map((item) => item._id);
+						curr.value = variation.values.filter((x) => !enableOption.includes(x._id)).map((item) => item._id);
 					}
 				}
 			});
@@ -86,13 +84,11 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 
 				return (
 					<div key={variation._id}>
-						<p className="mb-3 font-semibold dark:text-white">
+						<p className="mb-3 text-center lg:text-left text-paragraph-4 lg:text-heading-4 font-semibold dark:text-white">
 							{variation.name.find((item) => item.language === locale)?.value}
 						</p>
 						<Select
-							disable={
-								disable.find((item) => item._id === variation._id) as IDisableVariationList
-							}
+							disable={disable.find((item) => item._id === variation._id) as IDisableVariationList}
 							onChange={(value) => {
 								handleOnChange(value);
 								handleChangeProductItem();

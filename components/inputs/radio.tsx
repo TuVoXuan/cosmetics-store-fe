@@ -14,16 +14,7 @@ interface Props {
 	onClick?: (value: string) => void;
 }
 
-export default function Radio({
-	children,
-	name,
-	option,
-	error,
-	value,
-	selected = false,
-	onClick,
-	register,
-}: Props) {
+export default function Radio({ children, name, option, error, value, selected = false, onClick, register }: Props) {
 	const radioRef = useRef<HTMLInputElement | null>(null);
 	const { ref, ...rest } = register(name, { ...option });
 
@@ -35,7 +26,7 @@ export default function Radio({
 	};
 
 	return (
-		<div className="flex items-start select-none gap-x-4 group dark:text-white-light">
+		<div className="flex items-start text-heading-6 lg:text-heading-5 select-none gap-x-4 group dark:text-white-light">
 			<input
 				{...rest}
 				ref={(e) => {

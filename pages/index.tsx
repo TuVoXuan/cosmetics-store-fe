@@ -121,11 +121,7 @@ export default function Home() {
 								onClick={() => categoriesSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -192,11 +188,7 @@ export default function Home() {
 								onClick={() => productsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -212,7 +204,7 @@ export default function Home() {
 									slidesPerView: 3,
 								},
 								1024: {
-									slidesPerView: 4,
+									slidesPerView: 5,
 								},
 							}}
 							modules={[Grid, Pagination]}
@@ -318,11 +310,7 @@ export default function Home() {
 								onClick={() => reviewsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full lg:border-2 lg:border-black lg:dark:border-none bg-gray-accent dark:bg-black-dark-2 lg:dark:bg-black-dark-4"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>

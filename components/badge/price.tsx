@@ -12,12 +12,12 @@ export default function Price({ price, sale, isResponsive }: Props) {
 		return (
 			<div className="flex items-center space-x-2">
 				{sale && (
-					<span className="font-semibold line-through text-heading-6 text-dark-24 md:text-heading-4 dark:text-light-24">
+					<span className="font-semibold line-through text-heading-6 lg:text-heading-5 text-dark-24 dark:text-light-24">
 						{convertPrice(price)}
 					</span>
 				)}
 
-				<span className="font-semibold text-heading-5 md:text-heading-2 dark:text-white-light">
+				<span className="font-semibold text-heading-4 lg:text-heading-3  dark:text-white-light">
 					{sale ? convertPrice((price * (100 - sale)) / 100) : convertPrice(price)}
 				</span>
 			</div>

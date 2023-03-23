@@ -14,6 +14,7 @@ import APP_PATH from "../constants/app-path";
 import { deleteAll, selectCart } from "../redux/slices/cart-slice";
 import { selectUser } from "../redux/slices/user-slice";
 import { toastError } from "../util/toast";
+import { convertPrice } from "../util/product";
 
 export default function ShoppingCart() {
 	// State
@@ -47,10 +48,7 @@ export default function ShoppingCart() {
 					longitude: shopLng,
 				};
 				try {
-					const response = adminstrativeApi.getDirection(
-						shopCoordinates,
-						defaultAddress.coordinates
-					);
+					const response = adminstrativeApi.getDirection(shopCoordinates, defaultAddress.coordinates);
 					response
 						.then((data) => data.data)
 						.then((data) => {
@@ -63,13 +61,10 @@ export default function ShoppingCart() {
 				}
 			}
 		} else {
-			toast(
-				"Hiện tại bạn chưa có địa chỉ mặc định. Vui lòng vào trang cá nhân để thêm địa chỉ mặc định.",
-				{
-					duration: 10000,
-					icon: <Warning className="text-yellow-tertiary-100 shrink-0" />,
-				}
-			);
+			toast("Hiện tại bạn chưa có địa chỉ mặc định. Vui lòng vào trang cá nhân để thêm địa chỉ mặc định.", {
+				duration: 10000,
+				icon: <Warning className="text-yellow-tertiary-100 shrink-0" />,
+			});
 		}
 	};
 
@@ -94,7 +89,7 @@ export default function ShoppingCart() {
 				<title>Shopping cart</title>
 			</Head>
 			<section className="pt-14 md:pt-16 mb-[104px] md:mb-[112px] xl:mb-[144px]">
-				<div className="justify-between mb-14 md:items-end md:flex md:mb-16">
+				<div className="justify-between mb-10 md:items-end md:flex md:mb-16">
 					<TitlePage className="mb-6 md:mb-0" subtitle="Giỏ hàng của bạn" title="Giỏ hàng" />
 					{cart.length > 0 && (
 						<Button onClick={handleDeleteAll} type="secondary">
@@ -103,8 +98,8 @@ export default function ShoppingCart() {
 					)}
 				</div>
 
-				<div className="lg:justify-between lg:flex">
-					<div className="mb-10 space-y-10 md:mb-12 md:space-y-12 lg:space-y-10 lg:mb-0 lg:w-[65%]">
+				<div className="md:w-4/5 md:mx-auto lg:w-full lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
+					<div className="mb-10 space-y-10 md:mb-12 md:space-y-12 lg:space-y-8 lg:mb-0 lg:col-span-2">
 						{cart.length > 0 ? (
 							cart.map((item) => <ItemCart key={item.itemId} item={item} />)
 						) : (
@@ -133,39 +128,23 @@ export default function ShoppingCart() {
 						)}
 					</div>
 
-					<div className="p-6 border-2 border-gray-accent rounded-4xl md:p-14 lg:p-8 lg:h-fit dark:border-black-dark-2">
-						<h4 className="mb-10 font-semibold text-heading-4 md:text-heading-2 md:mb-12 lg:mb-10 dark:text-white">
+					<div className="p-6 border-2 border-gray-accent rounded-4xl md:p-8 lg:p-6 lg:h-fit dark:border-black-dark-2">
+						<h4 className="mb-8 font-semibold text-heading-5 lg:text-heading-4 md:mb-8 lg:mb-10 dark:text-white">
 							Tổng số giỏ hàng
 						</h4>
-						<div className="space-y-10 mb-14 md:space-y-12 md:mb-20 lg:block lg:space-y-10 lg:mb-14">
+						<div className="space-y-6 mb-8 md:mb-10 lg:mx-0 lg:block lg:mb-14">
 							<div className="flex justify-between">
-								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									Tổng phụ:
-								</p>
-								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									{subTotal.toLocaleString("it-IT", { style: "currency", currency: "VND" })}
-								</p>
+								<p className="text-heading-6 lg:text-heading-5 dark:text-white">Tổng phụ:</p>
+								<p className="text-heading-6 lg:text-heading-5 dark:text-white">{convertPrice(subTotal)}</p>
 							</div>
 							<div className="flex justify-between">
-								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									Phí giao hàng:
-								</p>
-								<p className="text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									{shippingFee.toLocaleString("it-IT", {
-										style: "currency",
-										currency: "VND",
-									})}
-								</p>
+								<p className="text-heading-6 lg:text-heading-5 dark:text-white">Phí giao hàng:</p>
+								<p className="text-heading-6 lg:text-heading-5 dark:text-white">{convertPrice(shippingFee)}</p>
 							</div>
 							<div className="flex justify-between">
-								<p className="font-semibold text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									Tổng:
-								</p>
-								<p className="font-semibold text-heading-5 md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									{(subTotal + shippingFee).toLocaleString("it-IT", {
-										style: "currency",
-										currency: "VND",
-									})}
+								<p className="font-semibold text-heading-6 lg:text-heading-5 dark:text-white">Tổng:</p>
+								<p className="font-semibold text-heading-6 lg:text-heading-5 dark:text-white">
+									{convertPrice(subTotal + shippingFee)}
 								</p>
 							</div>
 						</div>
