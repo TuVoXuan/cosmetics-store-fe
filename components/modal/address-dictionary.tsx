@@ -107,16 +107,13 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 			<div
 				ref={addressDictRef}
 				className="fixed md:right-1/2 z-20 w-[100%] md:w-4/5 lg:w-3/5 md:left-auto md:-translate-x-full md:-translate-y-1/2
-				 bg-white dark:bg-black-dark-3 md:rounded-3xl rounded-tl-3xl rounded-tr-3xl md:top-1/2 md:bottom-auto bottom-0 left-0 translate-y-full
+				 bg-white dark:bg-black-dark-3 md:rounded-3xl rounded-t-2xl md:top-1/2 md:bottom-auto bottom-0 left-0 translate-y-full
 				  transition-transform duration-500 ease-in-out"
 			>
-				<div className="relative flex justify-between p-4 border-b-2 md:p-5">
-					<h3 className="text-heading-5 lg:text-heading-4 dark:text-white">Địa chỉ của tôi</h3>
+				<div className="relative p-4 border-b-2 md:p-5">
+					<h3 className="text-heading-5 text-center lg:text-heading-4 dark:text-white">Địa chỉ của tôi</h3>
 
-					<button
-						onClick={handleClose}
-						className="absolute top-[50%] -translate-y-1/2 p-2 border-2 rounded-full right-6 border-gray-accent dark:border-black-dark-2"
-					>
+					<button onClick={handleClose} className="absolute top-[50%] -translate-y-1/2 right-4 md:right-5">
 						<Delete width={20} height={20} className="dark:text-white" />
 					</button>
 				</div>
@@ -152,11 +149,21 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 						);
 					})}
 				</form>
-				<div className="p-4 space-x-4 md:p-5 md:space-x-5">
-					<Button className="!py-2 md:!py-3" onClick={handleSubmit(onSubmit)} type="secondary" btnType="submit">
+				<div className="p-4 shadow-t-md md:shadow-none flex gap-x-4 md:block md:gap-x-0 space-x-4 md:p-5 md:space-x-5">
+					<Button
+						className="!py-2 md:!py-3 w-full md:w-fit"
+						onClick={handleSubmit(onSubmit)}
+						type="secondary"
+						btnType="submit"
+					>
 						Thêm địa chỉ
 					</Button>
-					<Button className="!py-2 md:!py-3" onClick={handleSubmit(onSubmit)} type="primary" btnType="submit">
+					<Button
+						className="!py-2 md:!py-3 w-full md:w-fit"
+						onClick={handleSubmit(onSubmit)}
+						type="primary"
+						btnType="submit"
+					>
 						Lưu
 					</Button>
 				</div>
