@@ -95,50 +95,52 @@ export default function OrdersHistory() {
 	return (
 		<div className="mb-[104px] md:mb-28 xl:mb-36">
 			<TitlePage className="mt-14" subtitle="Cá nhân" title="Đơn hàng của bạn" />
-			<Dropdown
-				defaulValue={EnumOrderStatus.Pending}
-				register={register}
-				name={"orderStatus"}
-				className="z-[1] mt-14 md:mt-16 lg:hidden"
-				onChange={handleSelectChange}
-				options={[
-					{ label: "Đang xử lý", value: EnumOrderStatus.Pending },
-					{ label: "Đang giao", value: EnumOrderStatus.Delivering },
-					{ label: "Đã nhận hàng", value: EnumOrderStatus.Completed },
-					{ label: "Đã hủy", value: EnumOrderStatus.Cancelled },
-				]}
-			/>
-			<div className="lg:flex gap-x-12">
-				<div className="hidden mt-16 space-y-4 w-fit whitespace-nowrap lg:block">
-					<OrderStatus value={EnumOrderStatus.Pending}>Đang xử lý</OrderStatus>
-					<OrderStatus value={EnumOrderStatus.Delivering}>Đang giao</OrderStatus>
-					<OrderStatus value={EnumOrderStatus.Completed}>Đã nhận</OrderStatus>
-					<OrderStatus value={EnumOrderStatus.Cancelled}>Đã hủy</OrderStatus>
-				</div>
-				<div className="space-y-8 lg:grow mt-14 md:mt-16 md:space-y-12 ">
-					{loading ? (
-						<div className="flex flex-col items-center">
-							<LoadingHorizontal className="h-[100px] text-primary-100" />
-							<p className="text-center">Đang tải dữ liệu vui lòng đợi trong giây lát</p>
-						</div>
-					) : (
-						<Fragment>
-							{orders.length > 0 &&
-								orders.map((item) => (
-									<OrderContainer
-										onCancelOrder={handleWarningCancelOrder}
-										key={item._id}
-										order={item}
-										status={((status as string) || "pending") as EnumOrderStatus}
-									/>
-								))}
-							{orders.length === 0 && (
-								<p className="text-center md:text-paragraph-2 lg:h-full lg:flex lg:justify-center lg:items-center">
-									Không có đơn hàng
-								</p>
-							)}
-						</Fragment>
-					)}
+			<div className="lg:px-28">
+				<Dropdown
+					defaulValue={EnumOrderStatus.Pending}
+					register={register}
+					name={"orderStatus"}
+					className="z-[1] mt-14 md:mt-16 lg:hidden"
+					onChange={handleSelectChange}
+					options={[
+						{ label: "Đang xử lý", value: EnumOrderStatus.Pending },
+						{ label: "Đang giao", value: EnumOrderStatus.Delivering },
+						{ label: "Đã nhận hàng", value: EnumOrderStatus.Completed },
+						{ label: "Đã hủy", value: EnumOrderStatus.Cancelled },
+					]}
+				/>
+				<div className="lg:flex gap-x-12">
+					<div className="hidden mt-16 space-y-4 w-fit whitespace-nowrap lg:block">
+						<OrderStatus value={EnumOrderStatus.Pending}>Đang xử lý</OrderStatus>
+						<OrderStatus value={EnumOrderStatus.Delivering}>Đang giao</OrderStatus>
+						<OrderStatus value={EnumOrderStatus.Completed}>Đã nhận</OrderStatus>
+						<OrderStatus value={EnumOrderStatus.Cancelled}>Đã hủy</OrderStatus>
+					</div>
+					<div className="space-y-6 lg:grow mt-14 md:mt-16 md:space-y-8 ">
+						{loading ? (
+							<div className="flex flex-col items-center">
+								<LoadingHorizontal className="h-[100px] text-primary-100" />
+								<p className="text-center">Đang tải dữ liệu vui lòng đợi trong giây lát</p>
+							</div>
+						) : (
+							<Fragment>
+								{orders.length > 0 &&
+									orders.map((item) => (
+										<OrderContainer
+											onCancelOrder={handleWarningCancelOrder}
+											key={item._id}
+											order={item}
+											status={((status as string) || "pending") as EnumOrderStatus}
+										/>
+									))}
+								{orders.length === 0 && (
+									<p className="text-center md:text-paragraph-2 lg:h-full lg:flex lg:justify-center lg:items-center">
+										Không có đơn hàng
+									</p>
+								)}
+							</Fragment>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

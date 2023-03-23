@@ -44,7 +44,9 @@ export default function Birthday({ className, error, label, defaultValue, name, 
 
 	return (
 		<div className="relative">
-			<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
+			<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
+				{label}
+			</p>
 
 			<input
 				{...rest}
@@ -62,7 +64,7 @@ export default function Birthday({ className, error, label, defaultValue, name, 
 			<div className="relative dark:bg-black-dark-3">
 				<input
 					className={clsx(
-						"border-[2px] border-gray-accent font-semibold placeholder:text-dark-40 text-dark-100 focus:border-primary-100 focus:outline-none dark:focus:border-primary-100 dark:focus:outline-none px-6 py-3 text-heading-5 rounded-3xl md:px-6 md:py-4 md:text-heading-4 md:rounded-4xl dark:border-black-dark-2 dark:bg-transparent dark:text-white-light dark:placeholder:text-light-40 ",
+						"border-[2px] border-gray-accent font-semibold placeholder:text-dark-40 text-dark-100 focus:border-primary-100 focus:outline-none dark:focus:border-primary-100 dark:focus:outline-none px-6 py-3 text-heading-6 rounded-3xl md:px-6 md:text-heading-5 md:rounded-4xl dark:border-black-dark-2 dark:bg-transparent dark:text-white-light dark:placeholder:text-light-40 ",
 						error && "border-red-accent dark:border-red-accent focus:border-red-accent",
 						className
 					)}
@@ -79,7 +81,11 @@ export default function Birthday({ className, error, label, defaultValue, name, 
 					className="absolute translate-y-1/2 text-dark-64 bottom-1/2 right-4 dark:text-white-light"
 				/>
 			</div>
-			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
+			{error && (
+				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
+					{error}
+				</p>
+			)}
 		</div>
 	);
 }

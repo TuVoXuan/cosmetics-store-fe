@@ -18,7 +18,10 @@ export default function ToggleBtn({ toggle, value, childrenOff, childrenOn, clas
 
 	useEffect(() => {
 		if (switchRef.current && childRef.current) {
-			const paddingLeft = window.getComputedStyle(switchRef.current).getPropertyValue("padding-left").replace("px", "");
+			const paddingLeft = window
+				.getComputedStyle(switchRef.current)
+				.getPropertyValue("padding-left")
+				.replace("px", "");
 			const childrenWidth = childRef.current.clientWidth;
 
 			switchRef.current.style.width = 2 * childrenWidth + 2 * parseInt(paddingLeft) + "px";
@@ -43,7 +46,7 @@ export default function ToggleBtn({ toggle, value, childrenOff, childrenOn, clas
 					className={clsx(
 						value && `translate-x-[100%]`,
 						!value && "translate-x-0",
-						"pointer-events-none inline-block p-1 text-light-100 transform rounded-full bg-primary-100 shadow-lg ring-0 transition duration-200 ease-in-out"
+						"text-paragraph-7 md:text-paragraph-6 pointer-events-none inline-block p-1 text-light-100 transform rounded-full bg-primary-100 shadow-lg ring-0 transition duration-200 ease-in-out"
 					)}
 				>
 					{value ? childrenOn : childrenOff}

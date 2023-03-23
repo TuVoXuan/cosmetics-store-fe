@@ -72,13 +72,13 @@ export default function AddressCard({ address, onUpdate }: Props) {
 	return (
 		<div className="pb-6 space-y-4 border-b-2 border-gray-accent dark:border-black-dark-2 md:grid md:grid-cols-3">
 			<div className="space-y-2 md:col-span-2">
-				<h4 className="font-semibold capitalize lg:inline-block lg:pr-4 text-paragraph-3 dark:text-white">
+				<h4 className="font-semibold capitalize lg:inline-block lg:pr-4 text-paragraph-5 md:text-paragraph-4 dark:text-white">
 					{address.name}
 				</h4>
-				<h4 className="font-semibold capitalize lg:inline-block lg:pl-4 lg:border-l-2 lg:border-gray-accent lg:dark:border-black-dark-2 text-paragraph-3 dark:text-white">
+				<h4 className="font-semibold capitalize lg:inline-block lg:pl-4 lg:border-l-2 lg:border-gray-accent lg:dark:border-black-dark-2 text-paragraph-5 md:text-paragraph-4 dark:text-white">
 					{address.phone}
 				</h4>
-				<p className="text-paragraph-3 dark:text-white">
+				<p className="text-paragraph-5 md:text-paragraph-4 dark:text-white">
 					{address.specificAddress}, {address.ward}, {address.district}, {address.province}
 				</p>
 				{address.default && (
@@ -91,11 +91,14 @@ export default function AddressCard({ address, onUpdate }: Props) {
 				<div className="hidden md:block md:space-x-4">
 					<button
 						onClick={() => onUpdate(address)}
-						className="p-3 md:text-heading-4 text-secondary-100"
+						className="p-3 text-heading-6 md:text-heading-5 text-secondary-100"
 					>
 						Cập nhật
 					</button>
-					<button onClick={showWarningToast} className="p-3 md:text-heading-4 text-red-accent">
+					<button
+						onClick={showWarningToast}
+						className="p-3 text-heading-6 md:text-heading-5 text-red-accent"
+					>
 						Xóa
 					</button>
 				</div>

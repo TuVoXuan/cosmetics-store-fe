@@ -70,15 +70,15 @@ export default function SocialMedia() {
 		<div>
 			<TitlePage className="mb-8 mt-14" subtitle="Mạng xã hội" title="Liên kết mạng xã hội" />
 
-			<div className="space-y-4 md:w-2/3 lg:w-full lg:grid lg:grid-cols-2 lg:gap-x-14 lg:space-y-0">
+			<div className="space-y-4 md:w-1/2 md:mx-auto lg:w-4/5 lg:grid lg:grid-cols-2 lg:gap-x-14 lg:space-y-0">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-x-4">
 						<Image src="/facebook.png" width={32} height={32} alt="facebook" />
-						<p className="text-paragraph-2 dark:text-light-100 lg:text-paragraph-1">Facebook</p>
+						<p className="text-paragraph-5 dark:text-light-100 lg:text-paragraph-4">Facebook</p>
 					</div>
 					{/* <p className="lg:text-paragraph-3">{statusSocialAccount?.facebook ? "Đã liên kết" : "Chưa liên kết"}</p> */}
 					<ToggleBtn
-						className="!rounded-full"
+						className="!rounded-full h-fit"
 						value={statusSocialAccount?.facebook || false}
 						toggle={toggleFacebook}
 						childrenOn="On"
@@ -88,10 +88,10 @@ export default function SocialMedia() {
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-x-4">
 						<Image src="/google.png" width={32} height={32} alt="google" />
-						<p className="text-paragraph-2 dark:text-light-100 lg:text-paragraph-1">Google</p>
+						<p className="text-paragraph-5 dark:text-light-100 lg:text-paragraph-4">Google</p>
 					</div>
 					<ToggleBtn
-						className="!rounded-full"
+						className="!rounded-full h-fit"
 						value={statusSocialAccount?.google || false}
 						toggle={toggleGoogle}
 						childrenOn="On"

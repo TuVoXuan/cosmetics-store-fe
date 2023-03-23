@@ -62,7 +62,7 @@ export default function CodeInput({ className, error, label, name, option, regis
 				<input
 					{...register(name, { ...option })}
 					className={clsx(
-						"border-[2px] border-gray-accent font-semibold placeholder:text-dark-40 text-dark-100 focus:border-primary-100 focus:outline-none dark:focus:border-primary-100 dark:focus:outline-none px-6 py-3 text-heading-5 rounded-3xl md:px-6 md:py-4 md:text-heading-4 md:rounded-4xl dark:border-black-dark-2 dark:bg-transparent dark:text-white-light dark:placeholder:text-light-40",
+						"border-[2px] border-gray-accent font-semibold placeholder:text-dark-40 text-dark-100 focus:border-primary-100 focus:outline-none dark:focus:border-primary-100 dark:focus:outline-none px-6 py-3 text-heading-6 rounded-3xl md:px-6 md:text-heading-5 md:rounded-4xl dark:border-black-dark-2 dark:bg-transparent dark:text-white-light dark:placeholder:text-light-40",
 						error && "border-red-accent dark:border-red-accent focus:border-red-accent",
 						className
 					)}
@@ -74,7 +74,7 @@ export default function CodeInput({ className, error, label, name, option, regis
 					ref={btnRef}
 					type="button"
 					onClick={handleGetOTP}
-					className="absolute py-3 md:py-4 md:text-heading-4 pl-4 pr-6 rounded-r-full whitespace-nowrap bottom-[2px] right-0  bg-primary-100 text-white-light font-semibold disabled:cursor-not-allowed disabled:bg-dark-64"
+					className="absolute py-3 text-heading-6 md:text-heading-5 pl-4 pr-6 rounded-r-full whitespace-nowrap bottom-[2px] right-0  bg-primary-100 text-white-light font-semibold disabled:cursor-not-allowed disabled:bg-dark-64"
 				>
 					Lấy mã
 				</button>

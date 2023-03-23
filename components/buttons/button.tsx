@@ -34,7 +34,7 @@ export default function Button({
 			disabled={disable}
 			form={form}
 			type={btnType}
-			className={`rounded-[32px] font-bold px-6 py-3 text-heading-5 md:px-10 md:py-4 md:text-heading-4 
+			className={`rounded-[32px] font-bold px-6 py-3 text-heading-6 md:px-10 md:text-heading-5 
 			hover:border-primary-100 transition-colors ease-linear select-none
 				disabled:cursor-not-allowed
 			${getCSSType()} ${className}`}

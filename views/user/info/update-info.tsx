@@ -68,7 +68,7 @@ export default function UpdateInfo() {
 		<>
 			<TitlePage className="mb-8 mt-14" subtitle="Cá nhân" title="Thông tin cá nhân" />
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className="space-y-10 md:w-4/5 md:mx-auto lg:w-full lg:grid lg:grid-cols-2 lg:gap-y-10 lg:gap-x-10 lg:space-y-0">
+				<div className="space-y-5 md:w-3/5 md:mx-auto lg:w-4/5 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
 					<Input
 						register={register}
 						className="w-full"
@@ -125,7 +125,7 @@ export default function UpdateInfo() {
 							},
 						}}
 					/>
-					<Button className="w-full md:col-span-2 lg:col-span-1" type="primary" btnType="submit">
+					<Button className="w-full lg:col-start-2" type="primary" btnType="submit">
 						Cập nhập
 					</Button>
 				</div>

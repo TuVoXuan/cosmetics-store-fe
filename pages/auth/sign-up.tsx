@@ -66,7 +66,10 @@ export default function SignUp() {
 	return (
 		<div className="pb-[104px] dark:bg-black-dark-3">
 			<TitlePage className="py-14" subtitle="Đăng ký" title="Tạo tài khoản của bạn" />
-			<form id="registerForm" className="space-y-10 lg:w-[496px] lg:mx-auto">
+			<form
+				id="registerForm"
+				className="gap-5 space-y-5 md:grid md:grid-cols-2 md:space-y-0 lg:w-2/3 lg:mx-auto"
+			>
 				<Input
 					name="email"
 					register={register}
@@ -98,7 +101,8 @@ export default function SignUp() {
 						},
 						pattern: {
 							value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-							message: "Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
+							message:
+								"Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
 						},
 					}}
 					error={errors.password?.message}
@@ -177,24 +181,32 @@ export default function SignUp() {
 					}}
 					error={errors.gender?.message}
 				/>
-				<Checkbox
-					name="agreePolicy"
-					register={register}
-					option={{
-						required: {
-							value: true,
-							message: "Yêu cầu đồng ý chính sách",
-						},
-					}}
-					error={errors.agreePolicy?.message}
-				>
-					<p className="text-paragraph-4 dark:text-white-light md:text-paragraph-2">
-						Tôi đã đọc và đồng ý <a className="font-semibold underline">điều khoản & điều kiện</a>
-					</p>
-				</Checkbox>
+				<div className="col-span-2">
+					<Checkbox
+						name="agreePolicy"
+						register={register}
+						option={{
+							required: {
+								value: true,
+								message: "Yêu cầu đồng ý chính sách",
+							},
+						}}
+						error={errors.agreePolicy?.message}
+					>
+						<p className="text-paragraph-5 dark:text-white-light md:text-paragraph-4">
+							Tôi đã đọc và đồng ý{" "}
+							<a className="font-semibold underline">điều khoản & điều kiện</a>
+						</p>
+					</Checkbox>
+				</div>
 			</form>
 			<div className="grid grid-cols-1 gap-y-4 mt-14 md:grid-cols-2 md:gap-x-6 md:w-[496px] md:mx-auto">
-				<Button form="registerForm" onClick={handleSubmit(onSubmit)} type="primary" className="w-full">
+				<Button
+					form="registerForm"
+					onClick={handleSubmit(onSubmit)}
+					type="primary"
+					className="w-full"
+				>
 					Tại tài khoản
 				</Button>
 				<Button type="secondary" className="w-full">

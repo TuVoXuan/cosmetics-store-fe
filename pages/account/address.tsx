@@ -179,7 +179,7 @@ export default function Address() {
 					Thêm địa chỉ mới
 				</Button>
 			</div>
-			<div>
+			<div className="lg:w-4/5 lg:mx-auto">
 				<div className="space-y-4">
 					{addresses.length > 0 ? (
 						addresses.map((item) => (
@@ -196,7 +196,7 @@ export default function Address() {
 			<form
 				ref={addressFormRef}
 				id="addressForm"
-				className="space-y-6 md:grid md:grid-cols-2 md:space-y-0 md:gap-6"
+				className="space-y-6 md:grid md:grid-cols-2 md:space-y-0 md:gap-6 lg:w-4/5 lg:mx-auto"
 			>
 				<Input
 					name="name"
@@ -314,8 +314,8 @@ export default function Address() {
 				/>
 			</form>
 			<p className="font-semibold text-red-accent">
-				*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy &quotClick&quot nút &quotXem vị trí trên
-				map&quot để xem vị trí nhận hàng của bạn có chính xác không.
+				*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy Click nút Xem vị trí trên map để xem vị
+				trí nhận hàng của bạn có chính xác không.
 			</p>
 			<Button
 				onClick={handleGetPosition}

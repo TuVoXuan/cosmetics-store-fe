@@ -87,7 +87,7 @@ export default function SignIn() {
 					{errorMessage}
 				</p>
 			)}
-			<form className="space-y-10 lg:w-[536px] lg:mx-auto" onSubmit={handleSubmit(onSubmit)}>
+			<form className="space-y-5 lg:w-[496px] lg:mx-auto" onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					name="email"
 					register={register}
@@ -164,7 +164,7 @@ export default function SignIn() {
 						<Button onClick={handleSignUpClick} type="secondary" className="w-full">
 							Tạo tài khoản
 						</Button>
-						<p className="font-normal text-center underline align-middle cursor-pointer md:text-paragraph-2 dark:text-white-light text-dark-100 text-heading-5">
+						<p className="font-normal text-center underline align-middle cursor-pointer text-paragraph-5 md:text-paragraph-4 dark:text-white-light text-dark-100">
 							Quên mật khẩu?
 						</p>
 					</div>

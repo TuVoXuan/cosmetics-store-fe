@@ -32,9 +32,13 @@ export default function Dropdown({
 	const [selectedValue, setSelectedValue] = useState<IOption>();
 	const listBoxButtonRef = useRef<HTMLButtonElement>(null);
 	const listBoxRef = useRef<HTMLUListElement>(null);
+	const expandIconRef = useRef<HTMLDivElement>(null);
 
 	const handleClick = () => {
 		if (listBoxButtonRef.current && listBoxRef.current) {
+			listBoxButtonRef.current.classList.toggle("border-primary-100");
+			listBoxButtonRef.current.classList.toggle("dark:border-primary-100");
+
 			if (listBoxRef.current.classList.contains("hidden")) {
 				listBoxRef.current.classList.remove("hidden");
 			} else {
@@ -54,6 +58,10 @@ export default function Dropdown({
 				listBoxButtonRef.current.classList.remove("border-t-2", "border-x-2");
 				listBoxButtonRef.current.classList.add("border-2");
 			}
+		}
+
+		if (expandIconRef.current) {
+			expandIconRef.current.classList.toggle("rotate-180");
 		}
 	};
 
@@ -92,7 +100,9 @@ export default function Dropdown({
 				)}
 			</div>
 			{label && (
-				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
+				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
+					{label}
+				</p>
 			)}
 
 			<div className={clsx("relative", className)}>
@@ -102,20 +112,26 @@ export default function Dropdown({
 					type="button"
 					className={clsx(
 						"flex items-center justify-between text-left w-full cursor-pointer border-2",
-						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px] md:py-4",
+						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px]",
 						error && "border-red-accent dark:border-red-accent"
 					)}
 				>
-					<p className={clsx("select-none capitalize dark:text-white-light text-heading-5 md:text-heading-4")}>
+					<p
+						className={clsx(
+							"select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5"
+						)}
+					>
 						{selectedValue ? selectedValue.label : "Chọn giá trị"}
 					</p>
-					<Expand width={16} height={16} className="dark:text-light-100" />
+					<div ref={expandIconRef} className="duration-300 ease-linear">
+						<Expand width={16} height={16} className="dark:text-light-100" />
+					</div>
 				</button>
 				<ul
 					ref={listBoxRef}
 					className={clsx(
-						"hidden md:pb-4 absolute left-0 right-0 z-[1] bg-white border-x-2 border-gray-accent dark:border-black-dark-2 dark:bg-black-dark-3 dark:text-white-light max-h-56 overflow-y-auto",
-						"top-[100%] rounded-b-[32px] border-b-2",
+						"hidden absolute left-0 right-0 z-[1] bg-white border-x-2 border-primary-100 dark:bg-black-dark-3 dark:text-white-light max-h-56 overflow-y-auto",
+						"top-[100%] rounded-b-[32px] border-b-2 shadow-lg dark:shadow-primary-100/50",
 						error && "border-red-accent dark:border-red-accent"
 					)}
 				>
@@ -126,13 +142,22 @@ export default function Dropdown({
 									key={item.value}
 									className={clsx(
 										"flex items-center justify-between font-semibold select-none capitalize",
-										"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent hover:dark:bg-black-dark-2"
+										"text-heading-6 px-6 py-3 md:text-heading-5 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 									)}
 								>
-									<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
+									<label
+										className="cursor-pointer"
+										onClick={() => handleOnchange(item)}
+										htmlFor={item.value}
+									>
 										{item.label}
 									</label>
-									<Selected width={16} height={16} color="#1A202C" className="dark:text-light-100" />
+									<Selected
+										width={16}
+										height={16}
+										color="#1A202C"
+										className="dark:text-light-100"
+									/>
 								</li>
 							);
 						}
@@ -141,10 +166,14 @@ export default function Dropdown({
 								key={item.value}
 								className={clsx(
 									"flex items-center justify-between select-none capitalize",
-									"text-heading-5 px-6 py-3 md:text-heading-4 md:py-4 hover:bg-gray-accent hover:dark:bg-black-dark-2"
+									"text-heading-6 px-6 py-3 md:text-heading-5 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 								)}
 							>
-								<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
+								<label
+									className="cursor-pointer"
+									onClick={() => handleOnchange(item)}
+									htmlFor={item.value}
+								>
 									{item.label}
 								</label>
 							</li>
@@ -152,7 +181,11 @@ export default function Dropdown({
 					})}
 				</ul>
 			</div>
-			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
+			{error && (
+				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
+					{error}
+				</p>
+			)}
 		</div>
 	);
 }

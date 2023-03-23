@@ -40,7 +40,7 @@ export default function Checkbox({ children, name, option, error, register }: Pr
 			<div
 				onClick={handleClick}
 				className={clsx(
-					"w-6 h-6 transition-all duration-300 ease-linear rounded-full cursor-pointer shrink-0 group-hover:border-primary-100 dark:group-hover:border-primary-100",
+					"w-6 h-6 text-paragraph-5 transition-all duration-300 ease-linear rounded-full cursor-pointer shrink-0 group-hover:border-primary-100 dark:group-hover:border-primary-100",
 					checked ? "checkboxActive" : "checkboxNoActive",
 					error && "!border-red-accent"
 				)}
