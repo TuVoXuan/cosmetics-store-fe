@@ -44,12 +44,30 @@ export default function Category() {
 	const [category, setCategory] = useState<ICategory>();
 	const [brands, setBrands] = useState<IBrand[]>([]);
 	const [after, setAfter] = useState<string>("");
+	const [selectedBrands, setSelectedBrands] = useState<IBrand[]>([]);
+	const [priceRange, setPriceRange] = useState<IPriceRange>();
 
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoriesRef = useRef<CategoriesWindowRefType>(null);
 	const priceRangRef = useRef<PriceRangeRefType>(null);
 	const categoryRef = useRef<CategoriesRefType>(null);
 	const filterRef = useRef<FilterRefType>(null);
+
+	const handleSelectBrand = (brandIds: string[]) => {
+		const selectdBrandsName: IBrand[] = [];
+		for (let i = 0; i < brandIds.length; i++) {
+			const brandId = brandIds[i];
+			const brand = brands.find((item) => item._id === brandId);
+			if (brand) {
+				selectdBrandsName.push(brand);
+			}
+		}
+		setSelectedBrands(selectdBrandsName);
+	};
+
+	const handleSelectPriceRange = (price: IPriceRange | undefined) => {
+		setPriceRange(price);
+	};
 
 	const handleOpenPriceRange = () => {
 		if (priceRangRef.current) {
@@ -227,98 +245,23 @@ export default function Category() {
 				}`}
 			/>
 
-			<div className="space-y-4 xl:space-y-12 mt-14 md:mt-16 xl:mt-[72px] lg:mt-14">
-				<div className="space-y-4 lg:flex lg:space-y-0 lg:gap-x-8">
-					<div className="space-y-2 md:space-y-4 xl:space-y-8">
-						<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-							Chọn tiêu chí
-						</p>
-						<div className="flex space-x-2 md:gap-x-4 xl:gap-x-8">
-							<OptionButton onClick={handleOpenCategories}>
-								<LayoutGrid
-									width={20}
-									height={20}
-									className="inline mr-1 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-								/>
-								Phân loại
-							</OptionButton>
-							<div className="lg:relative">
-								<OptionButton onClick={handleOpenPriceRange}>
-									<Wallet
-										width={20}
-										height={20}
-										className="inline mr-1 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-									/>
-									Khoảng giá
-								</OptionButton>
-
-								{/* price range */}
-								<PriceRange overlay={overlayRef} ref={priceRangRef} />
-							</div>
-						</div>
-					</div>
-
-					<div className="space-y-2 md:space-y-4 xl:space-y-8">
-						<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-							Sắp xếp theo
-						</p>
-						<div className="flex overflow-x-auto gap-x-2 md:gap-x-4 xl:gap-x-8">
-							<OptionButton actived={order === "asc"} onClick={handleClickOrder("asc")}>
-								<BarCharDown
-									width={20}
-									height={20}
-									className="inline mr-1 -rotate-90 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-								/>
-								Giá tăng dần
-							</OptionButton>
-							<OptionButton actived={order === "desc"} onClick={handleClickOrder("desc")}>
-								<BarCharUp
-									width={20}
-									height={20}
-									className="inline mr-1 -rotate-90 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-								/>
-								Giá giảm dần
-							</OptionButton>
-						</div>
-					</div>
-
-					<div
-						className="flex gap-x-4 w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
-						onClick={handleOpenCategoriesModel}
-					>
-						<p className="capitalize text-paragraph-5 dark:text-light-100">
-							{category
-								? category.name
-										.filter((item) => item.language === "vi")[0]
-										.value.toLocaleLowerCase()
-								: ""}
-						</p>
-						<Expand
-							width={16}
-							height={16}
-							className="transition-transform duration-300 ease-linear dark:text-light-100"
-						/>
-					</div>
-				</div>
-				{/* brand logos */}
-				<div className="space-y-2 md:space-y-4 xl:space-y-8">
-					<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-						Thương hiệu
+			<div className="space-y-4 lg:flex lg:space-y-0 lg:gap-x-8">
+				<div
+					className="flex gap-x-4 w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
+					onClick={handleOpenCategoriesModel}
+				>
+					<p className="capitalize text-paragraph-5 dark:text-light-100">
+						{category
+							? category.name
+									.filter((item) => item.language === "vi")[0]
+									.value.toLocaleLowerCase()
+							: ""}
 					</p>
-
-					<div className="flex items-center overflow-x-auto xl:h-36 h-14 md:h-28 gap-x-4 md:gap-x-8 lg:gap-x-10">
-						{brands.length > 0 &&
-							brands.map((brd) => (
-								<HyggeImage
-									onClick={handleClickBrand(brd._id)}
-									key={brd._id}
-									actived={brd._id === brand}
-									className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-									src={brd.logo}
-									alt={brd.name}
-								/>
-							))}
-					</div>
+					<Expand
+						width={16}
+						height={16}
+						className="transition-transform duration-300 ease-linear dark:text-light-100"
+					/>
 				</div>
 			</div>
 
@@ -386,7 +329,15 @@ export default function Category() {
 			{/* categories */}
 			<Categories overlay={overlayRef} ref={categoryRef} />
 			{/* filter modal */}
-			<FilterModal ref={filterRef} overlay={overlayRef} brands={brands} />
+			<FilterModal
+				ref={filterRef}
+				overlay={overlayRef}
+				brands={brands}
+				selectedBrands={selectedBrands.map((item) => item._id)}
+				onSelectBrand={handleSelectBrand}
+				priceRange={priceRange}
+				onSelectPriceRange={handleSelectPriceRange}
+			/>
 			{/* overlay */}
 			<Overlay ref={overlayRef} />
 		</div>

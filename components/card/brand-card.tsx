@@ -2,14 +2,17 @@ import clsx from "clsx";
 import React, { useState } from "react";
 
 interface Props {
+	active?: boolean;
 	brandName: string;
+	onClick: () => void;
 }
 
-export default function BrandCard({ brandName }: Props) {
-	const [active, setActive] = useState<boolean>(false);
+export default function BrandCard({ brandName, onClick, active = false }: Props) {
+	// const [isActive, setIsActive] = useState<boolean>(active);
 
 	const handleClick = () => {
-		setActive((value) => !value);
+		onClick();
+		// setIsActive((value) => !value);
 	};
 
 	return (
