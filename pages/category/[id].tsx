@@ -32,6 +32,7 @@ import { SortPrice } from "../../constants/enums";
 import Filter from "../../components/icons/filter";
 import FilterModal, { FilterRefType } from "../../components/modal/filter-modal";
 import { PathCategoryProvider } from "../../context/path-category.context";
+import MultipleSelectDropdown from "../../components/inputs/multiple-select-dropdown";
 
 export default function Category() {
 	const router = useRouter();
@@ -207,40 +208,18 @@ export default function Category() {
 					</PathCategoryProvider>
 				</div>
 				<div className="lg:col-span-3">
-					<div className="space-y-4 xl:space-y-12 mt-14 md:mt-16 xl:mt-[72px] lg:mt-14">
-						<div
-							className="flex gap-x-4 lg:hidden w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
-							onClick={handleOpenCategoriesModel}
-						>
-							<p className="capitalize text-paragraph-5 dark:text-light-100">
-								{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
-							</p>
-							<Expand
-								width={16}
-								height={16}
-								className="transition-transform duration-300 ease-linear dark:text-light-100"
-							/>
-						</div>
-						{/* brand logos */}
-						<div className="space-y-2 md:space-y-4 xl:space-y-8">
-							<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-								Thương hiệu
-							</p>
-
-							<div className="flex items-center overflow-x-auto xl:h-36 h-14 md:h-28 gap-x-4 md:gap-x-8 lg:gap-x-10">
-								{brands.length > 0 &&
-									brands.map((brd) => (
-										<HyggeImage
-											onClick={handleClickBrand(brd._id)}
-											key={brd._id}
-											actived={brd._id === brand}
-											className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-											src={brd.logo}
-											alt={brd.name}
-										/>
-									))}
-							</div>
-						</div>
+					<div
+						className="flex gap-x-4 lg:hidden w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
+						onClick={handleOpenCategoriesModel}
+					>
+						<p className="capitalize text-paragraph-5 dark:text-light-100">
+							{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
+						</p>
+						<Expand
+							width={16}
+							height={16}
+							className="transition-transform duration-300 ease-linear dark:text-light-100"
+						/>
 					</div>
 
 					<div className="flex justify-between">
@@ -255,6 +234,13 @@ export default function Category() {
 								{ label: "Tăng dần", value: SortPrice.Ascending },
 								{ label: "giảm dần", value: SortPrice.Descending },
 							]}
+						/>
+
+						<MultipleSelectDropdown
+							register={register}
+							name="brand"
+							placeholder="Chọn thương hiệu"
+							options={brands.map((item) => ({ label: item.name, value: item._id }))}
 						/>
 
 						<Button onClick={handleOpenFilter} type="secondary">
