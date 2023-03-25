@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import Badge from "../../components/badge/badge";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 import Button from "../../components/buttons/button";
@@ -25,6 +25,8 @@ import { useAppSelector } from "../../store/hooks";
 import { selectCategories } from "../../redux/slices/category-slice";
 import { brandApi } from "../../api/brand-api";
 import APP_PATH from "../../constants/app-path";
+import Expand from "../../components/icons/expand";
+import Categories, { CategoriesRefType } from "../../components/modal/categories";
 
 export default function Category() {
 	const router = useRouter();
@@ -40,6 +42,7 @@ export default function Category() {
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoriesRef = useRef<CategoriesWindowRefType>(null);
 	const priceRangRef = useRef<PriceRangeRefType>(null);
+	const categoryRef = useRef<CategoriesRefType>(null);
 
 	const handleOpenPriceRange = () => {
 		if (priceRangRef.current) {
@@ -50,6 +53,12 @@ export default function Category() {
 	const handleOpenCategories = () => {
 		if (categoriesRef.current) {
 			categoriesRef.current.open();
+		}
+	};
+
+	const handleOpenCategoriesModel = () => {
+		if (categoryRef.current) {
+			categoryRef.current.open();
 		}
 	};
 
@@ -199,9 +208,7 @@ export default function Category() {
 				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
 				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
 				title={`Khám phá các sản phẩm ${
-					category
-						? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase()
-						: ""
+					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
 				}`}
 			/>
 
@@ -259,6 +266,20 @@ export default function Category() {
 							</OptionButton>
 						</div>
 					</div>
+
+					<div
+						className="flex gap-x-4 w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
+						onClick={handleOpenCategoriesModel}
+					>
+						<p className="text-paragraph-5 dark:text-light-100 capitalize">
+							{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
+						</p>
+						<Expand
+							width={16}
+							height={16}
+							className="transition-transform duration-300 ease-linear dark:text-light-100"
+						/>
+					</div>
 				</div>
 				{/* brand logos */}
 				<div className="space-y-2 md:space-y-4 xl:space-y-8">
@@ -285,8 +306,7 @@ export default function Category() {
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
 				<div className="grid grid-cols-2 lg:grid-cols-4 ">
-					{products.length > 0 &&
-						products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+					{products.length > 0 && products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>
 
 				{products.length === 0 && (
@@ -321,6 +341,8 @@ export default function Category() {
 			{/* categories */}
 			<CategoriesWindow ref={categoriesRef} overlay={overlayRef} />
 
+			{/* categories */}
+			<Categories overlay={overlayRef} ref={categoryRef} />
 			{/* overlay */}
 			<Overlay ref={overlayRef} />
 		</div>
