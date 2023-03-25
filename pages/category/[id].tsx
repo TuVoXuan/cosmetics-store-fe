@@ -1,4 +1,4 @@
-import React, { LegacyRef, useEffect, useRef, useState } from "react";
+import React, { Fragment, LegacyRef, useEffect, useRef, useState } from "react";
 import Badge from "../../components/badge/badge";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 import Button from "../../components/buttons/button";
@@ -31,6 +31,7 @@ import { useForm } from "react-hook-form";
 import { SortPrice } from "../../constants/enums";
 import Filter from "../../components/icons/filter";
 import FilterModal, { FilterRefType } from "../../components/modal/filter-modal";
+import { PathCategoryProvider } from "../../context/path-category.context";
 
 export default function Category() {
 	const router = useRouter();
@@ -46,22 +47,8 @@ export default function Category() {
 	const [after, setAfter] = useState<string>("");
 
 	const overlayRef = useRef<HTMLDivElement>(null);
-	const categoriesRef = useRef<CategoriesWindowRefType>(null);
-	const priceRangRef = useRef<PriceRangeRefType>(null);
 	const categoryRef = useRef<CategoriesRefType>(null);
 	const filterRef = useRef<FilterRefType>(null);
-
-	const handleOpenPriceRange = () => {
-		if (priceRangRef.current) {
-			priceRangRef.current.open();
-		}
-	};
-
-	const handleOpenCategories = () => {
-		if (categoriesRef.current) {
-			categoriesRef.current.open();
-		}
-	};
 
 	const handleOpenCategoriesModel = () => {
 		if (categoryRef.current) {
@@ -138,22 +125,6 @@ export default function Category() {
 		}
 	};
 
-	const handleClickOrder = (order: "asc" | "desc") => () => {
-		let path = `${APP_PATH.CATEGORY}/${id}?order=${order}`;
-
-		if (from) {
-			path += `&from=${from}`;
-		}
-		if (to) {
-			path += `&to=${to}`;
-		}
-		if (brand) {
-			path += `&brand=${brand}`;
-		}
-
-		router.push(path);
-	};
-
 	const handleClickBrand = (brand: string) => () => {
 		let path = `${APP_PATH.CATEGORY}/${id}?brand=${brand}`;
 
@@ -221,167 +192,116 @@ export default function Category() {
 				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
 				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
 				title={`Khám phá các sản phẩm ${
-					category
-						? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase()
-						: ""
+					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
 				}`}
 			/>
 
-			<div className="space-y-4 xl:space-y-12 mt-14 md:mt-16 xl:mt-[72px] lg:mt-14">
-				<div className="space-y-4 lg:flex lg:space-y-0 lg:gap-x-8">
-					<div className="space-y-2 md:space-y-4 xl:space-y-8">
-						<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-							Chọn tiêu chí
-						</p>
-						<div className="flex space-x-2 md:gap-x-4 xl:gap-x-8">
-							<OptionButton onClick={handleOpenCategories}>
-								<LayoutGrid
-									width={20}
-									height={20}
-									className="inline mr-1 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-								/>
-								Phân loại
-							</OptionButton>
-							<div className="lg:relative">
-								<OptionButton onClick={handleOpenPriceRange}>
-									<Wallet
-										width={20}
-										height={20}
-										className="inline mr-1 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-									/>
-									Khoảng giá
-								</OptionButton>
+			<div className="lg:grid lg:grid-cols-4 mt-10">
+				<div className="hidden lg:block">
+					<h5 className="font-semibold text-heading-4">Danh mục</h5>
+					<PathCategoryProvider>
+						<div className="mt-2 space-y-3">
+							{categories.length > 0 &&
+								categories.map((category) => <CategoryItem key={category._id} category={category} />)}
+						</div>
+					</PathCategoryProvider>
+				</div>
+				<div className="lg:col-span-3">
+					<div className="space-y-4 xl:space-y-12 mt-14 md:mt-16 xl:mt-[72px] lg:mt-14">
+						<div
+							className="flex gap-x-4 lg:hidden w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
+							onClick={handleOpenCategoriesModel}
+						>
+							<p className="capitalize text-paragraph-5 dark:text-light-100">
+								{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
+							</p>
+							<Expand
+								width={16}
+								height={16}
+								className="transition-transform duration-300 ease-linear dark:text-light-100"
+							/>
+						</div>
+						{/* brand logos */}
+						<div className="space-y-2 md:space-y-4 xl:space-y-8">
+							<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
+								Thương hiệu
+							</p>
 
-								{/* price range */}
-								<PriceRange overlay={overlayRef} ref={priceRangRef} />
+							<div className="flex items-center overflow-x-auto xl:h-36 h-14 md:h-28 gap-x-4 md:gap-x-8 lg:gap-x-10">
+								{brands.length > 0 &&
+									brands.map((brd) => (
+										<HyggeImage
+											onClick={handleClickBrand(brd._id)}
+											key={brd._id}
+											actived={brd._id === brand}
+											className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
+											src={brd.logo}
+											alt={brd.name}
+										/>
+									))}
 							</div>
 						</div>
 					</div>
 
-					<div className="space-y-2 md:space-y-4 xl:space-y-8">
-						<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-							Sắp xếp theo
-						</p>
-						<div className="flex overflow-x-auto gap-x-2 md:gap-x-4 xl:gap-x-8">
-							<OptionButton actived={order === "asc"} onClick={handleClickOrder("asc")}>
-								<BarCharDown
-									width={20}
-									height={20}
-									className="inline mr-1 -rotate-90 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-								/>
-								Giá tăng dần
-							</OptionButton>
-							<OptionButton actived={order === "desc"} onClick={handleClickOrder("desc")}>
-								<BarCharUp
-									width={20}
-									height={20}
-									className="inline mr-1 -rotate-90 dark:text-light-100 text-dark-100 xl:w-6 xl:h-6"
-								/>
-								Giá giảm dần
-							</OptionButton>
-						</div>
-					</div>
-
-					<div
-						className="flex gap-x-4 w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
-						onClick={handleOpenCategoriesModel}
-					>
-						<p className="capitalize text-paragraph-5 dark:text-light-100">
-							{category
-								? category.name
-										.filter((item) => item.language === "vi")[0]
-										.value.toLocaleLowerCase()
-								: ""}
-						</p>
-						<Expand
-							width={16}
-							height={16}
-							className="transition-transform duration-300 ease-linear dark:text-light-100"
-						/>
-					</div>
-				</div>
-				{/* brand logos */}
-				<div className="space-y-2 md:space-y-4 xl:space-y-8">
-					<p className="font-bold md:text-heading-4 text-heading-5 xl:text-heading-3 dark:text-light-100">
-						Thương hiệu
-					</p>
-
-					<div className="flex items-center overflow-x-auto xl:h-36 h-14 md:h-28 gap-x-4 md:gap-x-8 lg:gap-x-10">
-						{brands.length > 0 &&
-							brands.map((brd) => (
-								<HyggeImage
-									onClick={handleClickBrand(brd._id)}
-									key={brd._id}
-									actived={brd._id === brand}
-									className="w-20 h-full shrink-0 lg:w-40 xl:w-52 md:w-32"
-									src={brd.logo}
-									alt={brd.name}
-								/>
-							))}
-					</div>
-				</div>
-			</div>
-
-			<div className="flex justify-between">
-				<Dropdown
-					defaulValue={SortPrice.Default}
-					register={register}
-					name={"orderStatus"}
-					className="w-fit"
-					// onChange={handleSelectChange}
-					options={[
-						{ label: "Mặc định", value: SortPrice.Default },
-						{ label: "Tăng dần", value: SortPrice.Ascending },
-						{ label: "giảm dần", value: SortPrice.Descending },
-					]}
-				/>
-
-				<Button onClick={handleOpenFilter} type="secondary">
-					<div className="flex items-center gap-x-3">
-						<Filter className="dark:text-white" />
-						<span className="font-normal dark:text-white">Lọc</span>
-					</div>
-				</Button>
-			</div>
-
-			{/* products */}
-			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
-				<div className="grid grid-cols-2 lg:grid-cols-4 ">
-					{products.length > 0 &&
-						products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
-				</div>
-
-				{products.length === 0 && (
-					<>
-						<Image
-							src="/not_found_dark.png"
-							alt="not found"
-							width={200}
-							height={200}
-							className="hidden mx-auto dark:block"
+					<div className="flex justify-between">
+						<Dropdown
+							defaulValue={SortPrice.Default}
+							register={register}
+							name={"orderStatus"}
+							className="w-fit"
+							// onChange={handleSelectChange}
+							options={[
+								{ label: "Mặc định", value: SortPrice.Default },
+								{ label: "Tăng dần", value: SortPrice.Ascending },
+								{ label: "giảm dần", value: SortPrice.Descending },
+							]}
 						/>
 
-						<Image
-							src="/not_found_light.png"
-							alt="not found"
-							width={200}
-							height={200}
-							className="mx-auto dark:hidden"
-						/>
-					</>
-				)}
-
-				{after !== "end" && (
-					<div className="flex justify-center mt-14 md:mt-16">
-						<Button onClick={loadMore} type="primary">
-							Xem thêm
+						<Button onClick={handleOpenFilter} type="secondary">
+							<div className="flex items-center gap-x-3">
+								<Filter className="dark:text-white" />
+								<span className="font-normal dark:text-white">Lọc</span>
+							</div>
 						</Button>
 					</div>
-				)}
-			</div>
 
-			{/* categories */}
-			<CategoriesWindow ref={categoriesRef} overlay={overlayRef} />
+					{/* products */}
+					<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
+						<div className="grid grid-cols-2 lg:grid-cols-4 ">
+							{products.length > 0 &&
+								products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+						</div>
+
+						{products.length === 0 && (
+							<>
+								<Image
+									src="/not_found_dark.png"
+									alt="not found"
+									width={200}
+									height={200}
+									className="hidden mx-auto dark:block"
+								/>
+
+								<Image
+									src="/not_found_light.png"
+									alt="not found"
+									width={200}
+									height={200}
+									className="mx-auto dark:hidden"
+								/>
+							</>
+						)}
+
+						{after !== "end" && (
+							<div className="flex justify-center mt-14 md:mt-16">
+								<Button onClick={loadMore} type="primary">
+									Xem thêm
+								</Button>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
 
 			{/* categories */}
 			<Categories overlay={overlayRef} ref={categoryRef} />
