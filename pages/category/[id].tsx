@@ -1,4 +1,4 @@
-import React, { LegacyRef, useEffect, useRef, useState } from "react";
+import React, { Fragment, LegacyRef, useEffect, useRef, useState } from "react";
 import Badge from "../../components/badge/badge";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 import Button from "../../components/buttons/button";
@@ -31,6 +31,8 @@ import { useForm } from "react-hook-form";
 import { SortPrice } from "../../constants/enums";
 import Filter from "../../components/icons/filter";
 import FilterModal, { FilterRefType } from "../../components/modal/filter-modal";
+import { PathCategoryProvider } from "../../context/path-category.context";
+import MultipleSelectDropdown from "../../components/inputs/multiple-select-dropdown";
 
 export default function Category() {
 	const router = useRouter();
@@ -48,8 +50,6 @@ export default function Category() {
 	const [priceRange, setPriceRange] = useState<IPriceRange>();
 
 	const overlayRef = useRef<HTMLDivElement>(null);
-	const categoriesRef = useRef<CategoriesWindowRefType>(null);
-	const priceRangRef = useRef<PriceRangeRefType>(null);
 	const categoryRef = useRef<CategoriesRefType>(null);
 	const filterRef = useRef<FilterRefType>(null);
 
@@ -67,18 +67,6 @@ export default function Category() {
 
 	const handleSelectPriceRange = (price: IPriceRange | undefined) => {
 		setPriceRange(price);
-	};
-
-	const handleOpenPriceRange = () => {
-		if (priceRangRef.current) {
-			priceRangRef.current.open();
-		}
-	};
-
-	const handleOpenCategories = () => {
-		if (categoriesRef.current) {
-			categoriesRef.current.open();
-		}
 	};
 
 	const handleOpenCategoriesModel = () => {
@@ -156,22 +144,6 @@ export default function Category() {
 		}
 	};
 
-	const handleClickOrder = (order: "asc" | "desc") => () => {
-		let path = `${APP_PATH.CATEGORY}/${id}?order=${order}`;
-
-		if (from) {
-			path += `&from=${from}`;
-		}
-		if (to) {
-			path += `&to=${to}`;
-		}
-		if (brand) {
-			path += `&brand=${brand}`;
-		}
-
-		router.push(path);
-	};
-
 	const handleClickBrand = (brand: string) => () => {
 		let path = `${APP_PATH.CATEGORY}/${id}?brand=${brand}`;
 
@@ -245,86 +217,105 @@ export default function Category() {
 				}`}
 			/>
 
-			<div className="space-y-4 lg:flex lg:space-y-0 lg:gap-x-8">
-				<div
-					className="flex gap-x-4 w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
-					onClick={handleOpenCategoriesModel}
-				>
-					<p className="capitalize text-paragraph-5 dark:text-light-100">
-						{category
-							? category.name
-									.filter((item) => item.language === "vi")[0]
-									.value.toLocaleLowerCase()
-							: ""}
-					</p>
-					<Expand
-						width={16}
-						height={16}
-						className="transition-transform duration-300 ease-linear dark:text-light-100"
-					/>
+			<div className="mt-10 lg:grid lg:grid-cols-4">
+				<div className="hidden lg:block">
+					<h5 className="font-semibold text-heading-4">Danh mục</h5>
+					<PathCategoryProvider>
+						<div className="mt-2 space-y-3">
+							{categories.length > 0 &&
+								categories.map((category) => (
+									<CategoryItem key={category._id} category={category} />
+								))}
+						</div>
+					</PathCategoryProvider>
 				</div>
-			</div>
-
-			<div className="flex justify-between">
-				<Dropdown
-					defaulValue={SortPrice.Default}
-					register={register}
-					name={"orderStatus"}
-					className="w-fit"
-					// onChange={handleSelectChange}
-					options={[
-						{ label: "Mặc định", value: SortPrice.Default },
-						{ label: "Tăng dần", value: SortPrice.Ascending },
-						{ label: "giảm dần", value: SortPrice.Descending },
-					]}
-				/>
-
-				<Button onClick={handleOpenFilter} type="secondary">
-					<div className="flex items-center gap-x-3">
-						<Filter className="dark:text-white" />
-						<span className="font-normal dark:text-white">Lọc</span>
+				<div className="lg:col-span-3">
+					<div
+						className="flex gap-x-4 lg:hidden w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
+						onClick={handleOpenCategoriesModel}
+					>
+						<p className="capitalize text-paragraph-5 dark:text-light-100">
+							{category
+								? category.name
+										.filter((item) => item.language === "vi")[0]
+										.value.toLocaleLowerCase()
+								: ""}
+						</p>
+						<Expand
+							width={16}
+							height={16}
+							className="transition-transform duration-300 ease-linear dark:text-light-100"
+						/>
 					</div>
-				</Button>
-			</div>
 
-			{/* products */}
-			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
-				<div className="grid grid-cols-2 lg:grid-cols-4 ">
-					{products.length > 0 &&
-						products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
-				</div>
-
-				{products.length === 0 && (
-					<>
-						<Image
-							src="/not_found_dark.png"
-							alt="not found"
-							width={200}
-							height={200}
-							className="hidden mx-auto dark:block"
+					<div className="flex justify-between">
+						<Dropdown
+							defaulValue={SortPrice.Default}
+							register={register}
+							name={"orderStatus"}
+							className="w-fit"
+							// onChange={handleSelectChange}
+							options={[
+								{ label: "Mặc định", value: SortPrice.Default },
+								{ label: "Tăng dần", value: SortPrice.Ascending },
+								{ label: "giảm dần", value: SortPrice.Descending },
+							]}
 						/>
 
-						<Image
-							src="/not_found_light.png"
-							alt="not found"
-							width={200}
-							height={200}
-							className="mx-auto dark:hidden"
+						<MultipleSelectDropdown
+							register={register}
+							name="brand"
+							placeholder="Chọn thương hiệu"
+							options={brands.map((item) => ({ label: item.name, value: item._id }))}
 						/>
-					</>
-				)}
 
-				{after !== "end" && (
-					<div className="flex justify-center mt-14 md:mt-16">
-						<Button onClick={loadMore} type="primary">
-							Xem thêm
+						<Button onClick={handleOpenFilter} type="secondary">
+							<div className="flex items-center gap-x-3">
+								<Filter className="dark:text-white" />
+								<span className="font-normal dark:text-white">Lọc</span>
+							</div>
 						</Button>
 					</div>
-				)}
-			</div>
 
-			{/* categories */}
-			<CategoriesWindow ref={categoriesRef} overlay={overlayRef} />
+					{/* products */}
+					<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
+						<div className="grid grid-cols-2 lg:grid-cols-4 ">
+							{products.length > 0 &&
+								products.map((product) => (
+									<ProductCard key={product.itemId} productItem={product} />
+								))}
+						</div>
+
+						{products.length === 0 && (
+							<>
+								<Image
+									src="/not_found_dark.png"
+									alt="not found"
+									width={200}
+									height={200}
+									className="hidden mx-auto dark:block"
+								/>
+
+								<Image
+									src="/not_found_light.png"
+									alt="not found"
+									width={200}
+									height={200}
+									className="mx-auto dark:hidden"
+								/>
+							</>
+						)}
+
+						{after !== "end" && (
+							<div className="flex justify-center mt-14 md:mt-16">
+								<Button onClick={loadMore} type="primary">
+									Xem thêm
+								</Button>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
 
 			{/* categories */}
 			<Categories overlay={overlayRef} ref={categoryRef} />
