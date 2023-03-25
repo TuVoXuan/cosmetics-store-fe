@@ -7,6 +7,8 @@ function GoBack(props: SVGProps<SVGSVGElement>) {
 			stroke="none"
 			fill="currentColor"
 			viewBox="0 0 16 16"
+			height={16}
+			width={16}
 			{...props}
 		>
 			<path

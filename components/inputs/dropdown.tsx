@@ -58,6 +58,7 @@ export default function Dropdown({
 				listBoxButtonRef.current.classList.remove("border-t-2", "border-x-2");
 				listBoxButtonRef.current.classList.add("border-2");
 			}
+			// listBoxButtonRef.current.classList.toggle("border-b-transparent");
 		}
 
 		if (expandIconRef.current) {
@@ -112,7 +113,7 @@ export default function Dropdown({
 					type="button"
 					className={clsx(
 						"flex items-center justify-between text-left w-full cursor-pointer border-2",
-						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px]",
+						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px] gap-x-4",
 						error && "border-red-accent dark:border-red-accent"
 					)}
 				>

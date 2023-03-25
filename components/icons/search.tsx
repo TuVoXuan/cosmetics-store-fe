@@ -7,6 +7,8 @@ function Search(props: SVGProps<SVGSVGElement>) {
 			stroke="currentColor"
 			fill="none"
 			viewBox="0 0 24 24"
+			height={24}
+			width={24}
 			{...props}
 		>
 			<path

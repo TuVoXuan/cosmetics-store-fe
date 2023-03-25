@@ -1,11 +1,12 @@
 import { getCookie, setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
-import { useAppDispatch } from "../store/hooks";
+import React, { useContext, useEffect, useState } from "react";
+import { useAppDispatch, useSettings } from "../store/hooks";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import { getCategories } from "../redux/actions/category-action";
 import { getAddress } from "../redux/actions/user-action";
+import { SettingsContextValue } from "../context/setting.context";
 
 interface Props {
 	children?: React.ReactNode;
@@ -15,6 +16,7 @@ export default function MainLayout({ children }: Props) {
 	const [showNavbar, setShowNavbar] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const { data: session } = useSession();
+	const { showLayout, toggleLayout } = useSettings();
 
 	const fetchCategories = () => {
 		dispatch(getCategories()).unwrap();
@@ -59,11 +61,11 @@ export default function MainLayout({ children }: Props) {
 
 	return (
 		<main
-			className={`overflow-hidden p-4 md:pt-8 md:px-8 lg:pt-12 lg:px-12 lg:pb-16 xl:px-24 xl:pt-12 xl:pb-[72px] dark:bg-black-dark-3 ${
-				showNavbar && "h-screen overflow-hidden"
+			className={`p-4 md:pt-8 md:px-8 lg:pt-12 lg:px-12 lg:pb-16 xl:px-24 xl:pt-12 xl:pb-[72px] dark:bg-black-dark-3 ${
+				showLayout && "h-screen overflow-hidden"
 			}`}
 		>
-			<Header onShowNavbar={handleShowNavbar} />
+			<Header onShowNavbar={toggleLayout} />
 			{children}
 			<Footer />
 		</main>

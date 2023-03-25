@@ -25,9 +25,15 @@ import { useAppSelector } from "../../store/hooks";
 import { selectCategories } from "../../redux/slices/category-slice";
 import { brandApi } from "../../api/brand-api";
 import APP_PATH from "../../constants/app-path";
+import { useForm } from "react-hook-form";
+import { SortPrice } from "../../constants/enums";
+import Filter from "../../components/icons/filter";
+import FilterModal, { FilterRefType } from "../../components/modal/filter-modal";
 
 export default function Category() {
 	const router = useRouter();
+	const { register } = useForm();
+
 	const { id, from, to, brand, order } = router.query;
 
 	const categories = useAppSelector(selectCategories).categories;
@@ -40,6 +46,7 @@ export default function Category() {
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoriesRef = useRef<CategoriesWindowRefType>(null);
 	const priceRangRef = useRef<PriceRangeRefType>(null);
+	const filterRef = useRef<FilterRefType>(null);
 
 	const handleOpenPriceRange = () => {
 		if (priceRangRef.current) {
@@ -50,6 +57,12 @@ export default function Category() {
 	const handleOpenCategories = () => {
 		if (categoriesRef.current) {
 			categoriesRef.current.open();
+		}
+	};
+
+	const handleOpenFilter = () => {
+		if (filterRef.current) {
+			filterRef.current.open();
 		}
 	};
 
@@ -282,6 +295,28 @@ export default function Category() {
 				</div>
 			</div>
 
+			<div className="flex justify-between">
+				<Dropdown
+					defaulValue={SortPrice.Default}
+					register={register}
+					name={"orderStatus"}
+					className="w-fit"
+					// onChange={handleSelectChange}
+					options={[
+						{ label: "Mặc định", value: SortPrice.Default },
+						{ label: "Tăng dần", value: SortPrice.Ascending },
+						{ label: "giảm dần", value: SortPrice.Descending },
+					]}
+				/>
+
+				<Button onClick={handleOpenFilter} type="secondary">
+					<div className="flex items-center gap-x-3">
+						<Filter className="dark:text-white" />
+						<span className="font-normal dark:text-white">Lọc</span>
+					</div>
+				</Button>
+			</div>
+
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
 				<div className="grid grid-cols-2 lg:grid-cols-4 ">
@@ -321,6 +356,8 @@ export default function Category() {
 			{/* categories */}
 			<CategoriesWindow ref={categoriesRef} overlay={overlayRef} />
 
+			{/* filter modal */}
+			<FilterModal ref={filterRef} overlay={overlayRef} brands={brands} />
 			{/* overlay */}
 			<Overlay ref={overlayRef} />
 		</div>

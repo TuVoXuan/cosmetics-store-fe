@@ -20,3 +20,9 @@ export enum OrderStatus {
 	Completed = "completed",
 	Cancelled = "cancelled",
 }
+
+export enum SortPrice {
+	Default = "default",
+	Ascending = "ascending",
+	Descending = "descending",
+}
