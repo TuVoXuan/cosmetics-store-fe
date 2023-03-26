@@ -6,3 +6,7 @@ export const convertPrice = (price: number) => {
 export const convertDate = (date: string) => {
 	return new Date(date).toLocaleDateString("en-GB");
 };
+
+export const numberWithDots = (x: number) => {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};

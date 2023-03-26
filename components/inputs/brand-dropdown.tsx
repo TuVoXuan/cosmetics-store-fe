@@ -2,39 +2,31 @@ import { useState, useRef, useEffect } from "react";
 import Expand from "../icons/expand";
 import Selected from "../icons/selected";
 import clsx from "clsx";
-import { RegisterOptions, UseFormRegister } from "react-hook-form";
+import { RegisterOptions, useForm, UseFormRegister } from "react-hook-form";
+import { useRouter } from "next/router";
+import Button from "../buttons/button";
 
 interface Props {
 	options: IOption[];
-	label?: string;
 	className?: string;
-	register: UseFormRegister<any>;
-	option?: RegisterOptions;
-	name: string;
-	defaulValue?: string[];
-	error?: string;
-	onChange?: (value: string) => void;
-	watch?: string;
-	placeholder?: string;
-	topChildren?: React.ReactNode;
-	bottomChildren?: React.ReactNode;
-	reset?: () => void;
 }
 
-export default function MultipleSelectDropdown({
-	options,
-	className,
-	label,
-	error,
-	name,
-	defaulValue,
-	option,
-	watch,
-	register,
-	onChange,
-	placeholder = "Chọn giá trị",
-}: Props) {
+interface FormValue {
+	brands: string[];
+}
+
+export default function MultipleSelectDropdown({ options, className }: Props) {
+	const router = useRouter();
+	const { register, reset, getValues } = useForm<FormValue>({
+		defaultValues: {
+			brands: [],
+		},
+	});
+	const { brands } = router.query;
+
 	const [selectedValue, setSelectedValue] = useState<IOption[]>([]);
+	const [defaultValue, setDefaultValue] = useState<string[]>([]);
+
 	const listBoxButtonRef = useRef<HTMLButtonElement>(null);
 	const listBoxRef = useRef<HTMLDivElement>(null);
 	const expandIconRef = useRef<HTMLDivElement>(null);
@@ -77,40 +69,43 @@ export default function MultipleSelectDropdown({
 		} else {
 			setSelectedValue(selectedValue.filter((item) => item.value !== option.value));
 		}
-		onChange && onChange(option.value);
+	};
+
+	const handleReset = () => {
+		reset();
+		setSelectedValue([]);
+		handleClick();
+	};
+
+	const handleApply = () => {
+		const result = getValues("brands");
+		console.log("result: ", result);
+		handleClick();
 	};
 
 	useEffect(() => {
-		setSelectedValue([]);
-	}, [watch]);
-
-	useEffect(() => {
-		setSelectedValue(options.filter((item) => defaulValue?.includes(item.value)));
+		if (brands) {
+			setSelectedValue(options.filter((item) => (brands as string).split(",")?.includes(item.value)));
+			setDefaultValue((brands as string).split(","));
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [defaulValue]);
+	}, [brands]);
 
 	return (
 		<div>
 			<div className="hidden">
-				{options.length > 0 ? (
+				{options.length > 0 &&
 					options.map((item) => (
 						<input
-							{...register(name, option)}
+							{...register("brands")}
 							key={item.value}
 							value={item.value}
 							type="checkbox"
-							name={name}
 							id={item.value}
-							defaultChecked={defaulValue?.includes(item.value)}
+							defaultChecked={defaultValue?.includes(item.value)}
 						/>
-					))
-				) : (
-					<input {...register(name, option)} value={""} type="checkbox" name={name} checked={false} />
-				)}
+					))}
 			</div>
-			{label && (
-				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
-			)}
 
 			<div className={clsx("relative", className)}>
 				<button
@@ -119,12 +114,11 @@ export default function MultipleSelectDropdown({
 					type="button"
 					className={clsx(
 						"flex items-center justify-between text-left w-full cursor-pointer border-2",
-						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px] gap-x-4",
-						error && "border-red-accent dark:border-red-accent"
+						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px] gap-x-4"
 					)}
 				>
 					<p className={clsx("select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5")}>
-						{selectedValue.length > 0 ? `${selectedValue.length} ${label} được chọn` : placeholder}
+						{selectedValue.length > 0 ? `Đã chọn ${selectedValue.length} thương hiệu` : "Chọn thương hiệu"}
 					</p>
 					<div ref={expandIconRef} className="duration-300 ease-linear">
 						<Expand width={16} height={16} className="dark:text-light-100" />
@@ -135,8 +129,7 @@ export default function MultipleSelectDropdown({
 					ref={listBoxRef}
 					className={clsx(
 						"hidden absolute w-full left-0 right-0 z-[1] bg-white border-x-2 border-primary-100 dark:bg-black-dark-3 dark:text-white-light max-h-80",
-						"top-[100%] rounded-b-[32px] border-b-2 shadow-lg dark:shadow-primary-100/50 flex flex-col",
-						error && "border-red-accent dark:border-red-accent"
+						"top-[100%] rounded-b-[32px] border-b-2 shadow-lg dark:shadow-primary-100/50 flex flex-col"
 					)}
 				>
 					<ul className="overflow-y-auto grow">
@@ -177,9 +170,16 @@ export default function MultipleSelectDropdown({
 							);
 						})}
 					</ul>
+					<div className="flex justify-between p-4">
+						<Button type="primary" className="w-fit !px-6 !py-2 text-paragraph-5 font-medium" onClick={handleApply}>
+							Áp dụng
+						</Button>
+						<Button type="secondary" className="w-fit !px-6 !py-2 text-paragraph-5 font-medium" onClick={handleReset}>
+							Bỏ chọn
+						</Button>
+					</div>
 				</div>
 			</div>
-			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
 		</div>
 	);
 }

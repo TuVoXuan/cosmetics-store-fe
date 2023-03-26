@@ -33,6 +33,8 @@ import Filter from "../../components/icons/filter";
 import FilterModal, { FilterRefType } from "../../components/modal/filter-modal";
 import { PathCategoryProvider } from "../../context/path-category.context";
 import MultipleSelectDropdown from "../../components/inputs/multiple-select-dropdown";
+import BrandDropdown from "../../components/inputs/brand-dropdown";
+import PriceRangeDropdown from "../../components/inputs/price-range-dropdown";
 
 export default function Category() {
 	const router = useRouter();
@@ -197,7 +199,7 @@ export default function Category() {
 				}`}
 			/>
 
-			<div className="lg:grid lg:grid-cols-4 mt-10">
+			<div className="mt-10 lg:grid lg:grid-cols-4">
 				<div className="hidden lg:block">
 					<h5 className="font-semibold text-heading-4">Danh mục</h5>
 					<PathCategoryProvider>
@@ -222,7 +224,7 @@ export default function Category() {
 						/>
 					</div>
 
-					<div className="flex justify-between">
+					<div className="flex flex-wrap gap-x-4">
 						<Dropdown
 							defaulValue={SortPrice.Default}
 							register={register}
@@ -236,14 +238,14 @@ export default function Category() {
 							]}
 						/>
 
-						<MultipleSelectDropdown
-							register={register}
-							name="brand"
-							placeholder="Chọn thương hiệu"
+						<BrandDropdown
+							className="w-[300px]"
 							options={brands.map((item) => ({ label: item.name, value: item._id }))}
 						/>
 
-						<Button onClick={handleOpenFilter} type="secondary">
+						<PriceRangeDropdown className="w-[300px]" />
+
+						<Button onClick={handleOpenFilter} type="secondary" className="lg:hidden">
 							<div className="flex items-center gap-x-3">
 								<Filter className="dark:text-white" />
 								<span className="font-normal dark:text-white">Lọc</span>
