@@ -35,6 +35,7 @@ import { PathCategoryProvider } from "../../context/path-category.context";
 import MultipleSelectDropdown from "../../components/inputs/multiple-select-dropdown";
 import BrandDropdown from "../../components/inputs/brand-dropdown";
 import PriceRangeDropdown from "../../components/inputs/price-range-dropdown";
+import RemoveFilterButton from "../../components/buttons/remove-filter-btn";
 
 export default function Category() {
 	const router = useRouter();
@@ -146,22 +147,6 @@ export default function Category() {
 		}
 	};
 
-	const handleClickBrand = (brand: string) => () => {
-		let path = `${APP_PATH.CATEGORY}/${id}?brand=${brand}`;
-
-		if (from) {
-			path += `&from=${from}`;
-		}
-		if (to) {
-			path += `&to=${to}`;
-		}
-		if (order) {
-			path += `&order=${order}`;
-		}
-
-		router.push(path);
-	};
-
 	const fetchProductsLoadMore = async (after: string) => {
 		if (id && after !== "end") {
 			const data = await productApi.getProductItemsByCategoryAndOptions({
@@ -213,9 +198,7 @@ export default function Category() {
 				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
 				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
 				title={`Khám phá các sản phẩm ${
-					category
-						? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase()
-						: ""
+					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
 				}`}
 			/>
 
@@ -225,9 +208,7 @@ export default function Category() {
 					<PathCategoryProvider>
 						<div className="mt-2 space-y-3">
 							{categories.length > 0 &&
-								categories.map((category) => (
-									<CategoryItem key={category._id} category={category} />
-								))}
+								categories.map((category) => <CategoryItem key={category._id} category={category} />)}
 						</div>
 					</PathCategoryProvider>
 				</div>
@@ -237,11 +218,7 @@ export default function Category() {
 						onClick={handleOpenCategoriesModel}
 					>
 						<p className="capitalize text-paragraph-5 dark:text-light-100">
-							{category
-								? category.name
-										.filter((item) => item.language === "vi")[0]
-										.value.toLocaleLowerCase()
-								: ""}
+							{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
 						</p>
 						<Expand
 							width={16}
@@ -279,13 +256,30 @@ export default function Category() {
 						</Button>
 					</div>
 
+					<div>
+						{from && to && (
+							<RemoveFilterButton
+								type="price-range"
+								value={`${new Intl.NumberFormat("vn-VN").format(
+									parseInt(from as string) / 1000
+								)}k - ${new Intl.NumberFormat("vn-VN").format(parseInt(to as string) / 1000)}k`}
+							/>
+						)}
+						{brand &&
+							(brand as string).split(",").map((item) => {
+								const brd = brands.find((e) => e._id === item);
+								if (brd) {
+									return <RemoveFilterButton key={brd._id} type="brand" value={brd.name} />;
+								}
+								return <Fragment key={item}></Fragment>;
+							})}
+					</div>
+
 					{/* products */}
 					<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
 						<div className="grid grid-cols-2 lg:grid-cols-4 ">
 							{products.length > 0 &&
-								products.map((product) => (
-									<ProductCard key={product.itemId} productItem={product} />
-								))}
+								products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 						</div>
 
 						{products.length === 0 && (

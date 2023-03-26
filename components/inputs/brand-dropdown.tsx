@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { RegisterOptions, useForm, UseFormRegister } from "react-hook-form";
 import { useRouter } from "next/router";
 import Button from "../buttons/button";
+import APP_PATH from "../../constants/app-path";
 
 interface Props {
 	options: IOption[];
@@ -22,7 +23,8 @@ export default function MultipleSelectDropdown({ options, className }: Props) {
 			brands: [],
 		},
 	});
-	const { brands } = router.query;
+
+	const { id, from, to, brand, order } = router.query;
 
 	const [selectedValue, setSelectedValue] = useState<IOption[]>([]);
 	const [defaultValue, setDefaultValue] = useState<string[]>([]);
@@ -79,17 +81,27 @@ export default function MultipleSelectDropdown({ options, className }: Props) {
 
 	const handleApply = () => {
 		const result = getValues("brands");
-		console.log("result: ", result);
+		let url = `${APP_PATH.CATEGORY}/${id}?brand=${result.join(",")}`;
+
+		if (from && to) {
+			url += `&from=${from}&to=${to}`;
+		}
+
+		if (order) {
+			url += `&order=${order}`;
+		}
+
 		handleClick();
+		router.push(url, undefined, { shallow: true });
 	};
 
 	useEffect(() => {
-		if (brands) {
-			setSelectedValue(options.filter((item) => (brands as string).split(",")?.includes(item.value)));
-			setDefaultValue((brands as string).split(","));
+		if (brand) {
+			setSelectedValue(options.filter((item) => (brand as string).split(",")?.includes(item.value)));
+			setDefaultValue((brand as string).split(","));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [brands]);
+	}, [brand]);
 
 	return (
 		<div>

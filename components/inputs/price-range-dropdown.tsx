@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import Button from "../buttons/button";
 import InputCurrency from "./input-currency";
 import Input from "./input";
+import { useRouter } from "next/router";
+import APP_PATH from "../../constants/app-path";
 
 interface Props {
 	className?: string;
@@ -19,6 +21,9 @@ export default function PriceRangeDropdown({ className }: Props) {
 	const listBoxButtonRef = useRef<HTMLButtonElement>(null);
 	const listBoxRef = useRef<HTMLDivElement>(null);
 	const expandIconRef = useRef<HTMLDivElement>(null);
+
+	const router = useRouter();
+	const { id, from, to, brand, order } = router.query;
 
 	const {
 		register,
@@ -70,7 +75,16 @@ export default function PriceRangeDropdown({ className }: Props) {
 	};
 
 	const onSubmit = (data: FormValue) => {
-		console.log("data: ", data);
+		let url = `${APP_PATH.CATEGORY}/${id}?from=${data.from}&to=${data.to}`;
+
+		if (brand) {
+			url += `&brand=${brand}`;
+		}
+		if (order) {
+			url += `$order=${order}`;
+		}
+
+		router.push(url, undefined, { shallow: true });
 	};
 
 	const handleReset = () => {

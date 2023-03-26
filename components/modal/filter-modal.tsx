@@ -164,10 +164,7 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 			>
 				<div className="relative p-4 border-b-2 md:p-5">
 					{moreBrands && (
-						<button
-							onClick={handleMoreBrands}
-							className="absolute top-[50%] -translate-y-1/2 left-4 md:right-5"
-						>
+						<button onClick={handleMoreBrands} className="absolute top-[50%] -translate-y-1/2 left-4 md:right-5">
 							<GoBack className="dark:text-white" />
 						</button>
 					)}
@@ -176,19 +173,12 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 						{moreBrands ? "Thương hiệu" : "Lọc sản phẩm"}
 					</h3>
 
-					<button
-						onClick={handleClose}
-						className="absolute top-[50%] -translate-y-1/2 right-4 md:right-5"
-					>
+					<button onClick={handleClose} className="absolute top-[50%] -translate-y-1/2 right-4 md:right-5">
 						<Delete width={20} height={20} className="dark:text-white" />
 					</button>
 				</div>
 
-				<form
-					id="filterForm"
-					onSubmit={handleSubmit(onSubmit)}
-					className="p-4 space-y-6 overflow-y-auto grow"
-				>
+				<form id="filterForm" onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-6 overflow-y-auto grow">
 					{moreBrands ? (
 						<>
 							<div className="relative flex items-center gap-x-3">
@@ -197,18 +187,14 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 									type="text"
 									name="search"
 									id="search"
-									onChange={(event: ChangeEvent<HTMLInputElement>) =>
-										setSearchBrand(event.target.value)
-									}
+									onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchBrand(event.target.value)}
 									className="w-full p-3 border-2 pl-9 border-gray-accent rounded-3xl focus:outline-none focus:border-primary-100"
 								/>
 							</div>
 
 							<div className="grid grid-cols-2 gap-3">
 								{brandsList
-									.filter((item) =>
-										item.name.toLowerCase().includes(searchBrand.toLowerCase())
-									)
+									.filter((item) => item.name.toLowerCase().includes(searchBrand.toLowerCase()))
 									.map((item) => (
 										<BrandCard
 											active={tempSelectedBrands.includes(item._id)}
@@ -256,9 +242,7 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 													message: "Price to is requited",
 												},
 												validate: () =>
-													Number(getValues("priceTo")) >=
-														Number(getValues("priceFrom")) ||
-													"Đến phải lớn hơn Từ",
+													Number(getValues("priceTo")) >= Number(getValues("priceFrom")) || "Đến phải lớn hơn Từ",
 											}}
 											type="number"
 											placeholder="Đến"
@@ -267,27 +251,17 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 									</div>
 								</div>
 								{errors.priceFrom?.message && (
-									<p className="text-red-accent text-heading-6">
-										{errors.priceFrom.message}
-									</p>
+									<p className="text-red-accent text-heading-6">{errors.priceFrom.message}</p>
 								)}
-								{errors.priceTo?.message && (
-									<p className="text-red-accent text-heading-6">{errors.priceTo.message}</p>
-								)}
+								{errors.priceTo?.message && <p className="text-red-accent text-heading-6">{errors.priceTo.message}</p>}
 							</div>
 							<div className="space-y-3">
 								<div className="flex items-center justify-between">
 									<h6 className="font-medium uppercase text-heading-6">Thương hiệu</h6>
 
 									{brandsList.length > 10 && (
-										<button
-											onClick={handleMoreBrands}
-											type="button"
-											className="flex items-center gap-x-1"
-										>
-											<p className="text-paragraph-5 text-dark-64">
-												Tất cả ({brands.length})
-											</p>
+										<button onClick={handleMoreBrands} type="button" className="flex items-center gap-x-1">
+											<p className="text-paragraph-5 text-dark-64">Tất cả ({brands.length})</p>
 											<GoForward className="w-3 h-3 text-dark-24" />
 										</button>
 									)}
@@ -327,4 +301,7 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 		);
 	}
 );
+
+FilterModal.displayName = "FilterModel";
+
 export default FilterModal;
