@@ -56,7 +56,7 @@ export default function Search() {
 				limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
 				from: from as string,
 				to: to as string,
-				brand: brand as string,
+				brands: brand as string,
 				after: after,
 				order: order ? (order as "desc" | "asc") : undefined,
 			});
@@ -208,7 +208,8 @@ export default function Search() {
 			{/* products */}
 			<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
 				<div className="space-y-14 md:grid md:grid-cols-3 md:space-y-0 gap-x-12 gap-y-16 lg:grid-cols-4 lg:gap-x-14">
-					{products.length > 0 && products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+					{products.length > 0 &&
+						products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
 				</div>
 				{products.length === 0 && (
 					<>

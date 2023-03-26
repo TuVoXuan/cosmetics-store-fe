@@ -12,11 +12,11 @@ declare interface IGetProductByCategory extends IRandomPagination {
 	id: string;
 }
 
-declare interface IGetProductByCategoryAndOptioins extends ILoadMorePagination {
+declare interface IGetProductByCategoryAndOptions extends ILoadMorePagination {
 	id: string;
 	from?: string;
 	to?: string;
-	brand?: string;
+	brands?: string;
 	order?: "asc" | "desc";
 }
 
@@ -44,7 +44,7 @@ declare interface IProductDetailInfo {
 	descriptions: ITranslation[];
 }
 
-declare interface ISearchProduct extends Omit<IGetProductByCategoryAndOptioins, "id"> {
+declare interface ISearchProduct extends Omit<IGetProductByCategoryAndOptions, "id"> {
 	search: string;
 }
 

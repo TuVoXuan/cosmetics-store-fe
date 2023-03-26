@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useRouter } from "next/dist/client/router";
 import React, {
 	ChangeEvent,
 	MouseEvent,
@@ -9,6 +10,7 @@ import React, {
 	useState,
 } from "react";
 import { useForm } from "react-hook-form";
+import APP_PATH from "../../constants/app-path";
 import { useSettings } from "../../store/hooks";
 import Button from "../buttons/button";
 import BrandCard from "../card/brand-card";
@@ -42,6 +44,10 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 		// ref
 		const FilterContainerRef = useRef<HTMLDivElement>(null);
 
+		// router
+		const router = useRouter();
+		const { id, order } = router.query;
+
 		// state
 		const [brandsList, setBrandsList] = useState<IBrand[]>(brands);
 		const [moreBrands, setMoreBrands] = useState<boolean>(false);
@@ -58,6 +64,7 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 			watch,
 			reset,
 			getValues,
+			setValue,
 			formState: { errors },
 		} = useForm<FormValues>({
 			defaultValues: {
@@ -86,12 +93,33 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 
 		const onSubmit = (value: FormValues) => {
 			onSelectBrand(tempSelectedBrands);
+			let url = `${APP_PATH.CATEGORY}/${id}`;
 			if (value.priceFrom && value.priceTo) {
 				onSelectPriceRange({ from: value.priceFrom, to: value.priceTo });
+				if (tempSelectedBrands.length > 0) {
+					url += `?from=${value.priceFrom}&to=${value.priceTo}&brand=${tempSelectedBrands.join(
+						","
+					)}`;
+				} else {
+					url += `?from=${value.priceFrom}&to=${value.priceTo}`;
+				}
 			} else {
+				if (tempSelectedBrands.length > 0) {
+					url += `?brand=${tempSelectedBrands.join(",")}`;
+				}
 				onSelectPriceRange(undefined);
 			}
+
+			if (order) {
+				if (value.priceFrom || value.priceTo || tempSelectedBrands.length > 0) {
+					url += `&order=${order}`;
+				} else {
+					url += `?order=${order}`;
+				}
+			}
+
 			handleClose();
+			router.push(url);
 		};
 
 		const handleMoreBrands = () => {
@@ -156,6 +184,13 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(
 		useEffect(() => {
 			setTempSelectedBrands(selectedBrands);
 		}, [selectedBrands]);
+
+		useEffect(() => {
+			if (priceRange) {
+				setValue("priceFrom", priceRange.from);
+				setValue("priceTo", priceRange.to);
+			}
+		}, [priceRange]);
 
 		return (
 			<div
