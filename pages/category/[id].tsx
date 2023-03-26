@@ -316,10 +316,10 @@ export default function Category() {
 				ref={filterRef}
 				overlay={overlayRef}
 				brands={brands}
-				selectedBrands={selectedBrands.map((item) => item._id)}
-				onSelectBrand={handleSelectBrand}
-				priceRange={priceRange}
-				onSelectPriceRange={handleSelectPriceRange}
+				// selectedBrands={selectedBrands.map((item) => item._id)}
+				// onSelectBrand={handleSelectBrand}
+				// priceRange={priceRange}
+				// onSelectPriceRange={handleSelectPriceRange}
 			/>
 			{/* overlay */}
 			<Overlay ref={overlayRef} />
