@@ -48,10 +48,28 @@ export default function Category() {
 	const [category, setCategory] = useState<ICategory>();
 	const [brands, setBrands] = useState<IBrand[]>([]);
 	const [after, setAfter] = useState<string>("");
+	const [selectedBrands, setSelectedBrands] = useState<IBrand[]>([]);
+	const [priceRange, setPriceRange] = useState<IPriceRange>();
 
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoryRef = useRef<CategoriesRefType>(null);
 	const filterRef = useRef<FilterRefType>(null);
+
+	const handleSelectBrand = (brandIds: string[]) => {
+		const selectdBrandsName: IBrand[] = [];
+		for (let i = 0; i < brandIds.length; i++) {
+			const brandId = brandIds[i];
+			const brand = brands.find((item) => item._id === brandId);
+			if (brand) {
+				selectdBrandsName.push(brand);
+			}
+		}
+		setSelectedBrands(selectdBrandsName);
+	};
+
+	const handleSelectPriceRange = (price: IPriceRange | undefined) => {
+		setPriceRange(price);
+	};
 
 	const handleOpenCategoriesModel = () => {
 		if (categoryRef.current) {
@@ -195,7 +213,9 @@ export default function Category() {
 				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
 				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
 				title={`Khám phá các sản phẩm ${
-					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
+					category
+						? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase()
+						: ""
 				}`}
 			/>
 
@@ -205,7 +225,9 @@ export default function Category() {
 					<PathCategoryProvider>
 						<div className="mt-2 space-y-3">
 							{categories.length > 0 &&
-								categories.map((category) => <CategoryItem key={category._id} category={category} />)}
+								categories.map((category) => (
+									<CategoryItem key={category._id} category={category} />
+								))}
 						</div>
 					</PathCategoryProvider>
 				</div>
@@ -215,7 +237,11 @@ export default function Category() {
 						onClick={handleOpenCategoriesModel}
 					>
 						<p className="capitalize text-paragraph-5 dark:text-light-100">
-							{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
+							{category
+								? category.name
+										.filter((item) => item.language === "vi")[0]
+										.value.toLocaleLowerCase()
+								: ""}
 						</p>
 						<Expand
 							width={16}
@@ -257,7 +283,9 @@ export default function Category() {
 					<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
 						<div className="grid grid-cols-2 lg:grid-cols-4 ">
 							{products.length > 0 &&
-								products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+								products.map((product) => (
+									<ProductCard key={product.itemId} productItem={product} />
+								))}
 						</div>
 
 						{products.length === 0 && (
@@ -294,7 +322,15 @@ export default function Category() {
 			{/* categories */}
 			<Categories overlay={overlayRef} ref={categoryRef} />
 			{/* filter modal */}
-			<FilterModal ref={filterRef} overlay={overlayRef} brands={brands} />
+			<FilterModal
+				ref={filterRef}
+				overlay={overlayRef}
+				brands={brands}
+				selectedBrands={selectedBrands.map((item) => item._id)}
+				onSelectBrand={handleSelectBrand}
+				priceRange={priceRange}
+				onSelectPriceRange={handleSelectPriceRange}
+			/>
 			{/* overlay */}
 			<Overlay ref={overlayRef} />
 		</div>

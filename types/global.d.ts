@@ -88,3 +88,8 @@ declare interface IAddress extends IAddressForm {
 declare interface IAddressExtract extends IAddress {
 	coordinates: ICoordinates;
 }
+
+declare interface IPriceRange {
+	from: number;
+	to: number;
+}
