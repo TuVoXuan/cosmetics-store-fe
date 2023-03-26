@@ -36,6 +36,7 @@ import MultipleSelectDropdown from "../../components/inputs/multiple-select-drop
 import BrandDropdown from "../../components/inputs/brand-dropdown";
 import PriceRangeDropdown from "../../components/inputs/price-range-dropdown";
 import RemoveFilterButton from "../../components/buttons/remove-filter-btn";
+import { toastError } from "../../util/toast";
 
 export default function Category() {
 	const router = useRouter();
@@ -55,6 +56,18 @@ export default function Category() {
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoryRef = useRef<CategoriesRefType>(null);
 	const filterRef = useRef<FilterRefType>(null);
+
+	const handleSortByChange = (value: string) => {
+		console.log("value: ", value);
+		let path = `${APP_PATH.CATEGORY}/${id}?order=${value}`;
+		if (from && to) {
+			path += `&from=${from}&to=${to}`;
+		}
+		if (brand) {
+			path += `&brand=${brand}`;
+		}
+		router.push(path);
+	};
 
 	const handleSelectBrand = (brandIds: string[]) => {
 		const selectdBrandsName: IBrand[] = [];
@@ -81,23 +94,6 @@ export default function Category() {
 	const handleOpenFilter = () => {
 		if (filterRef.current) {
 			filterRef.current.open();
-		}
-	};
-
-	const fetchProductItemsRandom = async (previous?: string[]) => {
-		if (id) {
-			const body: IGetProductByCategory = {
-				id: id as string,
-				limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
-			};
-			if (previous) {
-				body.previous = previous;
-			}
-			const response = await productApi.getProductItemsByCategory(body);
-			if (response.length === 0) {
-				setAfter("end");
-			}
-			setProducts((values) => [...values, ...response]);
 		}
 	};
 
@@ -133,11 +129,7 @@ export default function Category() {
 	};
 
 	const loadMore = () => {
-		if (from || to || brand || order) {
-			fetchProductsLoadMore(after);
-		} else {
-			fetchProductItemsRandom(products.map((item) => item.itemId));
-		}
+		fetchProductsLoadMore(after);
 	};
 
 	const fetchBrands = async (id: string) => {
@@ -154,25 +146,35 @@ export default function Category() {
 				limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
 				from: from as string,
 				to: to as string,
-				brand: brand as string,
+				brands: brand as string,
 				after: after,
 				order: order ? (order as "desc" | "asc") : undefined,
 			});
 
-			setProducts((values) => [...values, ...data.data]);
+			if (after === "") {
+				setProducts(data.data);
+			} else {
+				setProducts((values) => [...values, ...data.data]);
+			}
 			setAfter(data.after);
 		}
 	};
 
 	useEffect(() => {
-		if (!from && !to && !brand && !order) {
-			fetchProductItemsRandom();
-		}
 		setProducts([]);
 		setAfter("");
+		fetchProductsLoadMore("");
 		fetchBrands(id as string);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
+
+	useEffect(() => {
+		if (brand) {
+			const listBrandIds = (brand as string).split(",");
+			const selectedBrandsName = brands.filter((item) => listBrandIds.includes(item._id));
+			setSelectedBrands(selectedBrandsName);
+		}
+	}, [brands]);
 
 	useEffect(() => {
 		if (id) {
@@ -182,133 +184,142 @@ export default function Category() {
 	}, [categories, id]);
 
 	useEffect(() => {
-		if (from || to || brand || order) {
-			setProducts([]);
-			setAfter("");
-			fetchProductsLoadMore("");
+		if (from && to) {
+			const queryPriceRange = { from: parseInt(from as string), to: parseInt(to as string) };
+			setPriceRange(queryPriceRange);
 		}
+		fetchProductsLoadMore("");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [from, to, brand, order]);
 
 	return (
 		<div>
-			<Breadcrumb className="hidden xl:block xl:mt-24" items={["Trang chủ", "Trang điểm"]} />
+			<div className="space-y-14 mt-14 mb-14 md:mb-[112px] xl:mb-[144px]">
+				<Breadcrumb className="hidden xl:block xl:mt-24" items={["Trang chủ", "Trang điểm"]} />
 
-			<TitlePage
-				className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
-				subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
-				title={`Khám phá các sản phẩm ${
-					category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
-				}`}
-			/>
+				<TitlePage
+					className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
+					subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
+					title={`Khám phá các sản phẩm ${
+						category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
+					}`}
+				/>
 
-			<div className="mt-10 lg:grid lg:grid-cols-4">
-				<div className="hidden lg:block">
-					<h5 className="font-semibold text-heading-4">Danh mục</h5>
-					<PathCategoryProvider>
-						<div className="mt-2 space-y-3">
-							{categories.length > 0 &&
-								categories.map((category) => <CategoryItem key={category._id} category={category} />)}
-						</div>
-					</PathCategoryProvider>
-				</div>
-				<div className="lg:col-span-3">
-					<div
-						className="flex gap-x-4 lg:hidden w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center"
-						onClick={handleOpenCategoriesModel}
-					>
-						<p className="capitalize text-paragraph-5 dark:text-light-100">
-							{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
-						</p>
-						<Expand
-							width={16}
-							height={16}
-							className="transition-transform duration-300 ease-linear dark:text-light-100"
-						/>
-					</div>
-
-					<div className="flex flex-wrap gap-x-4">
-						<Dropdown
-							defaulValue={SortPrice.Default}
-							register={register}
-							name={"orderStatus"}
-							className="w-fit"
-							// onChange={handleSelectChange}
-							options={[
-								{ label: "Mặc định", value: SortPrice.Default },
-								{ label: "Tăng dần", value: SortPrice.Ascending },
-								{ label: "giảm dần", value: SortPrice.Descending },
-							]}
-						/>
-
-						<BrandDropdown
-							className="w-[300px]"
-							options={brands.map((item) => ({ label: item.name, value: item._id }))}
-						/>
-
-						<PriceRangeDropdown className="w-[300px]" />
-
-						<Button onClick={handleOpenFilter} type="secondary" className="lg:hidden">
-							<div className="flex items-center gap-x-3">
-								<Filter className="dark:text-white" />
-								<span className="font-normal dark:text-white">Lọc</span>
+				<div className="mt-10 lg:grid lg:grid-cols-4">
+					<div className="hidden lg:block">
+						<h5 className="font-semibold text-heading-4">Danh mục</h5>
+						<PathCategoryProvider>
+							<div className="mt-2 space-y-3">
+								{categories.length > 0 &&
+									categories.map((category) => <CategoryItem key={category._id} category={category} />)}
 							</div>
-						</Button>
+						</PathCategoryProvider>
 					</div>
+					<div className="space-y-6 lg:col-span-3">
+						<div className="space-y-6 md:space-y-0 md:flex gap-x-4 lg:block">
+							<div
+								className="flex shrink-0 gap-x-4 w-full justify-between md:w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center lg:hidden"
+								onClick={handleOpenCategoriesModel}
+							>
+								<p className="capitalize text-paragraph-5 dark:text-light-100">
+									{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
+								</p>
+								<Expand
+									width={16}
+									height={16}
+									className="transition-transform duration-300 ease-linear dark:text-light-100"
+								/>
+							</div>
 
-					<div>
-						{from && to && (
-							<RemoveFilterButton
-								type="price-range"
-								value={`${new Intl.NumberFormat("vn-VN").format(
-									parseInt(from as string) / 1000
-								)}k - ${new Intl.NumberFormat("vn-VN").format(parseInt(to as string) / 1000)}k`}
-							/>
-						)}
-						{brand &&
-							(brand as string).split(",").map((item) => {
-								const brd = brands.find((e) => e._id === item);
-								if (brd) {
-									return <RemoveFilterButton key={brd._id} type="brand" value={brd.name} />;
-								}
-								return <Fragment key={item}></Fragment>;
-							})}
-					</div>
-
-					{/* products */}
-					<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
-						<div className="grid grid-cols-2 lg:grid-cols-4 ">
-							{products.length > 0 &&
-								products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
-						</div>
-
-						{products.length === 0 && (
-							<>
-								<Image
-									src="/not_found_dark.png"
-									alt="not found"
-									width={200}
-									height={200}
-									className="hidden mx-auto dark:block"
+							<div className="flex justify-between md:w-full">
+								<Dropdown
+									defaulValue={order ? (order as string) : SortPrice.Default}
+									register={register}
+									name={"orderStatus"}
+									className="w-fit"
+									onChange={handleSortByChange}
+									options={[
+										{ label: "Mặc định", value: SortPrice.Default },
+										{ label: "Tăng dần", value: SortPrice.Ascending },
+										{ label: "giảm dần", value: SortPrice.Descending },
+									]}
 								/>
 
-								<Image
-									src="/not_found_light.png"
-									alt="not found"
-									width={200}
-									height={200}
-									className="mx-auto dark:hidden"
+								<BrandDropdown
+									className="w-[300px]"
+									options={brands.map((item) => ({ label: item.name, value: item._id }))}
 								/>
-							</>
-						)}
 
-						{after !== "end" && (
-							<div className="flex justify-center mt-14 md:mt-16">
-								<Button onClick={loadMore} type="primary">
-									Xem thêm
+								<PriceRangeDropdown className="w-[300px]" />
+
+								<Button onClick={handleOpenFilter} type="secondary" className="lg:hidden">
+									<div className="flex items-center gap-x-3">
+										<Filter className="dark:text-white" />
+										<span className="font-normal dark:text-white">Lọc</span>
+									</div>
 								</Button>
 							</div>
+						</div>
+
+						{((from && to) || brand) && (
+							<div className="space-y-4">
+								<h5 className="text-paragraph-3">Đang lọc theo</h5>
+								<div className="flex gap-x-4">
+									{from && to && (
+										<RemoveFilterButton
+											type="price-range"
+											value={`${new Intl.NumberFormat("vn-VN").format(
+												parseInt(from as string) / 1000
+											)}k - ${new Intl.NumberFormat("vn-VN").format(parseInt(to as string) / 1000)}k`}
+										/>
+									)}
+									{brand &&
+										(brand as string).split(",").map((item) => {
+											const brd = brands.find((e) => e._id === item);
+											if (brd) {
+												return <RemoveFilterButton key={brd._id} brandId={brd._id} type="brand" value={brd.name} />;
+											}
+											return <Fragment key={item}></Fragment>;
+										})}
+								</div>
+							</div>
 						)}
+
+						{/* products */}
+						<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
+							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+								{products.length > 0 &&
+									products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+							</div>
+
+							{products.length === 0 && (
+								<>
+									<Image
+										src="/not_found_dark.png"
+										alt="not found"
+										width={200}
+										height={200}
+										className="hidden mx-auto dark:block"
+									/>
+
+									<Image
+										src="/not_found_light.png"
+										alt="not found"
+										width={200}
+										height={200}
+										className="mx-auto dark:hidden"
+									/>
+								</>
+							)}
+
+							{after !== "end" && (
+								<div className="flex justify-center mt-14 md:mt-16">
+									<Button onClick={loadMore} type="primary">
+										Xem thêm
+									</Button>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -320,10 +331,10 @@ export default function Category() {
 				ref={filterRef}
 				overlay={overlayRef}
 				brands={brands}
-				selectedBrands={selectedBrands.map((item) => item._id)}
-				onSelectBrand={handleSelectBrand}
-				priceRange={priceRange}
-				onSelectPriceRange={handleSelectPriceRange}
+				// selectedBrands={selectedBrands.map((item) => item._id)}
+				// onSelectBrand={handleSelectBrand}
+				// priceRange={priceRange}
+				// onSelectPriceRange={handleSelectPriceRange}
 			/>
 			{/* overlay */}
 			<Overlay ref={overlayRef} />

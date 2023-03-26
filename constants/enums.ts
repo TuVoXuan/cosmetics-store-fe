@@ -22,7 +22,7 @@ export enum OrderStatus {
 }
 
 export enum SortPrice {
-	Default = "default",
-	Ascending = "ascending",
-	Descending = "descending",
+	Default = "def",
+	Ascending = "asc",
+	Descending = "desc",
 }

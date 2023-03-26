@@ -29,7 +29,7 @@ const productApi = {
 		return response.data.data;
 	},
 
-	getProductItemsByCategoryAndOptions: async (data: IGetProductByCategoryAndOptioins) => {
+	getProductItemsByCategoryAndOptions: async (data: IGetProductByCategoryAndOptions) => {
 		let newURL = URL + `/product-items/category/${data.id}/options?`;
 		if (data.from) {
 			newURL += `&from=${data.from}`;
@@ -40,8 +40,8 @@ const productApi = {
 		if (data.order) {
 			newURL += `&order=${data.order}`;
 		}
-		if (data.brand) {
-			newURL += `&brand=${data.brand}`;
+		if (data.brands) {
+			newURL += `&brands=${data.brands}`;
 		}
 
 		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductItem[]>>>(
@@ -66,8 +66,8 @@ const productApi = {
 		if (data.order) {
 			newURL += `&order=${data.order}`;
 		}
-		if (data.brand) {
-			newURL += `&brand=${data.brand}`;
+		if (data.brands) {
+			newURL += `&brands=${data.brands}`;
 		}
 
 		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductItem[]>>>(
@@ -80,6 +80,7 @@ const productApi = {
 
 		return response.data.data;
 	},
+
 	recommendCF: async (itemId: string) => {
 		const response = await axiosService.get<IResponseSuccess<IProductItem[]>>(
 			`${URL}/recommend/cf/${itemId}`

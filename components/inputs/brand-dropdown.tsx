@@ -16,9 +16,9 @@ interface FormValue {
 	brands: string[];
 }
 
-export default function MultipleSelectDropdown({ options, className }: Props) {
+export default function BrandDropdown({ options, className }: Props) {
 	const router = useRouter();
-	const { register, reset, getValues } = useForm<FormValue>({
+	const { register, reset, getValues, setValue } = useForm<FormValue>({
 		defaultValues: {
 			brands: [],
 		},
@@ -28,6 +28,7 @@ export default function MultipleSelectDropdown({ options, className }: Props) {
 
 	const [selectedValue, setSelectedValue] = useState<IOption[]>([]);
 	const [defaultValue, setDefaultValue] = useState<string[]>([]);
+	const [brands, setBrands] = useState<IOption[]>([]);
 
 	const listBoxButtonRef = useRef<HTMLButtonElement>(null);
 	const listBoxRef = useRef<HTMLDivElement>(null);
@@ -40,6 +41,9 @@ export default function MultipleSelectDropdown({ options, className }: Props) {
 
 			if (listBoxRef.current.classList.contains("hidden")) {
 				listBoxRef.current.classList.remove("hidden");
+				const selected = options.filter((item) => selectedValue.find((e) => e.value === item.value));
+				const others = options.filter((item) => !selectedValue.find((e) => e.value === item.value));
+				setBrands([...selected, ...others]);
 			} else {
 				listBoxRef.current.classList.add("hidden");
 			}
@@ -99,9 +103,20 @@ export default function MultipleSelectDropdown({ options, className }: Props) {
 		if (brand) {
 			setSelectedValue(options.filter((item) => (brand as string).split(",")?.includes(item.value)));
 			setDefaultValue((brand as string).split(","));
+			setValue("brands", (brand as string).split(","));
+		} else {
+			setDefaultValue([]);
+			setSelectedValue([]);
+			reset();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [brand]);
+	}, [brand, options]);
+
+	useEffect(() => {
+		if (options.length > 0) {
+			setBrands(options);
+		}
+	}, [options]);
 
 	return (
 		<div>
@@ -145,7 +160,7 @@ export default function MultipleSelectDropdown({ options, className }: Props) {
 					)}
 				>
 					<ul className="overflow-y-auto grow">
-						{options.map((item) => {
+						{brands.map((item) => {
 							if (selectedValue.find((e) => e.value === item.value)) {
 								return (
 									<li

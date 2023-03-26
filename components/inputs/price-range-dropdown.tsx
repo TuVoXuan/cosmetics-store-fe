@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Expand from "../icons/expand";
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,7 @@ export default function PriceRangeDropdown({ className }: Props) {
 		register,
 		reset,
 		getValues,
+		setValue,
 		handleSubmit,
 		watch,
 		formState: { errors },
@@ -84,12 +85,22 @@ export default function PriceRangeDropdown({ className }: Props) {
 			url += `$order=${order}`;
 		}
 
+		handleClick();
 		router.push(url, undefined, { shallow: true });
 	};
 
 	const handleReset = () => {
 		reset();
 	};
+
+	useEffect(() => {
+		if (from && to) {
+			setValue("from", parseInt(from as string));
+			setValue("to", parseInt(to as string));
+		} else {
+			reset();
+		}
+	}, [from, to]);
 
 	return (
 		<div>
@@ -157,6 +168,7 @@ export default function PriceRangeDropdown({ className }: Props) {
 							className="w-fit !px-6 text-paragraph-5 font-medium py-2"
 							btnType="submit"
 							form="form-price-range"
+							disable={!watchFrom || !watchTo}
 						>
 							Áp dụng
 						</Button>
