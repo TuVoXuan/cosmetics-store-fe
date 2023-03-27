@@ -262,7 +262,7 @@ export default function Category() {
 
 						{((from && to) || brand) && (
 							<div className="hidden space-y-4 lg:block">
-								<h5 className="text-paragraph-3">Đang lọc theo</h5>
+								<h5 className="text-paragraph-3 font-semibold">Đang lọc theo</h5>
 								<div className="flex items-center flex-wrap gap-4">
 									{from && to && (
 										<RemoveFilterButton
