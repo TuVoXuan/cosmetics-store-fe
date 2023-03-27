@@ -50,6 +50,10 @@ module.exports = {
 				"white-light": "#ffffff",
 			},
 
+			fontFamily: {
+				sans: ["var(--font-montserrat)"],
+			},
+
 			fontSize: {
 				"heading-1": ["2.5rem", "3.5rem"], //40px
 				"heading-2": ["2rem", "3rem"], //32px

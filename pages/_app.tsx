@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { getLocalData } from "../redux/slices/cart-slice";
 import { SettingProvider } from "../context/setting.context";
 
-const montserrat = Montserrat({ subsets: ["latin", "vietnamese"] });
+const montserrat = Montserrat({ subsets: ["latin", "vietnamese"], variable: "--font-montserrat" });
 
 NProgress.configure({ showSpinner: false });
 
@@ -44,18 +44,18 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 		<Provider store={store}>
 			<SettingProvider>
 				<SessionProvider session={session}>
-					<main className={montserrat.className}>
+					<main className={`${montserrat.variable} font-sans`}>
 						<MainLayout>
 							<Component {...pageProps} />
 						</MainLayout>
+						<Toaster
+							toastOptions={{
+								className: "z-[500]",
+							}}
+						/>
 					</main>
 				</SessionProvider>
 			</SettingProvider>
-			<Toaster
-				toastOptions={{
-					className: "z-[500]",
-				}}
-			/>
 		</Provider>
 	);
 }
