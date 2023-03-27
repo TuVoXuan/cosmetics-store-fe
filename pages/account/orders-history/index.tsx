@@ -4,6 +4,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { orderApi } from "../../../api/order-api";
+import OrderHistoryCardLoader from "../../../components/card/skeleton-loader/order-history-card-loader";
 import LoadingHorizontal from "../../../components/icons/loading";
 import Warning from "../../../components/icons/warning";
 import Dropdown from "../../../components/inputs/dropdown";
@@ -118,10 +119,13 @@ export default function OrdersHistory() {
 					</div>
 					<div className="space-y-6 lg:grow mt-14 md:mt-16 md:space-y-8 ">
 						{loading ? (
-							<div className="flex flex-col items-center">
-								<LoadingHorizontal className="h-[100px] text-primary-100" />
-								<p className="text-center">Đang tải dữ liệu vui lòng đợi trong giây lát</p>
-							</div>
+							<>
+								<OrderHistoryCardLoader />
+								<OrderHistoryCardLoader />
+								<OrderHistoryCardLoader />
+								<OrderHistoryCardLoader />
+								<OrderHistoryCardLoader />
+							</>
 						) : (
 							<Fragment>
 								{orders.length > 0 &&
