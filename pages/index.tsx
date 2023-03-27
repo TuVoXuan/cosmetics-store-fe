@@ -114,6 +114,7 @@ export default function Home() {
 					</div>
 				</div>
 
+				{/* test comment */}
 				{/* the categories */}
 				<div>
 					<div className="text-center mb-14 md:text-left md:mb-12 md:flex md:justify-between">
