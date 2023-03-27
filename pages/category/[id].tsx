@@ -231,7 +231,7 @@ export default function Category() {
 								/>
 							</div>
 
-							<div className="flex justify-between md:w-full">
+							<div className="flex flex-wrap justify-between lg:gap-4 md:w-full">
 								<Dropdown
 									defaulValue={order ? (order as string) : SortPrice.Default}
 									register={register}
@@ -246,11 +246,11 @@ export default function Category() {
 								/>
 
 								<BrandDropdown
-									className="w-[300px]"
+									className="w-[280px] hidden lg:block"
 									options={brands.map((item) => ({ label: item.name, value: item._id }))}
 								/>
 
-								<PriceRangeDropdown className="w-[300px]" />
+								<PriceRangeDropdown className="w-[280px] hidden lg:block" />
 
 								<Button onClick={handleOpenFilter} type="secondary" className="lg:hidden">
 									<div className="flex items-center gap-x-3">
@@ -262,9 +262,9 @@ export default function Category() {
 						</div>
 
 						{((from && to) || brand) && (
-							<div className="space-y-4">
+							<div className="hidden space-y-4 lg:block">
 								<h5 className="text-paragraph-3">Đang lọc theo</h5>
-								<div className="flex gap-x-4">
+								<div className="flex flex-wrap gap-4">
 									{from && to && (
 										<RemoveFilterButton
 											type="price-range"
