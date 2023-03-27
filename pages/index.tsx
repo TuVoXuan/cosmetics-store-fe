@@ -1,21 +1,12 @@
-import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useAppSelector } from "../store/hooks";
-import { selectUser } from "../redux/slices/user-slice";
 import TitlePage from "../components/title-page/title-page";
 import CategoryBtn from "../components/buttons/category-btn";
-import ShoppingBag from "../components/icons/shopping-bag";
-import Skincare from "../components/icons/skincare";
-import Natural from "../components/icons/natural";
-import EyeCare from "../components/icons/eye-care";
-import Protection from "../components/icons/protection";
-import NightCare from "../components/icons/night-care";
-import AfterSun from "../components/icons/after-sun";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
-import { Grid, Pagination } from "swiper";
+import { Pagination } from "swiper";
 import GoBack from "../components/icons/go-back";
 import GoForward from "../components/icons/go-forward";
 import { useEffect, useRef, useState } from "react";
@@ -31,51 +22,70 @@ import { toast } from "react-hot-toast";
 import productApi from "../api/product-api";
 import { selectCategories } from "../redux/slices/category-slice";
 import Head from "next/head";
-import { deleteCookie } from "cookies-next";
 import APP_PATH from "../constants/app-path";
+import ProductCardLoader from "../components/card/skeleton-loader/product-card-loader";
+import Link from "next/link";
 
 export default function Home() {
 	// ** State
-	const [products, setProducts] = useState<IProductItem[]>([]);
+	const [facialSkinCareProds, setFacialSkinCareProds] = useState<IProductItem[]>([]);
+	const [highEndCosmeticsProds, setHighEndCosmeticsProds] = useState<IProductItem[]>([]);
+	const [makeupProds, setMakeupProds] = useState<IProductItem[]>([]);
 
 	// ** Redux & Session
-	const { data: session } = useSession();
 	const { push } = useRouter();
 	const categories = useAppSelector(selectCategories).categories;
-	const user = useAppSelector(selectUser);
 
 	// ** Swiper
 	const categoriesSwiperRef = useRef<SwiperRef>(null);
 	const reviewsSwiperRef = useRef<SwiperRef>(null);
-	const productsSwiperRef = useRef<SwiperRef>(null);
+	const skinCareProdsSwiperRef = useRef<SwiperRef>(null);
+	const highEndCostmeticsProdsSwiperRef = useRef<SwiperRef>(null);
+	const makeupProdsSwiperRef = useRef<SwiperRef>(null);
 
-	const handleSignIn = () => push(`/auth/sign-in`);
-
-	const handleFetchProductItems = async () => {
+	const handleFetchFacialSkinCareProds = async () => {
 		try {
-			const response = await productApi.getProductItems();
-			setProducts(response.data.data);
+			const response = await productApi.getProductItemsByCategory({
+				id: "63ea42b09d7b67d0ae6c14d9",
+				limit: "20",
+			});
+			setFacialSkinCareProds(response);
+		} catch (error) {
+			toast.error((error as IResponseError).error);
+		}
+	};
+
+	const handleFetchHighEndProds = async () => {
+		try {
+			const response = await productApi.getProductItemsByCategory({
+				id: "63ea43bf9d7b67d0ae6c14de",
+				limit: "20",
+			});
+			setHighEndCosmeticsProds(response);
+		} catch (error) {
+			toast.error((error as IResponseError).error);
+		}
+	};
+
+	const handleMakeupProds = async () => {
+		try {
+			const response = await productApi.getProductItemsByCategory({
+				id: "63ea440f9d7b67d0ae6c14e1",
+				limit: "20",
+			});
+			setMakeupProds(response);
 		} catch (error) {
 			toast.error((error as IResponseError).error);
 		}
 	};
 
 	useEffect(() => {
-		handleFetchProductItems();
+		handleFetchFacialSkinCareProds();
+		handleFetchHighEndProds();
+		handleMakeupProds();
 	}, []);
 	return (
 		<>
-			{/* {session && (
-				<button
-					onClick={() => {
-						deleteCookie("Authorization", { path: "/", domain: "localhost" });
-						signOut({ callbackUrl: APP_PATH.HOME });
-					}}
-					className="bg-red-200"
-				>
-					sign out
-				</button>
-			)} */}
 			<Head>
 				<title>Hygge</title>
 			</Head>
@@ -121,7 +131,11 @@ export default function Home() {
 								onClick={() => categoriesSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
+								<GoForward
+									height={16}
+									width={16}
+									className="text-black dark:text-white-light"
+								/>
 							</button>
 						</div>
 					</div>
@@ -170,35 +184,21 @@ export default function Home() {
 
 				{/* products */}
 				<div>
-					<div className="md:flex md:justify-between mb-14">
-						<TitlePage
-							className="text-center md:text-left md:w-2/3"
-							subtitle="Sản phẩm"
-							title="Khám phá các sản phẩm của chúng tôi"
-						/>
+					<TitlePage
+						className="text-center mb-14 md:text-left md:w-2/3"
+						subtitle="Chăm sóc da mặt"
+						title="Khám phá các sản phẩm chăm sóc da mặt"
+					/>
 
-						<div className="hidden md:flex md:gap-x-4 md:items-end">
-							<button
-								onClick={() => productsSwiperRef.current?.swiper.slidePrev()}
-								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
-							>
-								<GoBack height={16} width={16} className="text-black dark:text-white-light" />
-							</button>
-							<button
-								onClick={() => productsSwiperRef.current?.swiper.slideNext()}
-								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
-							>
-								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
-							</button>
-						</div>
-					</div>
-					<div>
+					<div className="relative">
+						<Link
+							href={`${APP_PATH.CATEGORY}/63ea42b09d7b67d0ae6c14d9`}
+							className="absolute right-0 -top-10 text-primary-100 text-heading-6 md:text-heading-5"
+						>
+							Xem tất cả
+						</Link>
 						<Swiper
 							slidesPerView={2}
-							grid={{
-								rows: 2,
-								fill: "row",
-							}}
 							breakpoints={{
 								756: {
 									slidesPerView: 3,
@@ -207,27 +207,188 @@ export default function Home() {
 									slidesPerView: 5,
 								},
 							}}
-							modules={[Grid, Pagination]}
+							modules={[Pagination]}
 							className="mySwiper"
-							ref={productsSwiperRef}
+							ref={skinCareProdsSwiperRef}
 						>
-							{products.map((prod) => (
-								<SwiperSlide key={prod.itemId}>
-									<ProductCard productItem={prod} />
-								</SwiperSlide>
-							))}
+							{facialSkinCareProds.length > 0 ? (
+								facialSkinCareProds.map((prod) => (
+									<SwiperSlide key={prod.itemId}>
+										<ProductCard productItem={prod} />
+									</SwiperSlide>
+								))
+							) : (
+								<>
+									{[
+										...Array(10).map((value, index) => (
+											<SwiperSlide key={value + index}>
+												<ProductCardLoader />
+											</SwiperSlide>
+										)),
+									]}
+								</>
+							)}
 						</Swiper>
+						<button
+							onClick={() => skinCareProdsSwiperRef.current?.swiper.slidePrev()}
+							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
+						>
+							<GoBack
+								height={16}
+								width={16}
+								className="text-primary-100 dark:text-white-light"
+							/>
+						</button>
+						<button
+							onClick={() => skinCareProdsSwiperRef.current?.swiper.slideNext()}
+							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
+						>
+							<GoForward
+								height={16}
+								width={16}
+								className="text-primary-100 dark:text-white-light"
+							/>
+						</button>
 					</div>
-					{/* <div
-						className="space-y-14 md:hidden md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 lg:gap-x-14 
-				md:space-y-0 md:gap-y-16 xl:grid-cols-4 xl:gap-x-12 xl:gap-y-[72px]"
-					>
-						{products.map((prod) => (
-							<ProductCard key={prod.itemId} productItem={prod} />
-						))}
-					</div> */}
-					<div className="flex justify-center mt-14">
-						<Button type="primary">Xem tất cả</Button>
+				</div>
+
+				{/* products */}
+				<div>
+					<TitlePage
+						className="text-center mb-14 md:text-left md:w-2/3"
+						subtitle="Mỹ phẩm High-end"
+						title="Khám phá các sản phẩm mỹ phẩm high-end"
+					/>
+
+					<div className="relative">
+						<Link
+							href={`${APP_PATH.CATEGORY}/63ea43bf9d7b67d0ae6c14de`}
+							className="absolute right-0 -top-10 text-primary-100 text-heading-6 md:text-heading-5"
+						>
+							Xem tất cả
+						</Link>
+						<Swiper
+							slidesPerView={2}
+							breakpoints={{
+								756: {
+									slidesPerView: 3,
+								},
+								1024: {
+									slidesPerView: 5,
+								},
+							}}
+							modules={[Pagination]}
+							className="mySwiper"
+							ref={highEndCostmeticsProdsSwiperRef}
+						>
+							{highEndCosmeticsProds.length > 0 ? (
+								highEndCosmeticsProds.map((prod) => (
+									<SwiperSlide key={prod.itemId}>
+										<ProductCard productItem={prod} />
+									</SwiperSlide>
+								))
+							) : (
+								<>
+									{[
+										...Array(10).map((value, index) => (
+											<SwiperSlide key={value + index}>
+												<ProductCardLoader />
+											</SwiperSlide>
+										)),
+									]}
+								</>
+							)}
+						</Swiper>
+						<button
+							onClick={() => highEndCostmeticsProdsSwiperRef.current?.swiper.slidePrev()}
+							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
+						>
+							<GoBack
+								height={16}
+								width={16}
+								className="text-primary-100 dark:text-white-light"
+							/>
+						</button>
+						<button
+							onClick={() => highEndCostmeticsProdsSwiperRef.current?.swiper.slideNext()}
+							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
+						>
+							<GoForward
+								height={16}
+								width={16}
+								className="text-primary-100 dark:text-white-light"
+							/>
+						</button>
+					</div>
+				</div>
+
+				{/* products */}
+				<div>
+					<TitlePage
+						className="text-center mb-14 md:text-left md:w-2/3"
+						subtitle="Trang điểm"
+						title="Khám phá các sản phẩm trang điểm"
+					/>
+
+					<div className="relative">
+						<Link
+							href={`${APP_PATH.CATEGORY}/63ea440f9d7b67d0ae6c14e1`}
+							className="absolute right-0 -top-10 text-primary-100 text-heading-6 md:text-heading-5"
+						>
+							Xem tất cả
+						</Link>
+						<Swiper
+							slidesPerView={2}
+							breakpoints={{
+								756: {
+									slidesPerView: 3,
+								},
+								1024: {
+									slidesPerView: 5,
+								},
+							}}
+							modules={[Pagination]}
+							className="mySwiper"
+							ref={makeupProdsSwiperRef}
+						>
+							{makeupProds.length > 0 ? (
+								makeupProds.map((prod) => (
+									<SwiperSlide key={prod.itemId}>
+										<ProductCard productItem={prod} />
+									</SwiperSlide>
+								))
+							) : (
+								<>
+									{[
+										...Array(10).map((value, index) => (
+											<SwiperSlide key={value + index}>
+												<ProductCardLoader />
+											</SwiperSlide>
+										)),
+									]}
+								</>
+							)}
+						</Swiper>
+						<button
+							onClick={() => makeupProdsSwiperRef.current?.swiper.slidePrev()}
+							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
+						>
+							<GoBack
+								height={16}
+								width={16}
+								className="text-primary-100 dark:text-white-light"
+							/>
+						</button>
+						<button
+							onClick={() => makeupProdsSwiperRef.current?.swiper.slideNext()}
+							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
+						>
+							<GoForward
+								height={16}
+								width={16}
+								className="text-primary-100 dark:text-white-light"
+							/>
+						</button>
 					</div>
 				</div>
 
@@ -310,7 +471,11 @@ export default function Home() {
 								onClick={() => reviewsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full lg:border-2 lg:border-black lg:dark:border-none bg-gray-accent dark:bg-black-dark-2 lg:dark:bg-black-dark-4"
 							>
-								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
+								<GoForward
+									height={16}
+									width={16}
+									className="text-black dark:text-white-light"
+								/>
 							</button>
 						</div>
 					</div>
