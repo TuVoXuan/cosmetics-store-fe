@@ -28,9 +28,11 @@ export default function Input({
 	if (register && name) {
 		return (
 			<div>
-				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
-					{label}
-				</p>
+				{label && (
+					<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
+						{label}
+					</p>
+				)}
 				<input
 					{...register(name, { ...option })}
 					className={clsx(
@@ -43,20 +45,16 @@ export default function Input({
 					type={type}
 					placeholder={placeholder ? placeholder : "Placeholder"}
 				/>
-				{error && (
-					<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
-						{error}
-					</p>
-				)}
+				{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
 			</div>
 		);
 	}
 
 	return (
 		<div>
-			<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
-				{label}
-			</p>
+			{label && (
+				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
+			)}
 			<input
 				className={clsx(
 					"border-[2px] border-gray-accent placeholder:text-dark-40 font-semibold text-dark-100",

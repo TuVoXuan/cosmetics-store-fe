@@ -6,17 +6,19 @@ import { RegisterOptions, useForm, UseFormRegister } from "react-hook-form";
 import { useRouter } from "next/router";
 import Button from "../buttons/button";
 import APP_PATH from "../../constants/app-path";
+import BrandItemLoading from "../card/skeleton-loader/brand-item-loading";
 
 interface Props {
 	options: IOption[];
 	className?: string;
+	loading: boolean;
 }
 
 interface FormValue {
 	brands: string[];
 }
 
-export default function BrandDropdown({ options, className }: Props) {
+export default function BrandDropdown({ options, className, loading }: Props) {
 	const router = useRouter();
 	const { register, reset, getValues, setValue } = useForm<FormValue>({
 		defaultValues: {
@@ -24,7 +26,7 @@ export default function BrandDropdown({ options, className }: Props) {
 		},
 	});
 
-	const { id, from, to, brand, order } = router.query;
+	const { id, from, to, brand, order, search } = router.query;
 
 	const [selectedValue, setSelectedValue] = useState<IOption[]>([]);
 	const [defaultValue, setDefaultValue] = useState<string[]>([]);
@@ -85,7 +87,16 @@ export default function BrandDropdown({ options, className }: Props) {
 
 	const handleApply = () => {
 		const result = getValues("brands");
-		let url = `${APP_PATH.CATEGORY}/${id}?brand=${result.join(",")}`;
+
+		const pathname = router.pathname;
+
+		let url = "";
+
+		if (pathname === APP_PATH.SEARCH) {
+			url = `${APP_PATH.SEARCH}?search=${search}&brand=${result.join(",")}`;
+		} else {
+			url = `${APP_PATH.CATEGORY}/${id}?brand=${result.join(",")}`;
+		}
 
 		if (from && to) {
 			url += `&from=${from}&to=${to}`;
@@ -159,46 +170,62 @@ export default function BrandDropdown({ options, className }: Props) {
 						"top-[100%] rounded-b-[32px] border-b-2 shadow-lg dark:shadow-primary-100/50 flex flex-col"
 					)}
 				>
-					<ul className="overflow-y-auto grow">
-						{brands.map((item) => {
-							if (selectedValue.find((e) => e.value === item.value)) {
+					{loading && (
+						<ul>
+							<BrandItemLoading />
+							<BrandItemLoading />
+							<BrandItemLoading />
+						</ul>
+					)}
+					{!loading && options.length > 0 && (
+						<ul className="overflow-y-auto grow">
+							{brands.map((item) => {
+								if (selectedValue.find((e) => e.value === item.value)) {
+									return (
+										<li
+											key={item.value}
+											className={clsx(
+												"flex items-center gap-x-4 font-medium select-none capitalize",
+												"text-heading-6 px-6 py-3 md:text-heading-5 hover:bg-gray-accent hover:dark:bg-black-dark-2"
+											)}
+										>
+											<div className="p-1 border-2 rounded-md border-black-dark-1">
+												<Selected width={12} height={12} color="#1A202C" className="dark:text-light-100" />
+											</div>
+											<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
+												{item.label}
+											</label>
+										</li>
+									);
+								}
 								return (
 									<li
 										key={item.value}
 										className={clsx(
-											"flex items-center gap-x-4 font-medium select-none capitalize",
+											"flex items-center gap-x-4  select-none capitalize",
 											"text-heading-6 px-6 py-3 md:text-heading-5 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 										)}
 									>
-										<div className="p-1 border-2 rounded-md border-black-dark-1">
-											<Selected width={12} height={12} color="#1A202C" className="dark:text-light-100" />
+										<div className="p-1 border-2 rounded-md">
+											<Selected width={12} height={12} color="#1A202C" className="text-light-100" />
 										</div>
 										<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
 											{item.label}
 										</label>
 									</li>
 								);
-							}
-							return (
-								<li
-									key={item.value}
-									className={clsx(
-										"flex items-center gap-x-4  select-none capitalize",
-										"text-heading-6 px-6 py-3 md:text-heading-5 hover:bg-gray-accent hover:dark:bg-black-dark-2"
-									)}
-								>
-									<div className="p-1 border-2 rounded-md">
-										<Selected width={12} height={12} color="#1A202C" className="text-light-100" />
-									</div>
-									<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
-										{item.label}
-									</label>
-								</li>
-							);
-						})}
-					</ul>
+							})}
+						</ul>
+					)}
+					{!loading && options.length === 0 && <p className="text-paragraph-5 lg:text-paragraph-4">Không có dữ liệu</p>}
+
 					<div className="flex justify-between p-4">
-						<Button type="primary" className="w-fit !px-6 !py-2 text-paragraph-5 font-medium" onClick={handleApply}>
+						<Button
+							disable={selectedValue.length === 0}
+							type="primary"
+							className="w-fit !px-6 !py-2 text-paragraph-5 font-medium"
+							onClick={handleApply}
+						>
 							Áp dụng
 						</Button>
 						<Button type="secondary" className="w-fit !px-6 !py-2 text-paragraph-5 font-medium" onClick={handleReset}>

@@ -1,24 +1,12 @@
-import React, { Fragment, LegacyRef, useEffect, useRef, useState } from "react";
-import Badge from "../../components/badge/badge";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 import Button from "../../components/buttons/button";
 import CategoryItem from "../../components/category/category";
-import Close from "../../components/icons/close";
-import Delete from "../../components/icons/delete";
-import LayoutGrid from "../../components/icons/layout-grid";
-import Wallet from "../../components/icons/wallet";
-import HyggeImage from "../../components/Image/image";
 import Dropdown from "../../components/inputs/dropdown";
-import Input from "../../components/inputs/input";
 import TitlePage from "../../components/title-page/title-page";
 import Image from "next/image";
-import BarCharUp from "../../components/icons/bar-char-up";
-import BarCharDown from "../../components/icons/bar-char-down";
 import ProductCard from "../../components/card/product-card";
-import OptionButton from "../../components/buttons/option-button";
-import PriceRange, { PriceRangeRefType } from "../../components/modal/price-range";
 import Overlay from "../../components/modal/overlay";
-import CategoriesWindow, { CategoriesWindowRefType } from "../../components/modal/categories-window";
 import { useRouter } from "next/router";
 import productApi from "../../api/product-api";
 import { useAppSelector } from "../../store/hooks";
@@ -32,11 +20,11 @@ import { SortPrice } from "../../constants/enums";
 import Filter from "../../components/icons/filter";
 import FilterModal, { FilterRefType } from "../../components/modal/filter-modal";
 import { PathCategoryProvider } from "../../context/path-category.context";
-import MultipleSelectDropdown from "../../components/inputs/multiple-select-dropdown";
 import BrandDropdown from "../../components/inputs/brand-dropdown";
 import PriceRangeDropdown from "../../components/inputs/price-range-dropdown";
 import RemoveFilterButton from "../../components/buttons/remove-filter-btn";
-import { toastError } from "../../util/toast";
+import ProductCardLoader from "../../components/card/skeleton-loader/product-card-loader";
+import CategoryCardLoader from "../../components/card/skeleton-loader/category-card-loader";
 
 export default function Category() {
 	const router = useRouter();
@@ -50,8 +38,15 @@ export default function Category() {
 	const [category, setCategory] = useState<ICategory>();
 	const [brands, setBrands] = useState<IBrand[]>([]);
 	const [after, setAfter] = useState<string>("");
-	const [selectedBrands, setSelectedBrands] = useState<IBrand[]>([]);
-	const [priceRange, setPriceRange] = useState<IPriceRange>();
+	const [loading, setLoading] = useState<{
+		brand: boolean;
+		product: boolean;
+		category: boolean;
+	}>({
+		brand: false,
+		product: false,
+		category: true,
+	});
 
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoryRef = useRef<CategoriesRefType>(null);
@@ -67,22 +62,6 @@ export default function Category() {
 			path += `&brand=${brand}`;
 		}
 		router.push(path);
-	};
-
-	const handleSelectBrand = (brandIds: string[]) => {
-		const selectdBrandsName: IBrand[] = [];
-		for (let i = 0; i < brandIds.length; i++) {
-			const brandId = brandIds[i];
-			const brand = brands.find((item) => item._id === brandId);
-			if (brand) {
-				selectdBrandsName.push(brand);
-			}
-		}
-		setSelectedBrands(selectdBrandsName);
-	};
-
-	const handleSelectPriceRange = (price: IPriceRange | undefined) => {
-		setPriceRange(price);
 	};
 
 	const handleOpenCategoriesModel = () => {
@@ -134,30 +113,46 @@ export default function Category() {
 
 	const fetchBrands = async (id: string) => {
 		if (id) {
-			const brands = await brandApi.getBrandsByCategory(id);
-			setBrands(brands);
+			try {
+				setLoading((value) => ({ ...value, brand: true }));
+				const brands = await brandApi.getBrandsByCategory(id);
+				setBrands(brands);
+				setLoading((value) => ({ ...value, brand: false }));
+			} catch (error) {
+				setLoading((value) => ({ ...value, brand: false }));
+			}
 		}
 	};
 
 	const fetchProductsLoadMore = async (after: string) => {
 		if (id && after !== "end") {
-			const data = await productApi.getProductItemsByCategoryAndOptions({
-				id: id as string,
-				limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
-				from: from as string,
-				to: to as string,
-				brands: brand as string,
-				after: after,
-				order: order ? (order as "desc" | "asc") : undefined,
-			});
+			try {
+				setLoading((value) => ({ ...value, product: true }));
+				const data = await productApi.getProductItemsByCategoryAndOptions({
+					id: id as string,
+					limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
+					from: from as string,
+					to: to as string,
+					brands: brand as string,
+					after: after,
+					order: order ? (order as "desc" | "asc") : undefined,
+				});
 
-			if (after === "") {
-				setProducts(data.data);
-			} else {
-				setProducts((values) => [...values, ...data.data]);
+				if (after === "") {
+					setProducts(data.data);
+				} else {
+					setProducts((values) => [...values, ...data.data]);
+				}
+				setAfter(data.after);
+				setLoading((value) => ({ ...value, product: false }));
+			} catch (error) {
+				setLoading((value) => ({ ...value, product: false }));
 			}
-			setAfter(data.after);
 		}
+	};
+
+	const handleRemoveAllFilter = () => {
+		router.push(`${APP_PATH.CATEGORY}/${id}`, undefined, { shallow: true });
 	};
 
 	useEffect(() => {
@@ -169,25 +164,17 @@ export default function Category() {
 	}, [id]);
 
 	useEffect(() => {
-		if (brand) {
-			const listBrandIds = (brand as string).split(",");
-			const selectedBrandsName = brands.filter((item) => listBrandIds.includes(item._id));
-			setSelectedBrands(selectedBrandsName);
-		}
-	}, [brands]);
-
-	useEffect(() => {
 		if (id) {
 			findCategory(id as string);
+		}
+		if (categories.length > 0) {
+			setLoading((value) => ({ ...value, category: false }));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categories, id]);
 
 	useEffect(() => {
-		if (from && to) {
-			const queryPriceRange = { from: parseInt(from as string), to: parseInt(to as string) };
-			setPriceRange(queryPriceRange);
-		}
+		setProducts([]);
 		fetchProductsLoadMore("");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [from, to, brand, order]);
@@ -210,7 +197,18 @@ export default function Category() {
 						<h5 className="font-semibold text-heading-4">Danh mục</h5>
 						<PathCategoryProvider>
 							<div className="mt-2 space-y-3">
-								{categories.length > 0 &&
+								{loading.category && (
+									<>
+										<CategoryCardLoader />
+										<CategoryCardLoader />
+										<CategoryCardLoader />
+										<CategoryCardLoader />
+										<CategoryCardLoader />
+										<CategoryCardLoader />
+									</>
+								)}
+								{!loading.category &&
+									categories.length > 0 &&
 									categories.map((category) => <CategoryItem key={category._id} category={category} />)}
 							</div>
 						</PathCategoryProvider>
@@ -246,7 +244,8 @@ export default function Category() {
 								/>
 
 								<BrandDropdown
-									className="w-[280px] hidden lg:block"
+									className="w-[300px] hidden lg:block"
+									loading={loading.brand}
 									options={brands.map((item) => ({ label: item.name, value: item._id }))}
 								/>
 
@@ -264,7 +263,7 @@ export default function Category() {
 						{((from && to) || brand) && (
 							<div className="hidden space-y-4 lg:block">
 								<h5 className="text-paragraph-3">Đang lọc theo</h5>
-								<div className="flex flex-wrap gap-4">
+								<div className="flex items-center flex-wrap gap-4">
 									{from && to && (
 										<RemoveFilterButton
 											type="price-range"
@@ -281,6 +280,9 @@ export default function Category() {
 											}
 											return <Fragment key={item}></Fragment>;
 										})}
+									<p onClick={handleRemoveAllFilter} className="text-red-accent text-paragraph-4 cursor-pointer">
+										Xóa tất cả
+									</p>
 								</div>
 							</div>
 						)}
@@ -290,9 +292,17 @@ export default function Category() {
 							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
 								{products.length > 0 &&
 									products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+								{loading.product && (
+									<>
+										<ProductCardLoader />
+										<ProductCardLoader />
+										<ProductCardLoader />
+										<ProductCardLoader />
+									</>
+								)}
 							</div>
 
-							{products.length === 0 && (
+							{!loading.product && products.length === 0 && (
 								<>
 									<Image
 										src="/not_found_dark.png"
@@ -327,15 +337,7 @@ export default function Category() {
 			{/* categories */}
 			<Categories overlay={overlayRef} ref={categoryRef} />
 			{/* filter modal */}
-			<FilterModal
-				ref={filterRef}
-				overlay={overlayRef}
-				brands={brands}
-				// selectedBrands={selectedBrands.map((item) => item._id)}
-				// onSelectBrand={handleSelectBrand}
-				// priceRange={priceRange}
-				// onSelectPriceRange={handleSelectPriceRange}
-			/>
+			<FilterModal ref={filterRef} overlay={overlayRef} brands={brands} />
 			{/* overlay */}
 			<Overlay ref={overlayRef} />
 		</div>

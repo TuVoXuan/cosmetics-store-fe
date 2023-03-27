@@ -60,7 +60,9 @@ export default function CategoryItem({ category }: Props) {
 						/>
 					</div>
 				) : (
-					<GoForward width={16} height={16} className="text-white dark:text-black-dark-1" />
+					<div className="p-2">
+						<GoForward width={16} height={16} className="text-transparent" />
+					</div>
 				)}
 				<p
 					className={clsx(

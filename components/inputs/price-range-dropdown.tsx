@@ -23,7 +23,8 @@ export default function PriceRangeDropdown({ className }: Props) {
 	const expandIconRef = useRef<HTMLDivElement>(null);
 
 	const router = useRouter();
-	const { id, from, to, brand, order } = router.query;
+	console.log("router.pathname: ", router.pathname);
+	const { id, from, to, brand, order, search } = router.query;
 
 	const {
 		register,
@@ -76,7 +77,15 @@ export default function PriceRangeDropdown({ className }: Props) {
 	};
 
 	const onSubmit = (data: FormValue) => {
-		let url = `${APP_PATH.CATEGORY}/${id}?from=${data.from}&to=${data.to}`;
+		const pathName = router.pathname;
+
+		let url = "";
+
+		if (pathName === APP_PATH.SEARCH) {
+			url = `${APP_PATH.SEARCH}?search=${search}&from=${data.from}&to=${data.to}`;
+		} else {
+			url = `${APP_PATH.CATEGORY}/${id}?from=${data.from}&to=${data.to}`;
+		}
 
 		if (brand) {
 			url += `&brand=${brand}`;
@@ -134,33 +143,40 @@ export default function PriceRangeDropdown({ className }: Props) {
 					)}
 				>
 					<form id="form-price-range" onSubmit={handleSubmit(onSubmit)} className="px-4 space-y-2">
-						<Input
-							register={register}
-							name="from"
-							option={{
-								required: { value: watchTo ? true : false, message: "vui lòng nhập số tiền" },
-								min: {
-									value: 1000,
-									message: "Số tiền phải lớn hơn 10000",
-								},
-							}}
-							type="number"
-							error={errors.from?.message}
-							className="w-full"
-							placeholder="Từ"
-						/>
-						<Input
-							register={register}
-							name="to"
-							option={{
-								required: { value: watchFrom ? true : false, message: "vui lòng nhập số tiền" },
-								validate: () => Number(getValues("to")) >= Number(getValues("from")) || "Từ phải nhỏ hơn hoặc bằng Đến",
-							}}
-							type="number"
-							error={errors.to?.message}
-							className="w-full"
-							placeholder="Đến"
-						/>
+						<div className="flex gap-x-2 items-center">
+							<Input
+								register={register}
+								name="from"
+								option={{
+									required: { value: watchTo ? true : false, message: "vui lòng nhập số tiền" },
+									min: {
+										value: 1000,
+										message: "Số tiền phải lớn hơn 10000",
+									},
+								}}
+								type="number"
+								error={errors.from?.message}
+								className="w-full"
+								placeholder="Từ"
+							/>
+							<p className="text-paragraph-4 font-medium">đ</p>
+						</div>
+						<div className="flex items-center gap-x-2">
+							<Input
+								register={register}
+								name="to"
+								option={{
+									required: { value: watchFrom ? true : false, message: "vui lòng nhập số tiền" },
+									validate: () =>
+										Number(getValues("to")) >= Number(getValues("from")) || "Từ phải nhỏ hơn hoặc bằng Đến",
+								}}
+								type="number"
+								error={errors.to?.message}
+								className="w-full"
+								placeholder="Đến"
+							/>
+							<p className="text-paragraph-4 font-medium">đ</p>
+						</div>
 					</form>
 					<div className="flex justify-between p-4">
 						<Button

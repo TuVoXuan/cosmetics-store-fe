@@ -1,19 +1,11 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { brandApi } from "../api/brand-api";
 import productApi from "../api/product-api";
 import Breadcrumb from "../components/breadcrumb/breadcrumb";
 import Button from "../components/buttons/button";
-import OptionButton from "../components/buttons/option-button";
 import ProductCard from "../components/card/product-card";
-import BarCharDown from "../components/icons/bar-char-down";
-import BarCharUp from "../components/icons/bar-char-up";
-import LayoutGrid from "../components/icons/layout-grid";
-import Wallet from "../components/icons/wallet";
-import HyggeImage from "../components/Image/image";
-import CategoriesWindow, { CategoriesWindowRefType } from "../components/modal/categories-window";
 import Overlay from "../components/modal/overlay";
-import PriceRange, { PriceRangeRefType } from "../components/modal/price-range";
 import TitlePage from "../components/title-page/title-page";
 import APP_PATH from "../constants/app-path";
 import Image from "next/image";
@@ -22,12 +14,14 @@ import Dropdown from "../components/inputs/dropdown";
 import { SortPrice } from "../constants/enums";
 import { useForm } from "react-hook-form";
 import Filter from "../components/icons/filter";
+import BrandDropdown from "../components/inputs/brand-dropdown";
+import PriceRangeDropdown from "../components/inputs/price-range-dropdown";
+import ProductCardLoader from "../components/card/skeleton-loader/product-card-loader";
+import RemoveFilterButton from "../components/buttons/remove-filter-btn";
 
 export default function Search() {
 	// ref
 	const overlayRef = useRef<HTMLDivElement>(null);
-	const categoriesRef = useRef<CategoriesWindowRefType>(null);
-	const priceRangRef = useRef<PriceRangeRefType>(null);
 	const filterRef = useRef<FilterRefType>(null);
 
 	// route
@@ -38,8 +32,13 @@ export default function Search() {
 	const [products, setProducts] = useState<IProductItem[]>([]);
 	const [brands, setBrands] = useState<IBrand[]>([]);
 	const [after, setAfter] = useState<string>("");
-	const [selectedBrands, setSelectedBrands] = useState<IBrand[]>([]);
-	const [priceRange, setPriceRange] = useState<IPriceRange>();
+	const [loading, setLoading] = useState<{
+		brand: boolean;
+		product: boolean;
+	}>({
+		brand: false,
+		product: false,
+	});
 
 	// react hook form
 	const { register } = useForm();
@@ -63,49 +62,48 @@ export default function Search() {
 		}
 	};
 
-	const handleSelectBrand = (brandIds: string[]) => {
-		const selectdBrandsName: IBrand[] = [];
-		for (let i = 0; i < brandIds.length; i++) {
-			const brandId = brandIds[i];
-			const brand = brands.find((item) => item._id === brandId);
-			if (brand) {
-				selectdBrandsName.push(brand);
-			}
-		}
-		setSelectedBrands(selectdBrandsName);
-	};
-
-	const handleSelectPriceRange = (price: IPriceRange | undefined) => {
-		setPriceRange(price);
-	};
-
 	const fetchBrands = async () => {
 		if (search) {
-			const brands = await brandApi.getBrandsBySearchKey(search as string);
-			setBrands(brands);
+			try {
+				setLoading((value) => ({ ...value, brand: true }));
+				const brands = await brandApi.getBrandsBySearchKey(search as string);
+				setBrands(brands);
+				setLoading((value) => ({ ...value, brand: false }));
+			} catch (error) {
+				setLoading((value) => ({ ...value, brand: false }));
+			}
 		}
 	};
 
 	const fetchProductsLoadMore = async (after: string) => {
 		if (search && after !== "end") {
-			console.log("search: ", search);
-			const data = await productApi.search({
-				search: search as string,
-				limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
-				from: from as string,
-				to: to as string,
-				brands: brand as string,
-				after: after,
-				order: order ? (order as "desc" | "asc") : undefined,
-			});
+			try {
+				setLoading((value) => ({ ...value, product: true }));
+				const data = await productApi.search({
+					search: search as string,
+					limit: process.env.LIIMIT_PRODUCTS_BY_CATEGORY || "10",
+					from: from as string,
+					to: to as string,
+					brands: brand as string,
+					after: after,
+					order: order ? (order as "desc" | "asc") : undefined,
+				});
 
-			setProducts((values) => [...values, ...data.data]);
-			setAfter(data.after);
+				setProducts((values) => [...values, ...data.data]);
+				setAfter(data.after);
+				setLoading((value) => ({ ...value, product: false }));
+			} catch (error) {
+				setLoading((value) => ({ ...value, product: false }));
+			}
 		}
 	};
 
 	const loadMore = () => {
 		fetchProductsLoadMore(after);
+	};
+
+	const handleRemoveAllFilter = () => {
+		router.push(`${APP_PATH.SEARCH}?search=${search}`, undefined, { shallow: true });
 	};
 
 	useEffect(() => {
@@ -118,6 +116,7 @@ export default function Search() {
 	}, [search, from, to, brand, order]);
 
 	useEffect(() => {
+		setProducts([]);
 		fetchBrands();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [search]);
@@ -125,20 +124,14 @@ export default function Search() {
 	return (
 		<div>
 			<div className="space-y-14 mt-14 mb-14 md:mb-[112px] xl:mb-[144px]">
-				<Breadcrumb
-					className="hidden xl:block xl:mt-[93px]"
-					items={["Trang chủ", "Kết quả tìm kiếm"]}
-				/>
+				<Breadcrumb className="hidden xl:block xl:mt-[93px]" items={["Trang chủ", "Kết quả tìm kiếm"]} />
 				<TitlePage
 					className="capitalize mt-14 md:mt-16 xl:mt-12"
 					subtitle="Kết quả tìm kiếm"
 					title={(search as string) || ""}
 				/>
-				{/* <p className="mt-6 text-paragraph-4 md:text-paragraph-2 md:mt-12 dark:text-light-100">
-				<span className="font-bold text-heading-5 md:text-heading-4 dark:text-light-100">6</span> sản phẩm phù hợp
-			</p> */}
 
-				<div className="flex justify-between">
+				<div className="flex justify-between lg:justify-start gap-x-4">
 					<Dropdown
 						defaulValue={order ? (order as string) : SortPrice.Default}
 						register={register}
@@ -152,7 +145,15 @@ export default function Search() {
 						]}
 					/>
 
-					<Button onClick={handleOpenFilter} type="secondary">
+					<BrandDropdown
+						loading={loading.brand}
+						className="w-[300px] hidden lg:block"
+						options={brands.map((item) => ({ label: item.name, value: item._id }))}
+					/>
+
+					<PriceRangeDropdown className="w-[280px] hidden lg:block" />
+
+					<Button className="lg:hidden" onClick={handleOpenFilter} type="secondary">
 						<div className="flex items-center gap-x-3">
 							<Filter className="dark:text-white" />
 							<span className="font-normal dark:text-white">Lọc</span>
@@ -160,13 +161,47 @@ export default function Search() {
 					</Button>
 				</div>
 
+				{((from && to) || brand) && (
+					<div className="hidden space-y-4 lg:block">
+						<h5 className="text-paragraph-3">Đang lọc theo</h5>
+						<div className="flex items-center flex-wrap gap-4">
+							{from && to && (
+								<RemoveFilterButton
+									type="price-range"
+									value={`${new Intl.NumberFormat("vn-VN").format(
+										parseInt(from as string) / 1000
+									)}k - ${new Intl.NumberFormat("vn-VN").format(parseInt(to as string) / 1000)}k`}
+								/>
+							)}
+							{brand &&
+								(brand as string).split(",").map((item) => {
+									const brd = brands.find((e) => e._id === item);
+									if (brd) {
+										return <RemoveFilterButton key={brd._id} brandId={brd._id} type="brand" value={brd.name} />;
+									}
+									return <Fragment key={item}></Fragment>;
+								})}
+							<p onClick={handleRemoveAllFilter} className="text-red-accent text-paragraph-4 cursor-pointer">
+								Xóa tất cả
+							</p>
+						</div>
+					</div>
+				)}
+
 				{/* products */}
 				<div className="mt-14 xl:mt-[72px] md:mt-16 lg:mt-14 mb-[104px] md:mb-28">
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-14">
+					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
 						{products.length > 0 &&
-							products.map((product) => (
-								<ProductCard key={product.itemId} productItem={product} />
-							))}
+							products.map((product) => <ProductCard key={product.itemId} productItem={product} />)}
+						{loading.product && (
+							<>
+								<ProductCardLoader />
+								<ProductCardLoader />
+								<ProductCardLoader />
+								<ProductCardLoader />
+								<ProductCardLoader />
+							</>
+						)}
 					</div>
 					{products.length === 0 && (
 						<>
@@ -202,15 +237,7 @@ export default function Search() {
 			{/* <CategoriesWindow ref={categoriesRef} overlay={overlayRef} /> */}
 
 			{/* filter modal */}
-			<FilterModal
-				ref={filterRef}
-				overlay={overlayRef}
-				brands={brands}
-				// selectedBrands={selectedBrands.map((item) => item._id)}
-				// onSelectBrand={handleSelectBrand}
-				// priceRange={priceRange}
-				// onSelectPriceRange={handleSelectPriceRange}
-			/>
+			<FilterModal ref={filterRef} overlay={overlayRef} brands={brands} />
 			{/* overlay */}
 			<Overlay ref={overlayRef} />
 		</div>
