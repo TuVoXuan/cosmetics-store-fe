@@ -1,15 +1,29 @@
 import clsx from "clsx";
 import React, { useState } from "react";
-import Image from "next/image";
 
 interface Props {
-	brand: IBrand;
+	active?: boolean;
+	brandName: string;
+	onClick: () => void;
 }
 
-export default function BrandCard({ brand }: Props) {
+export default function BrandCard({ brandName, onClick, active = false }: Props) {
+	// const [isActive, setIsActive] = useState<boolean>(active);
+
+	const handleClick = () => {
+		onClick();
+		// setIsActive((value) => !value);
+	};
+
 	return (
-		<div className="w-full p-3">
-			<Image src={brand.logo} alt={brand.name} height={200} width={200} />
+		<div
+			onClick={handleClick}
+			className={clsx(
+				"w-full p-2 rounded-xl bg-gray-accent text-center text-heading-6 transition-colors duration-500 ease-in-out",
+				active && "bg-primary-100 text-white"
+			)}
+		>
+			{brandName}
 		</div>
 	);
 }

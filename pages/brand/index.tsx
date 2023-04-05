@@ -3,7 +3,7 @@ import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 import TitlePage from "../../components/title-page/title-page";
 import { toastError } from "../../util/toast";
 import { brandApi } from "../../api/brand-api";
-import BrandCard from "../../components/card/brand-card";
+import BrandLogoCard from "../../components/card/brand-logo-card";
 
 const alphabet = [
 	"0-9",
@@ -92,7 +92,7 @@ export default function Brands() {
 							<div key={char} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
 								{brandNameBeginWithChar.map((brand) => (
 									<div key={brand._id} className="flex items-center py-2">
-										<BrandCard brand={brand} />
+										<BrandLogoCard brand={brand} />
 									</div>
 								))}
 							</div>

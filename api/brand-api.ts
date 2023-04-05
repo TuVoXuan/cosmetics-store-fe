@@ -29,4 +29,10 @@ export const brandApi = {
 
 		return response.data.data;
 	},
+
+	getBrandName: async (brandId: string) => {
+		const response = await axiosService.get<IResponseSuccess<string>>(`${URL}/${brandId}`);
+
+		return response.data.data;
+	},
 };

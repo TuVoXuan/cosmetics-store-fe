@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useAppSelector } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import TitlePage from "../components/title-page/title-page";
 import CategoryBtn from "../components/buttons/category-btn";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
@@ -27,19 +27,22 @@ import ProductCardLoader from "../components/card/skeleton-loader/product-card-l
 import Link from "next/link";
 import { brandApi } from "../api/brand-api";
 import Image from "next/image";
-import BrandCard from "../components/card/brand-card";
+import BrandLogoCard from "../components/card/brand-logo-card";
 import BrandCardLoader from "../components/card/skeleton-loader/brand-card-loader";
+import { selectHomeSlice } from "../redux/slices/home-slice";
+import { getPopularBrands } from "../redux/actions/home-action";
 
 export default function Home() {
 	// ** State
 	const [facialSkinCareProds, setFacialSkinCareProds] = useState<IProductItem[]>([]);
 	const [highEndCosmeticsProds, setHighEndCosmeticsProds] = useState<IProductItem[]>([]);
 	const [makeupProds, setMakeupProds] = useState<IProductItem[]>([]);
-	const [outstandingBrands, setOutstandingBrands] = useState<IBrand[]>([]);
 
 	// ** Redux & Session
 	const { push } = useRouter();
+	const dispatch = useAppDispatch();
 	const categories = useAppSelector(selectCategories).categories;
+	const popularBrands = useAppSelector(selectHomeSlice).popularBrands;
 
 	// ** Swiper
 	const categoriesSwiperRef = useRef<SwiperRef>(null);
@@ -47,7 +50,7 @@ export default function Home() {
 	const skinCareProdsSwiperRef = useRef<SwiperRef>(null);
 	const highEndCostmeticsProdsSwiperRef = useRef<SwiperRef>(null);
 	const makeupProdsSwiperRef = useRef<SwiperRef>(null);
-	const outstandingBrandsSwiperRef = useRef<SwiperRef>(null);
+	const popularBrandsSwiperRef = useRef<SwiperRef>(null);
 
 	const handleFetchFacialSkinCareProds = async () => {
 		try {
@@ -85,10 +88,11 @@ export default function Home() {
 		}
 	};
 
-	const handleGetBrandRankingSell = async () => {
+	const handleGetPopularBrands = async () => {
 		try {
-			const response = await brandApi.getBrandRankingSell();
-			setOutstandingBrands(response);
+			if (popularBrands.length === 0) {
+				await dispatch(getPopularBrands()).unwrap();
+			}
 		} catch (error) {
 			toast.error((error as IResponseError).error);
 		}
@@ -98,7 +102,7 @@ export default function Home() {
 		handleFetchFacialSkinCareProds();
 		handleFetchHighEndProds();
 		handleMakeupProds();
-		handleGetBrandRankingSell();
+		handleGetPopularBrands();
 	}, []);
 	return (
 		<>
@@ -428,21 +432,18 @@ export default function Home() {
 							slidesPerView={2}
 							breakpoints={{
 								756: {
-									slidesPerView: 3,
-								},
-								1024: {
 									slidesPerView: 5,
 								},
 							}}
 							modules={[Pagination]}
 							className="mySwiper"
-							ref={outstandingBrandsSwiperRef}
+							ref={popularBrandsSwiperRef}
 						>
-							{outstandingBrands.length > 0 ? (
-								outstandingBrands.map((brand) => (
+							{popularBrands.length > 0 ? (
+								popularBrands.map((brand) => (
 									<SwiperSlide key={brand._id}>
 										<div className="h-[150px] flex items-center w-full">
-											<BrandCard brand={brand} />
+											<BrandLogoCard brand={brand} />
 										</div>
 									</SwiperSlide>
 								))
@@ -459,7 +460,7 @@ export default function Home() {
 							)}
 						</Swiper>
 						<button
-							onClick={() => outstandingBrandsSwiperRef.current?.swiper.slidePrev()}
+							onClick={() => popularBrandsSwiperRef.current?.swiper.slidePrev()}
 							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
 							<GoBack
@@ -469,7 +470,7 @@ export default function Home() {
 							/>
 						</button>
 						<button
-							onClick={() => outstandingBrandsSwiperRef.current?.swiper.slideNext()}
+							onClick={() => popularBrandsSwiperRef.current?.swiper.slideNext()}
 							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
 							<GoForward
