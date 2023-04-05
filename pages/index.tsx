@@ -25,12 +25,17 @@ import Head from "next/head";
 import APP_PATH from "../constants/app-path";
 import ProductCardLoader from "../components/card/skeleton-loader/product-card-loader";
 import Link from "next/link";
+import { brandApi } from "../api/brand-api";
+import Image from "next/image";
+import BrandCard from "../components/card/brand-card";
+import BrandCardLoader from "../components/card/skeleton-loader/brand-card-loader";
 
 export default function Home() {
 	// ** State
 	const [facialSkinCareProds, setFacialSkinCareProds] = useState<IProductItem[]>([]);
 	const [highEndCosmeticsProds, setHighEndCosmeticsProds] = useState<IProductItem[]>([]);
 	const [makeupProds, setMakeupProds] = useState<IProductItem[]>([]);
+	const [outstandingBrands, setOutstandingBrands] = useState<IBrand[]>([]);
 
 	// ** Redux & Session
 	const { push } = useRouter();
@@ -42,6 +47,7 @@ export default function Home() {
 	const skinCareProdsSwiperRef = useRef<SwiperRef>(null);
 	const highEndCostmeticsProdsSwiperRef = useRef<SwiperRef>(null);
 	const makeupProdsSwiperRef = useRef<SwiperRef>(null);
+	const outstandingBrandsSwiperRef = useRef<SwiperRef>(null);
 
 	const handleFetchFacialSkinCareProds = async () => {
 		try {
@@ -79,10 +85,20 @@ export default function Home() {
 		}
 	};
 
+	const handleGetBrandRankingSell = async () => {
+		try {
+			const response = await brandApi.getBrandRankingSell();
+			setOutstandingBrands(response);
+		} catch (error) {
+			toast.error((error as IResponseError).error);
+		}
+	};
+
 	useEffect(() => {
 		handleFetchFacialSkinCareProds();
 		handleFetchHighEndProds();
 		handleMakeupProds();
+		handleGetBrandRankingSell();
 	}, []);
 	return (
 		<>
@@ -221,7 +237,7 @@ export default function Home() {
 							) : (
 								<>
 									{[
-										...Array(10).map((value, index) => (
+										...new Array(10).fill(7).map((value, index) => (
 											<SwiperSlide key={value + index}>
 												<ProductCardLoader />
 											</SwiperSlide>
@@ -291,7 +307,7 @@ export default function Home() {
 							) : (
 								<>
 									{[
-										...Array(10).map((value, index) => (
+										...new Array(10).fill(8).map((value, index) => (
 											<SwiperSlide key={value + index}>
 												<ProductCardLoader />
 											</SwiperSlide>
@@ -361,7 +377,7 @@ export default function Home() {
 							) : (
 								<>
 									{[
-										...Array(10).map((value, index) => (
+										...new Array(10).fill(9).map((value, index) => (
 											<SwiperSlide key={value + index}>
 												<ProductCardLoader />
 											</SwiperSlide>
@@ -382,6 +398,78 @@ export default function Home() {
 						</button>
 						<button
 							onClick={() => makeupProdsSwiperRef.current?.swiper.slideNext()}
+							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
+						>
+							<GoForward
+								height={16}
+								width={16}
+								className="text-primary-100 dark:text-white-light"
+							/>
+						</button>
+					</div>
+				</div>
+
+				{/* outstanding brands */}
+				<div>
+					<TitlePage
+						className="text-center mb-14 md:text-left md:w-2/3"
+						subtitle="Thương hiệu nổi bật"
+						title="Khám phá các thương hiệu nổi bật"
+					/>
+
+					<div className="relative">
+						<Link
+							href={APP_PATH.BRAND}
+							className="absolute right-0 -top-10 text-primary-100 text-heading-6 md:text-heading-5"
+						>
+							Xem tất cả
+						</Link>
+						<Swiper
+							slidesPerView={2}
+							breakpoints={{
+								756: {
+									slidesPerView: 3,
+								},
+								1024: {
+									slidesPerView: 5,
+								},
+							}}
+							modules={[Pagination]}
+							className="mySwiper"
+							ref={outstandingBrandsSwiperRef}
+						>
+							{outstandingBrands.length > 0 ? (
+								outstandingBrands.map((brand) => (
+									<SwiperSlide key={brand._id}>
+										<div className="h-[150px] flex items-center w-full">
+											<BrandCard brand={brand} />
+										</div>
+									</SwiperSlide>
+								))
+							) : (
+								<>
+									{[
+										...new Array(10).fill(10).map((value, index) => (
+											<SwiperSlide key={value + index}>
+												<BrandCardLoader />
+											</SwiperSlide>
+										)),
+									]}
+								</>
+							)}
+						</Swiper>
+						<button
+							onClick={() => outstandingBrandsSwiperRef.current?.swiper.slidePrev()}
+							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
+						>
+							<GoBack
+								height={16}
+								width={16}
+								className="text-primary-100 dark:text-white-light"
+							/>
+						</button>
+						<button
+							onClick={() => outstandingBrandsSwiperRef.current?.swiper.slideNext()}
 							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
 							<GoForward

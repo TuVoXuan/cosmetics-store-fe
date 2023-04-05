@@ -17,4 +17,16 @@ export const brandApi = {
 
 		return response.data.data;
 	},
+
+	getBrandRankingSell: async () => {
+		const response = await axiosService.get<IResponseSuccess<IBrand[]>>(`${URL}/ranking-sell`);
+
+		return response.data.data;
+	},
+
+	getListBrands: async () => {
+		const response = await axiosService.get<IResponseSuccess<IBrand[]>>(URL);
+
+		return response.data.data;
+	},
 };
