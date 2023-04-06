@@ -17,6 +17,7 @@ import Search from "./icons/search";
 import Twitter from "./icons/twitter";
 import SearchInput from "./inputs/search-input";
 import MyAccount from "./modal/my-account";
+import LanguageDropdown from "./inputs/language-dropdown";
 
 interface Props {
 	onShowNavbar: () => void;
@@ -301,6 +302,7 @@ export default function Header({ onShowNavbar }: Props) {
 				</div>
 
 				<div className="flex items-center">
+					<LanguageDropdown className="hidden lg:block lg:mr-8" />
 					{search ? (
 						<SearchInput onClose={handleCloseSearchInput} />
 					) : (
