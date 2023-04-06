@@ -121,6 +121,28 @@ const productApi = {
 
 		return response.data.data;
 	},
+
+	paginateProductBrand: async (data: IProductBrand) => {
+		let newURL = URL + `/product-items/brand/${data.id}/options?`;
+		if (data.from) {
+			newURL += `&from=${data.from}`;
+		}
+		if (data.to) {
+			newURL += `&to=${data.to}`;
+		}
+		if (data.order) {
+			newURL += `&order=${data.order}`;
+		}
+
+		const response = await axiosService.post<
+			IResponseSuccess<ILoadMorePaginationRes<IProductBrandItem[]>>
+		>(newURL, {
+			limit: data.limit,
+			after: data.after ? data.after : undefined,
+		});
+
+		return response.data.data;
+	},
 };
 
 export default productApi;

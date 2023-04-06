@@ -87,3 +87,7 @@ declare interface ICommentPagination {
 	data: ICommentProdItem[];
 	totalPage: number;
 }
+
+declare interface IProductBrand extends Omit<IGetProductByCategoryAndOptions, "brands"> {}
+
+declare interface IProductBrandItem extends Omit<IProductItem, "categories"> {}

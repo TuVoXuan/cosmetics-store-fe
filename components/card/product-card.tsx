@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import APP_PATH from "../../constants/app-path";
 
 interface Props {
-	productItem: IProductItem;
+	productItem: IProductItem | IProductBrandItem;
 }
 
 export default function ProductCard({ productItem }: Props) {

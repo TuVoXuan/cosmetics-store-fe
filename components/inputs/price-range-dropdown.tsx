@@ -83,15 +83,17 @@ export default function PriceRangeDropdown({ className }: Props) {
 
 		if (pathName === APP_PATH.SEARCH) {
 			url = `${APP_PATH.SEARCH}?search=${search}&from=${data.from}&to=${data.to}`;
-		} else {
+		} else if (pathName === APP_PATH.CATEGORY) {
 			url = `${APP_PATH.CATEGORY}/${id}?from=${data.from}&to=${data.to}`;
+		} else {
+			url = `${APP_PATH.BRAND}/${id}?from=${data.from}&to=${data.to}`;
 		}
 
 		if (brand) {
 			url += `&brand=${brand}`;
 		}
 		if (order) {
-			url += `$order=${order}`;
+			url += `&order=${order}`;
 		}
 
 		handleClick();
@@ -123,11 +125,15 @@ export default function PriceRangeDropdown({ className }: Props) {
 						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px] gap-x-4"
 					)}
 				>
-					<p className={clsx("select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5")}>
+					<p
+						className={clsx(
+							"select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5"
+						)}
+					>
 						{watchFrom && watchTo
-							? `${new Intl.NumberFormat("vn-VN").format(watchFrom / 1000)}k - ${new Intl.NumberFormat("vn-VN").format(
-									watchTo / 1000
-							  )}k`
+							? `${new Intl.NumberFormat("vn-VN").format(
+									watchFrom / 1000
+							  )}k - ${new Intl.NumberFormat("vn-VN").format(watchTo / 1000)}k`
 							: "Khoảng giá"}
 					</p>
 					<div ref={expandIconRef} className="duration-300 ease-linear">
@@ -143,12 +149,15 @@ export default function PriceRangeDropdown({ className }: Props) {
 					)}
 				>
 					<form id="form-price-range" onSubmit={handleSubmit(onSubmit)} className="px-4 space-y-2">
-						<div className="flex gap-x-2 items-center">
+						<div className="flex items-center gap-x-2">
 							<Input
 								register={register}
 								name="from"
 								option={{
-									required: { value: watchTo ? true : false, message: "vui lòng nhập số tiền" },
+									required: {
+										value: watchTo ? true : false,
+										message: "vui lòng nhập số tiền",
+									},
 									min: {
 										value: 1000,
 										message: "Số tiền phải lớn hơn 10000",
@@ -159,23 +168,27 @@ export default function PriceRangeDropdown({ className }: Props) {
 								className="w-full"
 								placeholder="Từ"
 							/>
-							<p className="text-paragraph-4 font-medium">đ</p>
+							<p className="font-medium text-paragraph-4">đ</p>
 						</div>
 						<div className="flex items-center gap-x-2">
 							<Input
 								register={register}
 								name="to"
 								option={{
-									required: { value: watchFrom ? true : false, message: "vui lòng nhập số tiền" },
+									required: {
+										value: watchFrom ? true : false,
+										message: "vui lòng nhập số tiền",
+									},
 									validate: () =>
-										Number(getValues("to")) >= Number(getValues("from")) || "Từ phải nhỏ hơn hoặc bằng Đến",
+										Number(getValues("to")) >= Number(getValues("from")) ||
+										"Từ phải nhỏ hơn hoặc bằng Đến",
 								}}
 								type="number"
 								error={errors.to?.message}
 								className="w-full"
 								placeholder="Đến"
 							/>
-							<p className="text-paragraph-4 font-medium">đ</p>
+							<p className="font-medium text-paragraph-4">đ</p>
 						</div>
 					</form>
 					<div className="flex justify-between p-4">
@@ -188,7 +201,11 @@ export default function PriceRangeDropdown({ className }: Props) {
 						>
 							Áp dụng
 						</Button>
-						<Button type="secondary" className="w-fit !px-6 text-paragraph-5 font-medium py-2" onClick={handleReset}>
+						<Button
+							type="secondary"
+							className="w-fit !px-6 text-paragraph-5 font-medium py-2"
+							onClick={handleReset}
+						>
 							Bỏ chọn
 						</Button>
 					</div>
