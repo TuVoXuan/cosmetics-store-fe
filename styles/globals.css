@@ -44,6 +44,12 @@
 		position: relative !important;
 		height: unset !important;
 	}
+
+	.clip-path-circle {
+		--zoom-x: 50%;
+		--zoom-y: 50%;
+		clip-path: circle(100px at var(--zoom-x) var(--zoom-y));
+	}
 }
 
 .swiper-pagination {

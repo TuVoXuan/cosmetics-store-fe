@@ -12,9 +12,7 @@ const productApi = {
 	},
 
 	getProductDetal: (productId: string, itemId: string) => {
-		return axiosService.get<IResponseSuccess<IProductDetailInfo>>(
-			`${URL}/product-detail/${productId}/${itemId}`
-		);
+		return axiosService.get<IResponseSuccess<IProductDetailInfo>>(`${URL}/product-detail/${productId}/${itemId}`);
 	},
 
 	getProductItemsByCategory: async (data: IGetProductByCategory) => {
@@ -44,13 +42,10 @@ const productApi = {
 			newURL += `&brands=${data.brands}`;
 		}
 
-		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductItem[]>>>(
-			newURL,
-			{
-				limit: data.limit,
-				after: data.after ? data.after : undefined,
-			}
-		);
+		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductItem[]>>>(newURL, {
+			limit: data.limit,
+			after: data.after ? data.after : undefined,
+		});
 
 		return response.data.data;
 	},
@@ -70,21 +65,22 @@ const productApi = {
 			newURL += `&brands=${data.brands}`;
 		}
 
-		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductItem[]>>>(
-			newURL,
-			{
-				limit: data.limit,
-				after: data.after ? data.after : undefined,
-			}
-		);
+		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductItem[]>>>(newURL, {
+			limit: data.limit,
+			after: data.after ? data.after : undefined,
+		});
 
 		return response.data.data;
 	},
 
 	recommendCF: async (itemId: string) => {
-		const response = await axiosService.get<IResponseSuccess<IProductItem[]>>(
-			`${URL}/recommend/cf/${itemId}`
-		);
+		const response = await axiosService.get<IResponseSuccess<IProductItem[]>>(`${URL}/recommend/cf/${itemId}`);
+
+		return response.data.data;
+	},
+
+	recommendItemBased: async () => {
+		const response = await axiosService.get<IResponseSuccess<IProductItem[]>>(`${URL}/recommend/item-based`);
 
 		return response.data.data;
 	},

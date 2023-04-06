@@ -3,25 +3,26 @@ import React, { useEffect, useState } from "react";
 import Select from "../inputs/select";
 
 interface Props {
-	defaultItemId: string;
+	currentItem?: IProductItemDetail;
 	variationList: IVariationList[];
 	productItems: IProductItemDetail[];
 	onChange: (item: IProductItemDetail) => void;
 }
 
-export default function VariationOptions({ defaultItemId, productItems, variationList, onChange }: Props) {
+export default function VariationOptions({ currentItem, productItems, variationList, onChange }: Props) {
 	// State
 	const [disable, setDisable] = useState<IDisableVariationList[]>(
 		variationList.map((variation) => ({ _id: variation._id, value: [] }))
 	);
+
 	const [selected, setSelected] = useState<ISeletedVariationList[]>(
 		variationList.map((variation) => ({ variationId: variation._id, optionId: "" }))
 	);
+	console.log("selected: ", selected);
 
 	// Router
 	const router = useRouter();
 	const { locale } = router;
-	const defaultItem = productItems.find((item) => item._id === defaultItemId);
 
 	const handleOnChange = (value: string) => {
 		const enableOption: string[] = [];
@@ -50,6 +51,7 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 		setSelected((select) => {
 			variationList.forEach((variation) => {
 				const option = variation.values.find((item) => item._id === value);
+
 				if (option) {
 					const selectOption = select.find((i) => i.variationId === variation._id);
 					if (selectOption) {
@@ -63,14 +65,34 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 
 	const handleChangeProductItem = () => {
 		const config: string[] = selected.map((item) => item.optionId);
-
 		const selectedItem = productItems.find((item) => {
-			return item.configurations.filter((conf) => !config.includes(conf)).length > 0 ? false : true;
+			// return item.configurations.filter((conf) => !config.includes(conf)).length > 0 ? false : true;
+			return item.configurations.length === config.length && config.every((e) => item.configurations.includes(e));
 		});
 		if (selectedItem) {
 			onChange(selectedItem);
 		}
 	};
+
+	useEffect(() => {
+		setDisable(variationList.map((variation) => ({ _id: variation._id, value: [] })));
+		setSelected(variationList.map((variation) => ({ variationId: variation._id, optionId: "" })));
+		if (currentItem) {
+			const selectedOptions: ISeletedVariationList[] = [];
+			for (const config of currentItem.configurations) {
+				for (const variation of variationList) {
+					const option = variation.values.find((item) => item._id === config);
+					if (option) {
+						selectedOptions.push({
+							variationId: variation._id,
+							optionId: option._id,
+						});
+					}
+				}
+			}
+			setSelected(selectedOptions);
+		}
+	}, [variationList, currentItem]);
 
 	return (
 		<div className="mb-10 space-y-3">
@@ -80,20 +102,25 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 					value: item._id,
 				}));
 
-				const defaultValue = optionList.find((op) => defaultItem?.configurations.includes(op.value));
+				const value = optionList.find((op) => currentItem?.configurations.includes(op.value));
 
 				return (
 					<div key={variation._id}>
-						<p className="mb-3 text-center lg:text-left text-paragraph-4 lg:text-heading-4 font-semibold dark:text-white">
+						<p className="mb-3 font-semibold text-center lg:text-left text-paragraph-4 lg:text-heading-4 dark:text-white">
 							{variation.name.find((item) => item.language === locale)?.value}
 						</p>
 						<Select
-							disable={disable.find((item) => item._id === variation._id) as IDisableVariationList}
+							disable={
+								(disable.find((item) => item._id === variation._id) as IDisableVariationList) || {
+									_id: variation._id,
+									value: [],
+								}
+							}
 							onChange={(value) => {
 								handleOnChange(value);
 								handleChangeProductItem();
 							}}
-							defaultValue={defaultValue as IOption}
+							value={value as IOption}
 							options={optionList}
 						/>
 					</div>

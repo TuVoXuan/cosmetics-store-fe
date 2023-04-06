@@ -1,12 +1,12 @@
-import { getCookie, setCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
-import React, { useContext, useEffect, useState } from "react";
-import { useAppDispatch, useSettings } from "../store/hooks";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector, useSettings } from "../store/hooks";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import { getCategories } from "../redux/actions/category-action";
 import { getAddress } from "../redux/actions/user-action";
-import { SettingsContextValue } from "../context/setting.context";
+import { recommendItemBase } from "../redux/actions/recommend-action";
 
 interface Props {
 	children?: React.ReactNode;
@@ -22,26 +22,18 @@ export default function MainLayout({ children }: Props) {
 		dispatch(getCategories()).unwrap();
 	};
 
+	const fetchRecommendedProducts = () => {
+		if (session) {
+			dispatch(recommendItemBase()).unwrap();
+		}
+	};
+
 	const handleShowNavbar = () => {
 		setShowNavbar(!showNavbar);
 	};
 
 	const handleSetToken = async () => {
-		// const authorization = getCookie("Authorization");
 		if (session) {
-			// fetch("/api/user")
-			// 	.then((data) => data.json())
-			// 	.then((data: JWTToken) => {
-			// 		if (data.jwtToken) {
-			// 			setCookie("Authorization", data.jwtToken);
-			// 		}
-			// 		return data;
-			// 	})
-			// 	.then((data: JWTToken) => {
-			// 		if (data.jwtToken) {
-			// 			dispatch(getAddress());
-			// 		}
-			// 	});
 			setCookie("Authorization", session.user.token);
 			try {
 				await dispatch(getAddress());
@@ -57,6 +49,7 @@ export default function MainLayout({ children }: Props) {
 
 	useEffect(() => {
 		handleSetToken();
+		fetchRecommendedProducts();
 	}, [session]);
 
 	return (

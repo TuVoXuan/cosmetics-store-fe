@@ -100,6 +100,21 @@ module.exports = {
 				"t-2xl": "0 -25px 50px -12px rgba(0, 0, 0, 0.25)",
 				"t-3xl": "0 -35px 60px -15px rgba(0, 0, 0, 0.3)",
 			},
+
+			keyframes: {
+				fadeInOut: {
+					"0%": { opacity: 0 },
+					"25%": { opacity: 0 },
+					"50%": { opacity: 0.25, filter: "blur(4px)" },
+					"75%": { opacity: 0.55, filter: "blur(2px)" },
+					"90%": { opacity: 0.75, filter: "blur(2px)" },
+					"100%": { opacity: 1, filter: "blur(0)" },
+				},
+			},
+
+			animation: {
+				"fade-in-out": "fadeInOut 1s ease-in-out",
+			},
 		},
 	},
 	plugins: [require("@tailwindcss/line-clamp")],
