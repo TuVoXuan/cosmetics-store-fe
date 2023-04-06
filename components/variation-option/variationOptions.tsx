@@ -15,9 +15,9 @@ export default function VariationOptions() {
 	const [selected, setSelected] = useState<ISeletedVariationList[]>(
 		variationList.map((variation) => ({ variationId: variation._id, optionId: "" }))
 	);
-	console.log("selected: ", selected);
 
 	const handleOnChange = (value: string) => {
+		console.log("value: ", value);
 		const enableOption: string[] = [];
 		for (const prodItem of productItems) {
 			const hasOption = prodItem.configurations.findIndex((item) => item === value);
@@ -54,12 +54,13 @@ export default function VariationOptions() {
 					}
 				}
 			});
-			return select;
+			return [...select];
 		});
 	};
 
 	const handleChangeProductItem = () => {
 		const config: string[] = selected.map((item) => item.optionId);
+		console.log("selected: ", selected);
 		console.log("config: ", config);
 		const selectedProductItem = productItems.find((item) => {
 			return (
@@ -81,6 +82,10 @@ export default function VariationOptions() {
 			}
 		}
 	}, [variationList]);
+
+	useEffect(() => {
+		handleChangeProductItem();
+	}, [selected]);
 
 	return (
 		<div className="mb-10 space-y-3">
@@ -110,7 +115,7 @@ export default function VariationOptions() {
 							}
 							onChange={(value) => {
 								handleOnChange(value);
-								handleChangeProductItem();
+								// handleChangeProductItem();
 							}}
 							value={value as IOption}
 							options={optionList}
