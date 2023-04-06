@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from "react";
 
 interface Props {
-	defaultValue: IOption;
+	value: IOption;
 	options: IOption[];
 	disable: IDisableVariationList;
 	onChange: (value: string) => void;
 }
 
-export default function Select({ options, disable, onChange, defaultValue }: Props) {
-	const [selected, setSelected] = useState<string>(defaultValue?.value);
-	// console.log("selected: ", selected);
+export default function Select({ options, disable, onChange, value }: Props) {
+	const [selected, setSelected] = useState<string>(value.value);
 
 	const handleClick = (value: string) => {
-		setSelected(value);
+		onChange(value);
 	};
 
 	useEffect(() => {
-		onChange(selected);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selected]);
+		setSelected(value.value);
+	}, [value]);
 
 	return (
-		<div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+		<div className="flex flex-wrap justify-center gap-3 lg:justify-start">
 			{options.map((option) => {
 				if (selected === option.value) {
 					return (
 						<button
 							// disabled={disable.value.find((item) => item === option.value) ? true : false}
 							onClick={() => handleClick(option.value)}
-							className="px-3 py-2 text-paragraph-5 lg:text-paragraph-4 border-2 rounded-xl dark:text-white border-primary-100"
+							className="px-3 py-2 border-2 text-paragraph-5 lg:text-paragraph-4 rounded-xl dark:text-white border-primary-100"
 							key={option.value}
 						>
 							{option.label}
@@ -40,7 +38,7 @@ export default function Select({ options, disable, onChange, defaultValue }: Pro
 					<button
 						disabled={disable.value.find((item) => item === option.value) ? true : false}
 						onClick={() => handleClick(option.value)}
-						className="px-3 py-2 text-paragraph-5 lg:text-paragraph-4 border-2 dark:border-black-dark-2 dark:text-white rounded-xl disabled:dark:bg-black-dark-2 disabled:bg-gray-accent disabled:line-through"
+						className="px-3 py-2 border-2 text-paragraph-5 lg:text-paragraph-4 dark:border-black-dark-2 dark:text-white rounded-xl disabled:dark:bg-black-dark-2 disabled:bg-gray-accent disabled:line-through"
 						key={option.value}
 					>
 						{option.label}

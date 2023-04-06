@@ -3,6 +3,7 @@ import userSlice from "../redux/slices/user-slice";
 import categorySlice from "../redux/slices/category-slice";
 import cartSlice from "../redux/slices/cart-slice";
 import homeSlice from "../redux/slices/home-slice";
+import recommendSlice from "../redux/slices/recommend-slice";
 
 export const store = configureStore({
 	reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
 		categories: categorySlice,
 		cart: cartSlice,
 		home: homeSlice,
+		recommend: recommendSlice,
 	},
 });
 

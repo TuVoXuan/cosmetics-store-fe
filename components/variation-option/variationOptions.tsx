@@ -1,27 +1,21 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Select from "../inputs/select";
+import { useProductDetail } from "../../store/hooks";
 
-interface Props {
-	defaultItemId: string;
-	variationList: IVariationList[];
-	productItems: IProductItemDetail[];
-	onChange: (item: IProductItemDetail) => void;
-}
+export default function VariationOptions() {
+	const router = useRouter();
+	const { locale } = router;
 
-export default function VariationOptions({ defaultItemId, productItems, variationList, onChange }: Props) {
-	// State
+	const { currentItem, setCurrentItem, productItems, variationList, selectedItem } = useProductDetail();
+
 	const [disable, setDisable] = useState<IDisableVariationList[]>(
 		variationList.map((variation) => ({ _id: variation._id, value: [] }))
 	);
 	const [selected, setSelected] = useState<ISeletedVariationList[]>(
 		variationList.map((variation) => ({ variationId: variation._id, optionId: "" }))
 	);
-
-	// Router
-	const router = useRouter();
-	const { locale } = router;
-	const defaultItem = productItems.find((item) => item._id === defaultItemId);
+	console.log("selected: ", selected);
 
 	const handleOnChange = (value: string) => {
 		const enableOption: string[] = [];
@@ -39,7 +33,9 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 				if (variation) {
 					const hasOption = variation.values.findIndex((item) => item._id === value);
 					if (hasOption === -1) {
-						curr.value = variation.values.filter((x) => !enableOption.includes(x._id)).map((item) => item._id);
+						curr.value = variation.values
+							.filter((x) => !enableOption.includes(x._id))
+							.map((item) => item._id);
 					}
 				}
 			});
@@ -50,6 +46,7 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 		setSelected((select) => {
 			variationList.forEach((variation) => {
 				const option = variation.values.find((item) => item._id === value);
+
 				if (option) {
 					const selectOption = select.find((i) => i.variationId === variation._id);
 					if (selectOption) {
@@ -63,14 +60,27 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 
 	const handleChangeProductItem = () => {
 		const config: string[] = selected.map((item) => item.optionId);
-
-		const selectedItem = productItems.find((item) => {
-			return item.configurations.filter((conf) => !config.includes(conf)).length > 0 ? false : true;
+		console.log("config: ", config);
+		const selectedProductItem = productItems.find((item) => {
+			return (
+				item.configurations.length === config.length &&
+				config.every((e) => item.configurations.includes(e))
+			);
 		});
-		if (selectedItem) {
-			onChange(selectedItem);
+		if (selectedProductItem) {
+			setCurrentItem(selectedProductItem);
 		}
 	};
+
+	useEffect(() => {
+		setDisable(variationList.map((variation) => ({ _id: variation._id, value: [] })));
+		setSelected(variationList.map((variation) => ({ variationId: variation._id, optionId: "" })));
+		if (selectedItem) {
+			for (const config of selectedItem.configurations) {
+				handleOnChange(config);
+			}
+		}
+	}, [variationList]);
 
 	return (
 		<div className="mb-10 space-y-3">
@@ -80,20 +90,29 @@ export default function VariationOptions({ defaultItemId, productItems, variatio
 					value: item._id,
 				}));
 
-				const defaultValue = optionList.find((op) => defaultItem?.configurations.includes(op.value));
+				const value =
+					optionList.find((op) => currentItem?.configurations.includes(op.value)) ||
+					optionList.find((op) => selectedItem?.configurations.includes(op.value));
 
 				return (
 					<div key={variation._id}>
-						<p className="mb-3 text-center lg:text-left text-paragraph-4 lg:text-heading-4 font-semibold dark:text-white">
+						<p className="mb-3 font-semibold text-center lg:text-left text-paragraph-4 lg:text-heading-4 dark:text-white">
 							{variation.name.find((item) => item.language === locale)?.value}
 						</p>
 						<Select
-							disable={disable.find((item) => item._id === variation._id) as IDisableVariationList}
+							disable={
+								(disable.find(
+									(item) => item._id === variation._id
+								) as IDisableVariationList) || {
+									_id: variation._id,
+									value: [],
+								}
+							}
 							onChange={(value) => {
 								handleOnChange(value);
 								handleChangeProductItem();
 							}}
-							defaultValue={defaultValue as IOption}
+							value={value as IOption}
 							options={optionList}
 						/>
 					</div>

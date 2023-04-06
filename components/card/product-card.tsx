@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import Image from "next/image";
+import React from "react";
 import Badge from "../badge/badge";
-import { light, red_accent, yellow_tertiary } from "../../styles/color";
-import clsx from "clsx";
 import ProductImage from "../Image/product-image";
 import Price from "../badge/price";
 import { useRouter } from "next/router";
