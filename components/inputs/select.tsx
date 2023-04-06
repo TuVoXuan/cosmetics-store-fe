@@ -8,9 +8,7 @@ interface Props {
 }
 
 export default function Select({ options, disable, onChange, value }: Props) {
-	console.log("options: ", options);
 	const [selected, setSelected] = useState<string>(value.value);
-	console.log("selected: ", selected);
 
 	const handleClick = (value: string) => {
 		onChange(value);

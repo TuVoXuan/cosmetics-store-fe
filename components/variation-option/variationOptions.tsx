@@ -1,28 +1,20 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Select from "../inputs/select";
+import { useProductDetail } from "../../store/hooks";
 
-interface Props {
-	currentItem?: IProductItemDetail;
-	variationList: IVariationList[];
-	productItems: IProductItemDetail[];
-	onChange: (item: IProductItemDetail) => void;
-}
+export default function VariationOptions() {
+	const router = useRouter();
+	const { locale } = router;
 
-export default function VariationOptions({ currentItem, productItems, variationList, onChange }: Props) {
-	// State
+	const { currentItem, setCurrentItem, productItems, variationList, selectedItem } = useProductDetail();
+
 	const [disable, setDisable] = useState<IDisableVariationList[]>(
 		variationList.map((variation) => ({ _id: variation._id, value: [] }))
 	);
-
 	const [selected, setSelected] = useState<ISeletedVariationList[]>(
 		variationList.map((variation) => ({ variationId: variation._id, optionId: "" }))
 	);
-	console.log("selected: ", selected);
-
-	// Router
-	const router = useRouter();
-	const { locale } = router;
 
 	const handleOnChange = (value: string) => {
 		const enableOption: string[] = [];
@@ -65,34 +57,23 @@ export default function VariationOptions({ currentItem, productItems, variationL
 
 	const handleChangeProductItem = () => {
 		const config: string[] = selected.map((item) => item.optionId);
-		const selectedItem = productItems.find((item) => {
-			// return item.configurations.filter((conf) => !config.includes(conf)).length > 0 ? false : true;
+		const selectedProductItem = productItems.find((item) => {
 			return item.configurations.length === config.length && config.every((e) => item.configurations.includes(e));
 		});
-		if (selectedItem) {
-			onChange(selectedItem);
+		if (selectedProductItem) {
+			setCurrentItem(selectedProductItem);
 		}
 	};
 
 	useEffect(() => {
 		setDisable(variationList.map((variation) => ({ _id: variation._id, value: [] })));
 		setSelected(variationList.map((variation) => ({ variationId: variation._id, optionId: "" })));
-		if (currentItem) {
-			const selectedOptions: ISeletedVariationList[] = [];
-			for (const config of currentItem.configurations) {
-				for (const variation of variationList) {
-					const option = variation.values.find((item) => item._id === config);
-					if (option) {
-						selectedOptions.push({
-							variationId: variation._id,
-							optionId: option._id,
-						});
-					}
-				}
+		if (selectedItem) {
+			for (const config of selectedItem.configurations) {
+				handleOnChange(config);
 			}
-			setSelected(selectedOptions);
 		}
-	}, [variationList, currentItem]);
+	}, [variationList]);
 
 	return (
 		<div className="mb-10 space-y-3">
@@ -102,7 +83,9 @@ export default function VariationOptions({ currentItem, productItems, variationL
 					value: item._id,
 				}));
 
-				const value = optionList.find((op) => currentItem?.configurations.includes(op.value));
+				const value =
+					optionList.find((op) => currentItem?.configurations.includes(op.value)) ||
+					optionList.find((op) => selectedItem?.configurations.includes(op.value));
 
 				return (
 					<div key={variation._id}>

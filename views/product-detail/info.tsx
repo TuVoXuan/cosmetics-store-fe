@@ -1,36 +1,39 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Pagination } from "swiper";
-import ProductImage from "../../../../components/Image/product-image";
-import ZoomImage from "../../../../components/Image/zoom-image";
-import Price from "../../../../components/badge/price";
-import Button from "../../../../components/buttons/button";
-import QuantityBtn from "../../../../components/buttons/quantity-btn";
-import GoBack from "../../../../components/icons/go-back";
-import GoForward from "../../../../components/icons/go-forward";
-import TitlePage from "../../../../components/title-page/title-page";
-import VariationOptions from "../../../../components/variation-option/variationOptions";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { useAppDispatch, useProductDetail } from "../../../../store/hooks";
+import { Pagination } from "swiper";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import APP_PATH from "../../../../constants/app-path";
-import { addToCart } from "../../../../redux/slices/cart-slice";
-import { toastSuccess } from "../../../../util/toast";
+import APP_PATH from "../../constants/app-path";
+import { toastSuccess } from "../../util/toast";
+import Price from "../../components/badge/price";
+import GoBack from "../../components/icons/go-back";
+import Button from "../../components/buttons/button";
+import { addToCart } from "../../redux/slices/cart-slice";
+import ZoomImage from "../../components/Image/zoom-image";
+import GoForward from "../../components/icons/go-forward";
+import React, { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import TitlePage from "../../components/title-page/title-page";
+import ProductImage from "../../components/Image/product-image";
+import QuantityBtn from "../../components/buttons/quantity-btn";
+import { useAppDispatch, useProductDetail } from "../../store/hooks";
+import VariationOptions from "../../components/variation-option/variationOptions";
 
 export default function ProductInfo() {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { data: session, status } = useSession();
 
-	const { currentItem, descriptions, productItems, variationList, setCurrentItem, productId } = useProductDetail();
+	const { currentItem, descriptions, productId } = useProductDetail();
 
 	const prodImagesSwiperRef = useRef<SwiperRef>(null);
+	const productDesRef = useRef<HTMLDivElement>(null);
+	const seeMoreRef = useRef<HTMLDivElement>(null);
 
 	const [quantity, setQuantity] = useState<number>(1);
 	const [displayImg, setDisplayImg] = useState<string | undefined>(currentItem?.thumbnail);
+	const [showMore, setShowMore] = useState(false);
 
 	const { locale } = router;
 
@@ -60,10 +63,6 @@ export default function ProductInfo() {
 		setQuantity(value);
 	};
 
-	const handleChangeCurrItem = (item: IProductItemDetail) => {
-		setCurrentItem(item);
-	};
-
 	const handleAddToCart = () => {
 		if (status === "authenticated") {
 			if (currentItem) {
@@ -85,6 +84,16 @@ export default function ProductInfo() {
 				pathname: APP_PATH.SIGN_IN,
 				query: { redirectURL: router.asPath },
 			});
+		}
+	};
+
+	const handleSeeMoreClick = () => {
+		if (productDesRef.current && seeMoreRef.current) {
+			productDesRef.current.classList.toggle("h-96");
+			productDesRef.current.classList.toggle("overflow-hidden");
+			seeMoreRef.current.classList.toggle("absolute");
+			seeMoreRef.current.classList.toggle("bottom-0");
+			setShowMore((value) => !value);
 		}
 	};
 
@@ -154,12 +163,7 @@ export default function ProductInfo() {
 						<Price isResponsive price={currentItem?.price || 0} />
 					</div>
 					{/* variation options */}
-					<VariationOptions
-						currentItem={currentItem}
-						productItems={productItems}
-						variationList={variationList}
-						onChange={handleChangeCurrItem}
-					/>
+					<VariationOptions />
 
 					<div className="flex flex-col items-center gap-6 md:items-stretch md:flex-row md:justify-center">
 						<QuantityBtn value={quantity} onChange={handleChangeQuantity} />
@@ -171,7 +175,7 @@ export default function ProductInfo() {
 			</div>
 
 			{/* product info */}
-			<div>
+			<div ref={productDesRef} className="relative h-96 overflow-hidden">
 				<TitlePage className="text-center xl:text-left " subtitle="Đặc điểm sản phẩm" title="Khám phá các đặc điểm" />
 				<div
 					className="mt-8 text-paragraph-5 lg:text-paragraph-4 dark:text-white"
@@ -179,6 +183,14 @@ export default function ProductInfo() {
 						__html: handleDescription(),
 					}}
 				></div>
+				<div
+					ref={seeMoreRef}
+					className="flex justify-center absolute bg-gradient-to-t from-white to-white/60 dark:from-black-dark-3 dark:to-black-dark-3/60 w-full bottom-0 py-4"
+				>
+					<Button onClick={handleSeeMoreClick} type="primary">
+						{showMore ? "Thu gọn" : "Xem thêm"}
+					</Button>
+				</div>
 			</div>
 		</>
 	);
