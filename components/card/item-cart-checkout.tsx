@@ -2,7 +2,7 @@ import router from "next/router";
 import React from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { deleteFromCart } from "../../redux/slices/cart-slice";
-import { en, vi } from "../../translation";
+import { English, Vietnamese } from "../../translation";
 import { convertPrice } from "../../util/product";
 import Delete from "../icons/delete";
 import ProductImage from "../Image/product-image";

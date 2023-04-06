@@ -1,4 +1,4 @@
-import { deleteCookie, setCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -6,19 +6,14 @@ import React, { useRef, useState } from "react";
 import APP_PATH from "../constants/app-path";
 import Button from "./buttons/button";
 import CartIndicator from "./icons/cart-indicator";
-import ClipBoard from "./icons/clip-board";
 import Delete from "./icons/delete";
 import Facebook from "./icons/facebook";
 import GoBack24 from "./icons/go-back-24";
 import GoForward from "./icons/go-forward";
 import Instargram from "./icons/instargram";
 import Menu from "./icons/menu";
-import Pin from "./icons/pin";
-import PinLine from "./icons/pin-line";
 import Profile from "./icons/profile";
-import Return from "./icons/return";
 import Search from "./icons/search";
-import SignOut from "./icons/sign-out";
 import Twitter from "./icons/twitter";
 import SearchInput from "./inputs/search-input";
 import MyAccount from "./modal/my-account";
@@ -320,7 +315,7 @@ export default function Header({ onShowNavbar }: Props) {
 
 					<CartIndicator
 						onClick={() => router.push(APP_PATH.CART)}
-						className="cursor-pointer md:mr-6 md:ml-8 dark:text-light-100"
+						className="cursor-pointer shrink-0 md:mr-6 md:ml-8 dark:text-light-100"
 						height={28}
 						width={32}
 						color="#000"

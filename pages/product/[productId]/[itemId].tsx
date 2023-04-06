@@ -19,7 +19,7 @@ import "swiper/css/grid";
 import "swiper/css/pagination";
 import "react-quill/dist/quill.snow.css";
 import { useRouter } from "next/router";
-import { en, vi } from "../../../translation";
+import { English, Vietnamese } from "../../../translation";
 import VariationOptions from "../../../components/variation-option/variationOptions";
 import Head from "next/head";
 import { useAppDispatch } from "../../../store/hooks";
@@ -60,7 +60,13 @@ export const getServerSideProps = async (context: any) => {
 	};
 };
 
-export default function Product({ productId, selectedItem, descriptions, productItems, variationList }: Props) {
+export default function Product({
+	productId,
+	selectedItem,
+	descriptions,
+	productItems,
+	variationList,
+}: Props) {
 	// State
 	const [currItem, setCurrItem] = useState<IProductItemDetail | undefined>(selectedItem);
 	const [displayImg, setDisplayImg] = useState<string | undefined>(currItem?.thumbnail);
@@ -78,7 +84,7 @@ export default function Product({ productId, selectedItem, descriptions, product
 	// Router & Redux
 	const router = useRouter();
 	const { locale } = router;
-	const content = locale === "en" ? en : vi;
+	const content = locale === "en" ? English : Vietnamese;
 	const dispatch = useAppDispatch();
 	const { data: session, status } = useSession();
 
@@ -235,7 +241,11 @@ export default function Product({ productId, selectedItem, descriptions, product
 								onClick={() => prodImagesSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
+								<GoForward
+									height={16}
+									width={16}
+									className="text-black dark:text-white-light"
+								/>
 							</button>
 						</nav>
 					</div>
@@ -247,7 +257,11 @@ export default function Product({ productId, selectedItem, descriptions, product
 							<div className="grid grid-cols-4 gap-x-2 ">
 								{currItem &&
 									[currItem.thumbnail, ...currItem.images].map((url) => (
-										<ProductImage onClick={() => handleClickImg(url)} key={url} src={url} />
+										<ProductImage
+											onClick={() => handleClickImg(url)}
+											key={url}
+											src={url}
+										/>
 									))}
 							</div>
 						</div>
@@ -283,7 +297,11 @@ export default function Product({ productId, selectedItem, descriptions, product
 
 				{/* product info */}
 				<div>
-					<TitlePage className="text-center xl:text-left " subtitle="Đặc điểm sản phẩm" title="Khám phá các đặc điểm" />
+					<TitlePage
+						className="text-center xl:text-left "
+						subtitle="Đặc điểm sản phẩm"
+						title="Khám phá các đặc điểm"
+					/>
 					<div
 						className="mt-8 text-paragraph-5 lg:text-paragraph-4 dark:text-white"
 						dangerouslySetInnerHTML={{
@@ -308,11 +326,18 @@ export default function Product({ productId, selectedItem, descriptions, product
 							<div className="space-y-1">
 								{[...Array(5)]
 									.map((value, index) => {
-										const rateTypeFound = ratingProdItem.rateType.find((r) => r.rate === index + 1);
+										const rateTypeFound = ratingProdItem.rateType.find(
+											(r) => r.rate === index + 1
+										);
 										return (
-											<div key={index} className="flex items-center justify-start gap-x-1">
+											<div
+												key={index}
+												className="flex items-center justify-start gap-x-1"
+											>
 												<GroupStars stars={index + 1} />
-												<p className="ml-2 dark:text-light-100 lg:text-heading-3">{rateTypeFound?.count || 0}</p>
+												<p className="ml-2 dark:text-light-100 lg:text-heading-3">
+													{rateTypeFound?.count || 0}
+												</p>
 											</div>
 										);
 									})
@@ -351,7 +376,11 @@ export default function Product({ productId, selectedItem, descriptions, product
 										}}
 										className="disabled:cursor-not-allowed"
 									>
-										<GoBack className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
+										<GoBack
+											className="dark:text-light-100 md:w-5 md:h-5"
+											width={14}
+											height={14}
+										/>
 									</button>
 
 									<p className="font-semibold text-paragraph-5 md:text-paragraph-4 dark:text-light-100">
@@ -366,7 +395,11 @@ export default function Product({ productId, selectedItem, descriptions, product
 										}}
 										className="disabled:cursor-not-allowed"
 									>
-										<GoForward className="dark:text-light-100 md:w-5 md:h-5" width={14} height={14} />
+										<GoForward
+											className="dark:text-light-100 md:w-5 md:h-5"
+											width={14}
+											height={14}
+										/>
 									</button>
 								</div>
 							</Fragment>
@@ -398,7 +431,11 @@ export default function Product({ productId, selectedItem, descriptions, product
 								onClick={() => relatedProdsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
+								<GoForward
+									height={16}
+									width={16}
+									className="text-black dark:text-white-light"
+								/>
 							</button>
 						</div>
 					</div>

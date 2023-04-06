@@ -1,14 +1,26 @@
 import Image from "next/image";
 import React from "react";
-import { useSettings } from "../store/hooks";
+import { useAppSelector, useSettings } from "../store/hooks";
 import ToggleBtn from "./buttons/toggle-btn";
 import Facebook from "./icons/facebook";
 import Instargram from "./icons/instargram";
 import Moon from "./icons/moon";
 import Sun from "./icons/sun";
 import Twitter from "./icons/twitter";
+import { useRouter } from "next/router";
+import { English, Vietnamese } from "../translation";
+import { selectCategories } from "../redux/slices/category-slice";
+import APP_PATH from "../constants/app-path";
 
 export default function Footer() {
+	// Redux
+	const categories = useAppSelector(selectCategories).categories;
+
+	// Router
+	const router = useRouter();
+	const { locale } = router;
+	const language = locale === "en" ? English : Vietnamese;
+
 	const { settings, saveSettings } = useSettings();
 	const Toggle = () => {
 		if (
@@ -66,7 +78,7 @@ export default function Footer() {
 					height={32}
 				/>
 				<p className="mt-4 mb-6 font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					© 2020 - All rights reserved
+					{language.footer.all_right_reserve}
 				</p>
 				<div className="flex mb-12 gap-x-6 md:gap-4">
 					<div className="md:w-12 md:h-12 md:rounded-full md:bg-gray-accent md:dark:bg-black-dark-2 md:flex md:justify-center md:items-center">
@@ -87,67 +99,53 @@ export default function Footer() {
 				/>
 			</div>
 			<div className="space-y-4">
-				<h4 className="dark:text-light-100 text-heading-4 md:text-heading-3">Categories</h4>
+				<h4 className="dark:text-light-100 text-heading-5 md:text-heading-4">
+					{language.footer.category_list_title}
+				</h4>
+				{categories.map((cate) => (
+					<p
+						onClick={() => {
+							router.push(`${APP_PATH.CATEGORY}/${cate._id}`);
+						}}
+						key={cate._id}
+						className="font-normal capitalize cursor-pointer dark:text-light-100 text-paragraph-5 md:text-paragraph-4"
+					>
+						{cate.name.filter((item) => item.language == locale)[0].value}
+					</p>
+				))}
+			</div>
+			<div className="space-y-4">
+				<h4 className="dark:text-light-100 text-heading-5 md:text-heading-4">
+					{language.footer.customer_support_list_title}
+				</h4>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					On Sale
+					{language.footer.customer_support_term_serive}
 				</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Featured
-				</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Masks</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Moisturizers
+					{language.footer.customer_support_privacy_policy}
 				</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Treatments
+					{language.footer.customer_support_return_policy}
 				</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Night Care
-				</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Sun Care
+					{language.footer.customer_support_data_protection}
 				</p>
 			</div>
 			<div className="space-y-4">
-				<h4 className="dark:text-light-100 text-heading-4 md:text-heading-3">Legal</h4>
+				<h4 className="dark:text-light-100 text-heading-5 md:text-heading-4">
+					{language.footer.about_hygge}
+				</h4>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Terms of Service
+					{language.footer.about_hygge_introduction}
 				</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Privacy Policy
+					{language.footer.about_hygge_team}
 				</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Return Policy
+					{language.footer.about_hygge_contact}
 				</p>
 				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Shipping
-				</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Data Protection
-				</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Night Care
-				</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Sun Care
-				</p>
-			</div>
-			<div className="space-y-4">
-				<h4 className="dark:text-light-100 text-heading-4 md:text-heading-3">Company</h4>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">About</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Team</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Contact
-				</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Careers
-				</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">Vision</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Culture
-				</p>
-				<p className="font-normal dark:text-light-100 text-paragraph-5 md:text-paragraph-4">
-					Sun Care
+					{language.footer.about_hygge_careers}
 				</p>
 			</div>
 		</section>

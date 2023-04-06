@@ -6,14 +6,14 @@ import Dropdown from "../components/inputs/dropdown";
 import Input from "../components/inputs/input";
 import ParaEmail from "../components/text/paraEmail";
 import TitlePage from "../components/title-page/title-page";
-import { en, vi } from "../translation";
+import { English, Vietnamese } from "../translation";
 
 export default function Contact() {
 	const router = useRouter();
 	const { locale } = router;
 	const { register } = useForm();
 
-	const content = locale === "en" ? en : vi;
+	const content = locale === "en" ? English : Vietnamese;
 
 	const handleLanguage = () => {
 		switch (locale) {

@@ -31,6 +31,8 @@ import BrandLogoCard from "../components/card/brand-logo-card";
 import BrandCardLoader from "../components/card/skeleton-loader/brand-card-loader";
 import { selectHomeSlice } from "../redux/slices/home-slice";
 import { getPopularBrands } from "../redux/actions/home-action";
+import { English, Vietnamese } from "../translation";
+import Input from "../components/inputs/input";
 
 export default function Home() {
 	// ** State
@@ -38,9 +40,12 @@ export default function Home() {
 	const [highEndCosmeticsProds, setHighEndCosmeticsProds] = useState<IProductItem[]>([]);
 	const [makeupProds, setMakeupProds] = useState<IProductItem[]>([]);
 
-	// ** Redux & Session
+	// ** Redux & Session && Router
 	const { push } = useRouter();
 	const dispatch = useAppDispatch();
+	const router = useRouter();
+	const { locale } = router;
+	const language = locale === "en" ? English : Vietnamese;
 	const categories = useAppSelector(selectCategories).categories;
 	const popularBrands = useAppSelector(selectHomeSlice).popularBrands;
 
@@ -118,11 +123,11 @@ export default function Home() {
 					<div className="lg:ml-12 lg:absolute lg:left-0 lg:w-[400px] xl:w-[496px] xl:ml-24 lg:top-0 lg:bottom-0 lg:content-center lg:grid">
 						<TitlePage
 							className="pb-6 pt-14"
-							subtitle="Sản phẩm chăm sóc da"
-							title="Chúng tôi cung cấp những sản phẩm tốt nhất cho làn da của bạn"
+							subtitle={language.home_page.banner_sub_title}
+							title={language.home_page.banner_title}
 						/>
 						<Button className="lg:w-fit" type="primary">
-							Mua ngay
+							{language.home_page.banner_btn}
 						</Button>
 					</div>
 					<div className="px-2 py-10 mt-10 lg:mt-12 lg:mb-6 rounded-5xl md:py-4 lg:flex lg:justify-end bg-gray-accent lg:bg-transparent dark:lg:bg-transparent lg:rounded-none dark:bg-black-dark-2 lg:pt-12 lg:pb-6 lg:pr-6 lg:pl-0 xl:pt-6">
@@ -134,11 +139,13 @@ export default function Home() {
 					</div>
 				</div>
 
-				{/* test comment */}
 				{/* the categories */}
 				<div>
 					<div className="text-center mb-14 md:text-left md:mb-12 md:flex md:justify-between">
-						<TitlePage subtitle="Các loại danh mục" title="Tìm kiếm bằng danh mục" />
+						<TitlePage
+							subtitle={language.home_page.category_sub_title}
+							title={language.home_page.category_title}
+						/>
 
 						{/* navigation button of swiper */}
 						<div className="hidden md:flex md:gap-x-4 md:items-end">
@@ -180,7 +187,7 @@ export default function Home() {
 											push(`${APP_PATH.CATEGORY}/${cate._id}`);
 										}}
 										icon={cate.icon ? cate.icon : ""}
-										title={cate.name.filter((item) => item.language === "vi")[0].value}
+										title={cate.name.filter((item) => item.language == locale)[0].value}
 									/>
 								</SwiperSlide>
 							))}
@@ -207,8 +214,8 @@ export default function Home() {
 				<div>
 					<TitlePage
 						className="text-center mb-14 md:text-left md:w-2/3"
-						subtitle="Chăm sóc da mặt"
-						title="Khám phá các sản phẩm chăm sóc da mặt"
+						subtitle={language.home_page.skin_care_sub_title}
+						title={language.home_page.skin_care_title}
 					/>
 
 					<div className="relative">
@@ -216,7 +223,7 @@ export default function Home() {
 							href={`${APP_PATH.CATEGORY}/63ea42b09d7b67d0ae6c14d9`}
 							className="absolute right-0 -top-10 text-primary-100 text-heading-6 md:text-heading-5"
 						>
-							Xem tất cả
+							{language.home_page.see_all_btn}
 						</Link>
 						<Swiper
 							slidesPerView={2}
@@ -277,8 +284,8 @@ export default function Home() {
 				<div>
 					<TitlePage
 						className="text-center mb-14 md:text-left md:w-2/3"
-						subtitle="Mỹ phẩm High-end"
-						title="Khám phá các sản phẩm mỹ phẩm high-end"
+						subtitle={language.home_page.high_end_sub_title}
+						title={language.home_page.high_end_title}
 					/>
 
 					<div className="relative">
@@ -286,7 +293,7 @@ export default function Home() {
 							href={`${APP_PATH.CATEGORY}/63ea43bf9d7b67d0ae6c14de`}
 							className="absolute right-0 -top-10 text-primary-100 text-heading-6 md:text-heading-5"
 						>
-							Xem tất cả
+							{language.home_page.see_all_btn}
 						</Link>
 						<Swiper
 							slidesPerView={2}
@@ -347,8 +354,8 @@ export default function Home() {
 				<div>
 					<TitlePage
 						className="text-center mb-14 md:text-left md:w-2/3"
-						subtitle="Trang điểm"
-						title="Khám phá các sản phẩm trang điểm"
+						subtitle={language.home_page.high_end_sub_title}
+						title={language.home_page.high_end_title}
 					/>
 
 					<div className="relative">
@@ -356,7 +363,7 @@ export default function Home() {
 							href={`${APP_PATH.CATEGORY}/63ea440f9d7b67d0ae6c14e1`}
 							className="absolute right-0 -top-10 text-primary-100 text-heading-6 md:text-heading-5"
 						>
-							Xem tất cả
+							{language.home_page.see_all_btn}
 						</Link>
 						<Swiper
 							slidesPerView={2}
@@ -417,8 +424,8 @@ export default function Home() {
 				<div>
 					<TitlePage
 						className="text-center mb-14 md:text-left md:w-2/3"
-						subtitle="Thương hiệu nổi bật"
-						title="Khám phá các thương hiệu nổi bật"
+						subtitle={language.home_page.popular_brands_sub_title}
+						title={language.home_page.popolar_brands_title}
 					/>
 
 					<div className="relative">
@@ -426,7 +433,7 @@ export default function Home() {
 							href={APP_PATH.BRAND}
 							className="absolute right-0 -top-10 text-primary-100 text-heading-6 md:text-heading-5"
 						>
-							Xem tất cả
+							{language.home_page.see_all_btn}
 						</Link>
 						<Swiper
 							slidesPerView={2}
@@ -486,28 +493,27 @@ export default function Home() {
 				<div>
 					<TitlePage
 						className="text-center mb-14 md:mb-16 xl:mb-[72px]"
-						subtitle="Tại sao là chúng tôi"
-						title="Tại sao mọi người chọn chúng tôi"
+						subtitle={language.home_page.why_us_sub_title}
+						title={language.home_page.why_us_title}
 					/>
 					<div className="space-y-14 md:space-y-16 lg:space-y-8 xl:space-y-0 xl:grid xl:grid-cols-3 xl:gap-x-[120px]">
 						<div className="space-y-14 md:space-y-16 lg:grid lg:grid-cols-2 lg:gap-x-16 lg:space-y-0 xl:col-span-2 xl:gap-x-[120px]">
 							<WhyUsCard
 								icon={<Return height={32} width={32} className="dark:text-white-light" />}
-								title="Trả lại dễ dàng"
-								bodyText="Chính sách hoàn trả của chúng tôi rất đơn giản và đó là lý do tại sao khách hàng yêu
-							thích cửa hàng của chúng tôi."
+								title={language.home_page.why_us_return_title}
+								bodyText={language.home_page.why_us_return_body}
 							/>
 							<WhyUsCard
 								icon={<Profile height={32} width={32} className="dark:text-white-light" />}
-								title="Chăm sóc khách hàng"
-								bodyText="Chúng tôi cung cấp dịch vụ khách hàng tuyệt vời bất kể điều gì xảy ra."
+								title={language.home_page.why_us_service_title}
+								bodyText={language.home_page.why_us_service_body}
 							/>
 						</div>
 						<WhyUsCard
 							className="lg:px-[248px] xl:px-0"
 							icon={<Quality height={32} width={32} className="dark:text-white-light" />}
-							title="Chất lượng cao"
-							bodyText="Tất cả các sản phẩm của chúng tôi đều được kiểm tra rất nghiêm ngặt trước khi gửi đi."
+							title={language.home_page.why_us_quality_title}
+							bodyText={language.home_page.why_us_quality_body}
 						/>
 					</div>
 				</div>
@@ -521,8 +527,8 @@ export default function Home() {
 				>
 					<TitlePage
 						className="text-center mb-14 md:mb-16 lg:my-auto lg:text-left xl:col-span-2 xl:pr-40"
-						subtitle="Nhận xét của chúng tôi"
-						title="Khách hàng của chúng tôi nói gì"
+						subtitle={language.home_page.our_review_sub_title}
+						title={language.home_page.our_review_title}
 					/>
 
 					<div className="lg:relative lg:my-auto">
@@ -575,21 +581,14 @@ export default function Home() {
 				<div className="hidden md:block lg:bg-gray-accent dark:lg:bg-black-dark-2 lg:rounded-[48px] lg:py-16 xl:py-24 xl:rounded-[56px]">
 					<TitlePage
 						className="text-center mb-14 md:mb-10 lg:mb-12"
-						subtitle="Bản tin của chúng tôi"
-						title="Đăng ký nhận tin mới nhất từ chúng tôi"
+						subtitle={language.home_page.our_newletter_sub_title}
+						title={language.home_page.our_newletter_title}
 					/>
 
 					<div className="flex items-end justify-center gap-x-6">
-						<input
-							className="w-[448px] border-[2px] border-gray-accent font-semibold placeholder:text-dark-40 text-dark-100 
-						focus:border-primary-100 focus:outline-none dark:focus:border-primary-100 
-						dark:focus:outline-none px-6 py-3 text-heading-5 rounded-3xl md:px-6 md:py-4 
-						md:text-heading-4 md:rounded-4xl dark:border-black-dark-4 dark:bg-transparent 
-						dark:text-white-light dark:placeholder:text-light-40 dark:bg-black-dark-4"
-							placeholder="Email của bạn"
-						/>
+						<Input placeholder={language.home_page.input_email_placehodlder} />
 						<Button type="primary" className="h-full">
-							Đăng ký
+							{language.home_page.our_newletter_signup_btn}
 						</Button>
 					</div>
 				</div>
