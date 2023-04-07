@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import adminstrativeApi from "../../api/adminstrative-api";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector, useSettings } from "../../store/hooks";
 import Button from "../../components/buttons/button";
 import AddressCard from "../../components/card/address-card";
 import Dropdown from "../../components/inputs/dropdown";
@@ -28,9 +28,10 @@ export default function Address() {
 	// Ref
 	const addressFormRef = useRef<HTMLFormElement>(null);
 
-	// Redux
+	// Redux & Context
 	const dispatch = useAppDispatch();
 	const addresses = useAppSelector(selectUser).address;
+	const { language } = useSettings();
 
 	// React-hook-form
 	const {
@@ -72,8 +73,6 @@ export default function Address() {
 		setSelectedProvince(value.province);
 		setSelectedDistrict(value.district);
 		setSelectedWard(value.ward);
-		// chưa làm cái update address vơi map
-		// handleGetPosition();
 		setPosition({ lat: value.coordinates.latitude, lng: value.coordinates.longitude });
 		scrollToForm();
 	};
@@ -91,16 +90,16 @@ export default function Address() {
 			console.log("address: ", address);
 			const response = adminstrativeApi.getGeocoding(address);
 			toast.promise(response, {
-				loading: "Đang lấy vị trí trên bản đồ",
-				success: "Lấy vị trí thành công",
-				error: "Xảy ra lỗi khi lấy vị trí",
+				loading: language.account_address_page.mes_getting_location,
+				success: language.account_address_page.mes_get_location_success,
+				error: language.account_address_page.mes_get_location_error,
 			});
 			response.then((data) => {
 				const coordinates = data.data.results[0].locations[0].displayLatLng;
 				setPosition(coordinates);
 			});
 		} else {
-			toastError("Please fill complete the form");
+			toastError(language.account_address_page.mes_not_fill_out_form);
 		}
 	};
 
@@ -111,16 +110,16 @@ export default function Address() {
 	const confirmPosition = () => {
 		if (position) {
 			setMarkerDraggable(false);
-			toast.success("Đã xác nhận vị trí. Bây giờ bạn hãy gửi form", { duration: 5000 });
+			toast.success(language.account_address_page.mes_confirm_location_success, { duration: 5000 });
 		} else {
-			toast.error("Hãy click xem vị trí trên bản đồ trước", { duration: 5000 });
+			toast.error(language.account_address_page.mes_confirm_location_error, { duration: 5000 });
 		}
 	};
 
 	const onSubmit = async (data: IAddressForm) => {
 		try {
 			if (!position) {
-				toastError("Bạn hãy xác nhận ví trí trên map");
+				toastError(language.account_address_page.mes_not_confirm_location);
 			} else {
 				const newAddress: IAddressAPI = {
 					coordinates: {
@@ -138,11 +137,11 @@ export default function Address() {
 
 				if (updateAddressId) {
 					await dispatch(updateAddress({ addressId: updateAddressId, addresss: newAddress }));
-					toastSuccess("Update address success");
+					toastSuccess(language.account_address_page.mes_update_location_success);
 					setUpdateAddressId(undefined);
 				} else {
 					await dispatch(createAddress(newAddress));
-					toastSuccess("Create new address success");
+					toastSuccess(language.account_address_page.mes_create_location_success);
 				}
 				// rest form
 				reset();
@@ -152,7 +151,7 @@ export default function Address() {
 			}
 		} catch (error) {
 			console.log("error: ", error);
-			toastError("Have some error. Try it later");
+			toastError(language.account_address_page.mes_submit_form_error);
 		}
 	};
 
@@ -174,9 +173,13 @@ export default function Address() {
 	return (
 		<section className="space-y-14 mt-14 mb-14 md:mb-[112px] xl:mb-[144px]">
 			<div className=" md:flex md:items-end md:justify-between">
-				<TitlePage className="mt-14 md-16" subtitle="Cá nhân" title="Sổ địa chỉ" />
+				<TitlePage
+					className="mt-14 md-16"
+					subtitle={language.account_address_page.section_subtitle}
+					title={language.account_address_page.addresses_title}
+				/>
 				<Button onClick={scrollToForm} className="mt-6 md:mt-0" type="secondary">
-					Thêm địa chỉ mới
+					{language.account_address_page.add_new_address_btn}
 				</Button>
 			</div>
 			<div className="lg:w-4/5 lg:mx-auto">
@@ -186,12 +189,16 @@ export default function Address() {
 							<AddressCard onUpdate={handleSetUpdate} key={item._id} address={item} />
 						))
 					) : (
-						<p>No address</p>
+						<p>{language.account_address_page.no_address}</p>
 					)}
 				</div>
 			</div>
 
-			<TitlePage className="mt-14 md-16" subtitle="Cá nhân" title="Địa chỉ mới" />
+			<TitlePage
+				className="mt-14 md-16"
+				subtitle={language.account_address_page.section_subtitle}
+				title={language.account_address_page.new_address_title}
+			/>
 
 			<form
 				ref={addressFormRef}
@@ -204,13 +211,13 @@ export default function Address() {
 					option={{
 						required: {
 							value: true,
-							message: "Yêu cầu nhập tên",
+							message: language.account_address_page.input_name_required_mes,
 						},
 					}}
 					error={errors.name?.message}
 					className="w-full"
-					label="Họ tên"
-					placeholder="Nguyễn Văn A"
+					label={language.account_address_page.input_name_label}
+					placeholder={language.account_address_page.input_name_placeholder}
 				/>
 				<Input
 					name="phone"
@@ -218,21 +225,21 @@ export default function Address() {
 					option={{
 						required: {
 							value: true,
-							message: "Yêu cầu nhập số điện thoại",
+							message: language.account_address_page.input_phone_required_mes,
 						},
 						pattern: {
 							value: /(03|05|07|08|09|01[2689])+([0-9]{8})\b/,
-							message: "Số điện thoại không đúng định đạng",
+							message: language.account_address_page.input_phone_not_match_format,
 						},
 					}}
 					error={errors.phone?.message}
 					className="w-full"
-					label="Số điện thoại"
-					placeholder="0987654321"
+					label={language.account_address_page.input_phone_label}
+					placeholder={language.account_address_page.input_phone_placeholder}
 				/>
 
 				<Dropdown
-					label="Tỉnh/Thành phố"
+					label={language.account_address_page.dropdown_province_label}
 					options={adminstrative.map((item) => ({
 						value: item.provinceName,
 						label: item.provinceName,
@@ -243,7 +250,7 @@ export default function Address() {
 					option={{
 						required: {
 							value: true,
-							message: "Chọn tỉnh/thành phố",
+							message: language.account_address_page.dropdown_province_required_mes,
 						},
 					}}
 					error={errors.province?.message}
@@ -253,7 +260,7 @@ export default function Address() {
 				/>
 
 				<Dropdown
-					label="Quận/Huyện"
+					label={language.account_address_page.dropdown_district_label}
 					options={
 						availabelDistricts?.districts.map((item) => ({
 							value: item.districtName,
@@ -266,7 +273,7 @@ export default function Address() {
 					option={{
 						required: {
 							value: true,
-							message: "Chọn quận/huyện",
+							message: language.account_address_page.dropdown_district_required_mes,
 						},
 					}}
 					error={errors.district?.message}
@@ -276,7 +283,7 @@ export default function Address() {
 					watch={watchProvince}
 				/>
 				<Dropdown
-					label="Xã/Thị trấn"
+					label={language.account_address_page.dropdown_ward_label}
 					options={
 						availableWards?.wards.map((item) => ({
 							value: item.wardName,
@@ -289,7 +296,7 @@ export default function Address() {
 					option={{
 						required: {
 							value: true,
-							message: "Chọn xã/thị trấn",
+							message: language.account_address_page.dropdown_ward_required_mes,
 						},
 					}}
 					error={errors.ward?.message}
@@ -304,26 +311,23 @@ export default function Address() {
 					option={{
 						required: {
 							value: true,
-							message: "Yêu cầu nhập địa chỉ cụ thể",
+							message: language.account_address_page.input_specific_address_required_mes,
 						},
 					}}
 					error={errors.specificAddress?.message}
 					className="w-full"
-					label="Địa chỉ cụ thể"
-					placeholder="Tổ dân phố 4B"
+					label={language.account_address_page.input_specific_address_label}
+					placeholder={language.account_address_page.input_specific_address_placeholder}
 				/>
 			</form>
-			<p className="font-semibold text-red-accent">
-				*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy Click nút Xem vị trí trên map để xem vị
-				trí nhận hàng của bạn có chính xác không.
-			</p>
+			<p className="font-semibold text-red-accent">{language.account_address_page.noted}</p>
 			<Button
 				onClick={handleGetPosition}
 				className="self-end w-full lg:w-fit"
 				btnType="submit"
 				type="primary"
 			>
-				Xem vị trí trên map
+				{language.account_address_page.view_location_in_map_btn}
 			</Button>
 			{/* Map React Leaflet */}
 			<div className="relative">
@@ -333,7 +337,7 @@ export default function Address() {
 					btnType="submit"
 					type="primary"
 				>
-					Xác nhận vị trí
+					{language.account_address_page.confirm_location_btn}
 				</Button>
 				<AddressMap
 					position={position}
@@ -348,7 +352,7 @@ export default function Address() {
 				btnType="submit"
 				type="primary"
 			>
-				submit
+				{language.account_address_page.create_address_btn}
 			</Button>
 		</section>
 	);

@@ -8,6 +8,7 @@ import PinLine from "../icons/pin-line";
 import Profile from "../icons/profile";
 import SignIn from "../icons/sign-in";
 import SignOut from "../icons/sign-out";
+import { useSettings } from "../../store/hooks";
 
 interface Props {
 	onClose: () => void;
@@ -18,6 +19,7 @@ export default function MyAccount({ onClose }: Props) {
 
 	const router = useRouter();
 	const { data: session, status } = useSession();
+	const { language } = useSettings();
 
 	const handleClickOutside = (event: any) => {
 		const { target } = event;
@@ -59,21 +61,21 @@ export default function MyAccount({ onClose }: Props) {
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<Profile className="text-black shrink-0 dark:text-light-100" />
-						<p>Info</p>
+						<p>{language.component_ui.info}</p>
 					</button>
 					<button
 						onClick={() => handleMyAccount(APP_PATH.ADDRESS)}
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<PinLine className="text-black shrink-0 dark:text-light-100" />
-						<p>Address</p>
+						<p>{language.component_ui.address}</p>
 					</button>
 					<button
 						onClick={() => handleMyAccount(`${APP_PATH.ORDER_HISTORY}?status=pending`)}
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<ClipBoard className="text-black shrink-0 dark:text-light-100" />
-						<p>Orders history</p>
+						<p>{language.component_ui.order_history}</p>
 					</button>
 					<button
 						onClick={() => {
@@ -84,7 +86,7 @@ export default function MyAccount({ onClose }: Props) {
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<SignOut className="text-black shrink-0 dark:text-light-100" />
-						Sign out
+						{language.component_ui.signout}
 					</button>
 				</Fragment>
 			) : (
@@ -93,7 +95,7 @@ export default function MyAccount({ onClose }: Props) {
 					className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 				>
 					<SignIn className="text-black shrink-0 dark:text-light-100" />
-					Sign in
+					{language.component_ui.signin}
 				</button>
 			)}
 		</div>

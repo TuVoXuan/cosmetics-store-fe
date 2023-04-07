@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "react-hot-toast";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useSettings } from "../../store/hooks";
 import { deleteAddress, setDefaultAddress } from "../../redux/actions/user-action";
 import { toastError, toastSuccess } from "../../util/toast";
 import Badge from "../badge/badge";
@@ -15,12 +15,13 @@ interface Props {
 }
 
 export default function AddressCard({ address, onUpdate }: Props) {
+	const { language } = useSettings();
 	const dispatch = useAppDispatch();
 
 	const handeDelete = async () => {
 		try {
 			await dispatch(deleteAddress(address._id)).unwrap();
-			toastSuccess("Delete address success");
+			toastSuccess(language.component_ui.mes_delete_address_success);
 		} catch (error) {
 			console.log("error: ", error);
 			toastError((error as IResponseError).error);
@@ -30,7 +31,7 @@ export default function AddressCard({ address, onUpdate }: Props) {
 	const handleSetDefault = async () => {
 		try {
 			await dispatch(setDefaultAddress(address._id)).unwrap();
-			toastSuccess("Set address default success");
+			toastSuccess(language.component_ui.mes_set_default_address_success);
 		} catch (error) {
 			console.log("error: ", error);
 			toastError((error as IResponseError).error);
@@ -41,14 +42,14 @@ export default function AddressCard({ address, onUpdate }: Props) {
 		toast.loading(
 			(t) => (
 				<div className="space-y-3">
-					<p>Bạn có chắc muốn xóa nó địa chỉ này không?</p>
+					<p>{language.component_ui.mes_ask_want_to_delete_address}</p>
 
 					<div className="flex justify-end gap-x-3">
 						<button
 							className="px-5 py-2 font-semibold border-2 rounded-3xl border-gray-accent hover:border-black"
 							onClick={() => toast.dismiss(t.id)}
 						>
-							Hủy bỏ
+							{language.component_ui.cancle}
 						</button>
 						<button
 							onClick={() => {
@@ -57,7 +58,7 @@ export default function AddressCard({ address, onUpdate }: Props) {
 							}}
 							className="px-5 py-2 font-semibold text-white rounded-3xl bg-red-accent"
 						>
-							Xóa
+							{language.component_ui.delete}
 						</button>
 					</div>
 				</div>
@@ -83,7 +84,7 @@ export default function AddressCard({ address, onUpdate }: Props) {
 				</p>
 				{address.default && (
 					<Badge className="w-fit shrink-0" isResponsive={false} color="pink_tertiary">
-						Mặc định
+						{language.component_ui.default}
 					</Badge>
 				)}
 			</div>
@@ -93,17 +94,17 @@ export default function AddressCard({ address, onUpdate }: Props) {
 						onClick={() => onUpdate(address)}
 						className="p-3 text-heading-6 md:text-heading-5 text-secondary-100"
 					>
-						Cập nhật
+						{language.component_ui.update}
 					</button>
 					<button
 						onClick={showWarningToast}
 						className="p-3 text-heading-6 md:text-heading-5 text-red-accent"
 					>
-						Xóa
+						{language.component_ui.delete}
 					</button>
 				</div>
 				<Button onClick={handleSetDefault} disable={address.default} type="secondary">
-					Đặt mặc định
+					{language.component_ui.set_default}
 				</Button>
 				<button onClick={() => onUpdate(address)} className="p-3 md:hidden">
 					<Edit className="w-6 h-6 dark:text-white" />

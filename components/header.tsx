@@ -18,6 +18,8 @@ import Twitter from "./icons/twitter";
 import SearchInput from "./inputs/search-input";
 import MyAccount from "./modal/my-account";
 import LanguageDropdown from "./inputs/language-dropdown";
+import { useAppSelector, useSettings } from "../store/hooks";
+import { selectCategories } from "../redux/slices/category-slice";
 
 interface Props {
 	onShowNavbar: () => void;
@@ -39,6 +41,8 @@ export default function Header({ onShowNavbar }: Props) {
 
 	const router = useRouter();
 	const { data: session, status } = useSession();
+	const categories = useAppSelector(selectCategories).categories;
+	const { language } = useSettings();
 
 	const handleClickSearchIcon = () => {
 		setSearch(true);
@@ -204,16 +208,6 @@ export default function Header({ onShowNavbar }: Props) {
 		});
 	};
 
-	const handleIconUserClick = () => {
-		if (status !== "authenticated") {
-			router.push({
-				pathname: APP_PATH.SIGN_IN,
-			});
-		} else {
-			router.push(APP_PATH.INFO);
-		}
-	};
-
 	const handleMyAccount = (to: string) => {
 		handleClickNavBarBtn();
 		router.push(to);
@@ -346,13 +340,13 @@ export default function Header({ onShowNavbar }: Props) {
 					ref={navbarListRef}
 					className="flex flex-col items-center mx-auto text-center transition-transform select-none lg:overflow-y-auto gap-y-6 dark:text-white-light"
 				>
-					<li className="text-paragraph-1 text-primary-100">Home</li>
+					<li className="text-paragraph-1 text-primary-100">{language.header.home_tag}</li>
 					<div onClick={handleShowCategories} className="md:relative dark:text-white-light">
 						<div
 							ref={categoriesTagRef}
 							className="flex items-center duration-300 ease-linear cursor-pointer text-paragraph-1 gap-x-4 hover:text-primary-100"
 						>
-							Categories
+							{language.header.categories_tag}
 							<GoForward height={16} width={16} />
 						</div>
 						<div
@@ -374,30 +368,17 @@ export default function Header({ onShowNavbar }: Props) {
 								</button>
 							</nav>
 							<ul className="space-y-6 text-center select-none text-paragraph-1">
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
-									On sale
-								</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
-									Featured
-								</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
-									Masks
-								</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
-									Eye care
-								</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
-									Moisturizers
-								</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
-									Treatments
-								</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
-									Night Care
-								</li>
-								<li className="duration-300 ease-linear cursor-pointer hover:text-primary-100">
-									Sun Care
-								</li>
+								{categories.map((cate) => (
+									<li
+										onClick={() => {
+											handleClickNavBarBtn();
+											router.push(`${APP_PATH.CATEGORY}/${cate._id}`);
+										}}
+										className="duration-300 ease-linear cursor-pointer whitespace-nowrap hover:text-primary-100"
+									>
+										{cate.name.filter((item) => item.language == router.locale)[0].value}
+									</li>
+								))}
 							</ul>
 						</div>
 					</div>
@@ -407,7 +388,7 @@ export default function Header({ onShowNavbar }: Props) {
 								ref={myAccountTagRef}
 								className="flex items-center duration-300 ease-linear cursor-pointer text-paragraph-1 gap-x-4 hover:text-primary-100"
 							>
-								My Account
+								{language.header.my_account_tag}
 								<GoForward height={16} width={16} />
 							</div>
 							<div
@@ -433,13 +414,13 @@ export default function Header({ onShowNavbar }: Props) {
 										onClick={() => handleMyAccount(APP_PATH.ADDRESS)}
 										className="duration-300 ease-linear cursor-pointer hover:text-primary-100"
 									>
-										Address
+										{language.header.my_account_address}
 									</li>
 									<li
 										onClick={() => handleMyAccount(APP_PATH.INFO)}
 										className="duration-300 ease-linear cursor-pointer hover:text-primary-100"
 									>
-										Info
+										{language.header.my_account_info}
 									</li>
 									<li
 										onClick={() =>
@@ -447,7 +428,7 @@ export default function Header({ onShowNavbar }: Props) {
 										}
 										className="duration-300 ease-linear cursor-pointer hover:text-primary-100"
 									>
-										Orders history
+										{language.header.my_account_order}
 									</li>
 								</ul>
 							</div>
@@ -455,10 +436,10 @@ export default function Header({ onShowNavbar }: Props) {
 					)}
 
 					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
-						About
+						{language.header.about_tag}
 					</li>
 					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
-						Contact
+						{language.header.contact_tag}
 					</li>
 				</ul>
 
@@ -472,7 +453,7 @@ export default function Header({ onShowNavbar }: Props) {
 						type="primary"
 						className="w-full mt-6 mb-[68px] md:hidden"
 					>
-						Đăng xuất
+						{language.header.signout_btn}
 					</Button>
 				) : (
 					<Button
@@ -480,7 +461,7 @@ export default function Header({ onShowNavbar }: Props) {
 						type="primary"
 						className="w-full mt-6 mb-[68px] md:hidden"
 					>
-						Đăng nhập
+						{language.header.signin_btn}
 					</Button>
 				)}
 

@@ -10,6 +10,7 @@ import Input from "../../../components/inputs/input";
 import TitlePage from "../../../components/title-page/title-page";
 import { Gender } from "../../../constants/enums";
 import { toastError } from "../../../util/toast";
+import { useSettings } from "../../../store/hooks";
 
 interface FormValue {
 	name: string;
@@ -20,7 +21,8 @@ interface FormValue {
 
 export default function UpdateInfo() {
 	const [user, setUser] = useState<IUserBasicInfo>();
-
+	const { language } = useSettings();
+	const { data: session } = useSession();
 	const {
 		register,
 		handleSubmit,
@@ -29,7 +31,6 @@ export default function UpdateInfo() {
 	} = useForm<FormValue>({
 		defaultValues: useMemo(() => user, [user]),
 	});
-	const { data: session } = useSession();
 
 	const fetchUser = async () => {
 		if (session?.user.email) {
@@ -41,7 +42,7 @@ export default function UpdateInfo() {
 
 	const onSubmit = async (value: FormValue) => {
 		try {
-			toast.loading("Đang cập nhập thông tin...", { id: "updateUserInfo" });
+			toast.loading(language.account_info_page.mes_updating, { id: "updateUserInfo" });
 			const updatedUser = await userApi.updateUser({
 				name: value.name,
 				gender: value.gender,
@@ -50,7 +51,7 @@ export default function UpdateInfo() {
 
 			setUser({ ...updatedUser, birthday: updatedUser.birthday.split("T")[0] });
 			toast.dismiss("updateUserInfo");
-			toast.success("Cập nhập thông tin thành công");
+			toast.success(language.account_info_page.mes_update_success);
 		} catch (error) {
 			toastError((error as IResponseError).error);
 		}
@@ -66,19 +67,24 @@ export default function UpdateInfo() {
 
 	return (
 		<>
-			<TitlePage className="mb-8 mt-14" subtitle="Cá nhân" title="Thông tin cá nhân" />
+			<TitlePage
+				className="mb-8 mt-14"
+				subtitle={language.account_info_page.info_subtitle}
+				title={language.account_info_page.info_title}
+			/>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className="space-y-5 md:w-3/5 md:mx-auto lg:w-4/5 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
 					<Input
 						register={register}
 						className="w-full"
-						label="Họ tên"
+						label={language.account_info_page.input_name_label}
+						placeholder={language.account_info_page.input_name_placeholder}
 						name="name"
 						error={errors.name?.message}
 						option={{
 							required: {
 								value: true,
-								message: "Nhập tên của bạn",
+								message: language.account_info_page.input_name_required_mes,
 							},
 						}}
 					/>
@@ -86,7 +92,7 @@ export default function UpdateInfo() {
 						register={register}
 						disabled
 						className="w-full"
-						label="Email"
+						label={language.account_info_page.input_email_label}
 						name="email"
 						error={errors.email?.message}
 					/>
@@ -97,23 +103,23 @@ export default function UpdateInfo() {
 						option={{
 							required: {
 								value: true,
-								message: "Nhập giới tính của bạn",
+								message: language.account_info_page.dropdown_gender_required_mes,
 							},
 						}}
 						defaulValue={user?.gender}
 						onChange={(value: string) => {
 							console.log("first");
 						}}
-						label="Giới tính"
+						label={language.account_info_page.dropdown_gender_label}
 						options={[
-							{ label: "Nam", value: "male" },
-							{ label: "Nữ", value: "female" },
-							{ label: "Khác", value: "other" },
+							{ label: language.account_info_page.gender_male, value: "male" },
+							{ label: language.account_info_page.gender_female, value: "female" },
+							{ label: language.account_info_page.gender_other, value: "other" },
 						]}
 					/>
 					<Birthday
 						className="w-full"
-						label="Ngày sinh"
+						label={language.account_info_page.input_birthday_label}
 						name="birthday"
 						defaultValue={user?.birthday}
 						error={errors.birthday?.message}
@@ -121,12 +127,12 @@ export default function UpdateInfo() {
 						option={{
 							required: {
 								value: true,
-								message: "Nhập ngày sinh của bạn",
+								message: language.account_info_page.input_birthday_required_mes,
 							},
 						}}
 					/>
 					<Button className="w-full lg:col-start-2" type="primary" btnType="submit">
-						Cập nhập
+						{language.account_info_page.update_btn}
 					</Button>
 				</div>
 			</form>

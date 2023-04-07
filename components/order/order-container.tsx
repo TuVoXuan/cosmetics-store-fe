@@ -8,6 +8,7 @@ import { hashCode } from "../../util/short-hash";
 import Badge from "../badge/badge";
 import Button from "../buttons/button";
 import OrderItem from "./order-item";
+import { useSettings } from "../../store/hooks";
 
 interface Props {
 	order: IOrder;
@@ -17,6 +18,7 @@ interface Props {
 
 export default function OrderContainer({ order, status, onCancelOrder }: Props) {
 	const router = useRouter();
+	const { language } = useSettings();
 
 	const handleTotal: () => number = () => {
 		let sum = 0;
@@ -50,12 +52,14 @@ export default function OrderContainer({ order, status, onCancelOrder }: Props) 
 			<div>
 				{order.orderItems.length > 1 && (
 					<p className="text-paragraph-5 md:text-paragraph-4 lg:text-paragraph-3 dark:text-light-100">
-						và <span className="font-semibold">{order.orderItems.length - 1}</span> sản phẩm khác
+						{language.component_ui.and}{" "}
+						<span className="font-semibold">{order.orderItems.length - 1}</span>{" "}
+						{language.component_ui.other_products}
 					</p>
 				)}
 				<div className="flex justify-between">
 					<p className="font-semibold text-paragraph-5 md:text-paragraph-4 lg:text-paragraph-3 dark:text-light-100">
-						Tổng đơn hàng:
+						{language.component_ui.order_total}
 					</p>
 					<p className="font-semibold text-paragraph-5 md:text-paragraph-4 lg:text-paragraph-3 dark:text-light-100">
 						{convertPrice(handleTotal())}
@@ -72,14 +76,12 @@ export default function OrderContainer({ order, status, onCancelOrder }: Props) 
 						className="w-full font-medium text-heading-6 md:text-heading-5 md:px-8 md:py-2 md:w-fit"
 						type="danger"
 					>
-						Hủy đơn hàng
+						{language.component_ui.cancel_oder}
 					</Button>
 				</div>
 			)}
 			{status === OrderStatus.Cancelled && order.paymentMethod === PaymentMethod.MOMO && (
-				<p className="font-medium text-red-accent">
-					Lưu ý: Đơn hàng thanh toán bằng Momo sẽ được hoàn tiền sau 24h.
-				</p>
+				<p className="font-medium text-red-accent">{language.component_ui.note_cancel_order}</p>
 			)}
 		</div>
 	);
