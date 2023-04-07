@@ -1,6 +1,6 @@
 import React, { Fragment, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAppSelector } from "../../store/hooks";
+import { useAppSelector, useSettings } from "../../store/hooks";
 import { selectUser } from "../../redux/slices/user-slice";
 import Badge from "../badge/badge";
 import Button from "../buttons/button";
@@ -29,6 +29,8 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 		const addressDictRef = useRef<HTMLDivElement>(null);
 		const address = useAppSelector(selectUser).address;
 
+		const { language } = useSettings();
+
 		const {
 			register,
 			handleSubmit,
@@ -42,8 +44,6 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 				address: defaultValue,
 			},
 		});
-
-		const watchAddress = watch("address");
 
 		const onSubmit = async (data: FormValues) => {
 			onChangeValue(address.find((item) => item._id === selectedValue));
@@ -111,7 +111,9 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 				  transition-transform duration-500 ease-in-out"
 			>
 				<div className="relative p-4 border-b-2 md:p-5">
-					<h3 className="text-heading-5 text-center lg:text-heading-4 dark:text-white">Địa chỉ của tôi</h3>
+					<h3 className="text-heading-5 text-center lg:text-heading-4 dark:text-white">
+						{language.component_ui.my_address}
+					</h3>
 
 					<button onClick={handleClose} className="absolute top-[50%] -translate-y-1/2 right-4 md:right-5">
 						<Delete width={20} height={20} className="dark:text-white" />
@@ -141,7 +143,7 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 									</p>
 									{item.default && (
 										<Badge className="w-fit shrink-0" isResponsive={false} color="pink_tertiary">
-											Mặc định
+											{language.category_page.default}
 										</Badge>
 									)}
 								</div>
@@ -156,7 +158,7 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 						type="secondary"
 						btnType="submit"
 					>
-						Thêm địa chỉ
+						{language.component_ui.add_new_address}
 					</Button>
 					<Button
 						className="!py-2 md:!py-3 w-full md:w-fit"
@@ -164,7 +166,7 @@ const AddressDictionary = React.forwardRef<AddressDictRefType, Props>(
 						type="primary"
 						btnType="submit"
 					>
-						Lưu
+						{language.component_ui.save}
 					</Button>
 				</div>
 			</div>

@@ -4,7 +4,7 @@ import GoBack from "../../components/icons/go-back";
 import GoForward from "../../components/icons/go-forward";
 import Dropdown from "../../components/inputs/dropdown";
 import TitlePage from "../../components/title-page/title-page";
-import { useProductDetail } from "../../store/hooks";
+import { useProductDetail, useSettings } from "../../store/hooks";
 import productApi from "../../api/product-api";
 import { toastError } from "../../util/toast";
 import Comment from "../../components/comment/comment";
@@ -14,7 +14,6 @@ import { English, Vietnamese } from "../../translation";
 
 export default function ProductComment() {
 	const { register } = useForm();
-	const { locale } = useRouter();
 	const { currentItem } = useProductDetail();
 
 	const [currPage, setCurrPage] = useState<number>(1);
@@ -22,7 +21,7 @@ export default function ProductComment() {
 	const [ratingProdItem, setRatingProdItem] = useState<IRatingProductItem>();
 	const [commentPagination, setCommentPagination] = useState<ICommentPagination>();
 
-	const { product_detail_page } = locale === "en" ? English : Vietnamese;
+	const { language } = useSettings();
 
 	const handleSelecteStar = (value: string) => {
 		const star = parseInt(value);
@@ -66,8 +65,8 @@ export default function ProductComment() {
 		<div className="space-y-4">
 			<TitlePage
 				className="text-center xl:text-left"
-				title={product_detail_page.prod_reviews_Title}
-				subtitle={product_detail_page.prod_reviews_subTitle}
+				title={language.home_page.our_review_title}
+				subtitle={language.product_detail_page.prod_reviews_subTitle}
 			/>
 
 			{ratingProdItem && (
@@ -94,12 +93,12 @@ export default function ProductComment() {
 			<Dropdown
 				className="md:w-1/4"
 				options={[
-					{ label: product_detail_page.all, value: "0" },
-					{ label: product_detail_page.five_star, value: "5" },
-					{ label: product_detail_page.four_star, value: "4" },
-					{ label: product_detail_page.three_star, value: "3" },
-					{ label: product_detail_page.two_star, value: "2" },
-					{ label: product_detail_page.one_star, value: "1" },
+					{ label: language.product_detail_page.all, value: "0" },
+					{ label: language.product_detail_page.five_star, value: "5" },
+					{ label: language.product_detail_page.four_star, value: "4" },
+					{ label: language.product_detail_page.three_star, value: "3" },
+					{ label: language.product_detail_page.two_star, value: "2" },
+					{ label: language.product_detail_page.one_star, value: "1" },
 				]}
 				onChange={handleSelecteStar}
 				register={register}
@@ -143,7 +142,7 @@ export default function ProductComment() {
 				</Fragment>
 			) : (
 				<div className="flex flex-col items-center pt-[60px] md:pt-[40px] gap-y-4">
-					<p className="text-paragraph-4 md:text-paragraph-2">{product_detail_page.no_reviews}</p>
+					<p className="text-paragraph-4 md:text-paragraph-2">{language.product_detail_page.no_reviews}</p>
 				</div>
 			)}
 		</div>

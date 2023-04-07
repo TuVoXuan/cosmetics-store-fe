@@ -1,6 +1,6 @@
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import React from "react";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useSettings } from "../../store/hooks";
 import { deleteFromCart } from "../../redux/slices/cart-slice";
 import { English, Vietnamese } from "../../translation";
 import { convertPrice } from "../../util/product";
@@ -14,6 +14,8 @@ interface Props {
 export default function ItemCartCheckout({ item }: Props) {
 	const { name, thumbnail, price, quantity, itemId, productId } = item;
 	const dispatch = useAppDispatch();
+	const { locale } = useRouter();
+	const { language } = useSettings();
 
 	const handleDelete = () => {
 		dispatch(
@@ -32,7 +34,7 @@ export default function ItemCartCheckout({ item }: Props) {
 			/>
 			<div className="mb-6 md:mx-6 md:mb-0 md:grow">
 				<h4 className="mb-4 font-semibold text-center md:text-left text-heading-6 lg:text-heading-5 dark:text-white">
-					{name.filter((e) => e.language === "vi")[0].value}
+					{name.filter((e) => e.language === locale)[0].value}
 				</h4>
 				<div className="flex flex-wrap  justify-center md:justify-start gap-y-3 gap-x-4">
 					<p className="flex items-center gap-x-3">
@@ -44,7 +46,7 @@ export default function ItemCartCheckout({ item }: Props) {
 						</span>
 					</p>
 					<p className="font-semibold text-paragraph-6 lg:text-paragraph-5 text-dark-64 dark:text-light-100">
-						SL: <span>{quantity}</span>
+						{language.component_ui.abbreviation_for_quantity}: <span>{quantity}</span>
 					</p>
 				</div>
 			</div>

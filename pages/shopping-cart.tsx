@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import React, { Fragment, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import adminstrativeApi from "../api/adminstrative-api";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppDispatch, useAppSelector, useSettings } from "../store/hooks";
 import Button from "../components/buttons/button";
 import ItemCart from "../components/card/item-cart";
 import Warning from "../components/icons/warning";
@@ -27,6 +27,9 @@ export default function ShoppingCart() {
 	const cart = useAppSelector(selectCart);
 	const addresses = useAppSelector(selectUser).address;
 	const defaultAddress = addresses.find((item) => item.default === true);
+
+	// Context
+	const { language } = useSettings();
 
 	const handleTotal = () => {
 		setSubTotal(cart.reduce((prev, curr) => prev + curr.quantity * curr.price, 0));
@@ -57,11 +60,11 @@ export default function ShoppingCart() {
 							setShippingFee(feePerKm * data.route.distance);
 						});
 				} catch (error) {
-					toastError("Xãy ra lỗi trong khi tính phí ship. Vui lòng thử lại sau.");
+					toastError(language.shopping_cart_page.error_shipping_fee);
 				}
 			}
 		} else {
-			toast("Hiện tại bạn chưa có địa chỉ mặc định. Vui lòng vào trang cá nhân để thêm địa chỉ mặc định.", {
+			toast(language.shopping_cart_page.warning_default_address, {
 				duration: 10000,
 				icon: <Warning className="text-yellow-tertiary-100 shrink-0" />,
 			});
@@ -86,14 +89,18 @@ export default function ShoppingCart() {
 	return (
 		<Fragment>
 			<Head>
-				<title>Shopping cart</title>
+				<title>{language.shopping_cart_page.shopping_cart}</title>
 			</Head>
 			<section className="pt-14 md:pt-16 mb-[104px] md:mb-[112px] xl:mb-[144px]">
 				<div className="justify-between mb-10 md:items-end md:flex md:mb-16">
-					<TitlePage className="mb-6 md:mb-0" subtitle="Giỏ hàng của bạn" title="Giỏ hàng" />
+					<TitlePage
+						className="mb-6 md:mb-0"
+						subtitle={language.shopping_cart_page.your_cart}
+						title={language.shopping_cart_page.shopping_cart}
+					/>
 					{cart.length > 0 && (
 						<Button onClick={handleDeleteAll} type="secondary">
-							Xóa tất cả
+							{language.category_page.clear_all}
 						</Button>
 					)}
 				</div>
@@ -119,9 +126,9 @@ export default function ShoppingCart() {
 									alt="empty-cart"
 								/>
 								<p className="md:text-paragraph-1 lg:text-paragraph-2 dark:text-white">
-									Cart is empty
+									{language.shopping_cart_page.empty_cart}
 									<Link className="pl-2 font-semibold text-primary-100" href={"/"}>
-										go to shop now!
+										{language.shopping_cart_page.go_shop_now}
 									</Link>
 								</p>
 							</div>
@@ -130,26 +137,32 @@ export default function ShoppingCart() {
 
 					<div className="p-6 border-2 border-gray-accent rounded-4xl md:p-8 lg:p-6 lg:h-fit dark:border-black-dark-2">
 						<h4 className="mb-8 font-semibold text-heading-5 lg:text-heading-4 md:mb-8 lg:mb-10 dark:text-white">
-							Tổng số giỏ hàng
+							{language.shopping_cart_page.cart_total}
 						</h4>
 						<div className="space-y-6 mb-8 md:mb-10 lg:mx-0 lg:block lg:mb-14">
 							<div className="flex justify-between">
-								<p className="text-heading-6 lg:text-heading-5 dark:text-white">Tổng phụ:</p>
+								<p className="text-heading-6 lg:text-heading-5 dark:text-white">
+									{language.shopping_cart_page.merchandise_subTotal}:
+								</p>
 								<p className="text-heading-6 lg:text-heading-5 dark:text-white">{convertPrice(subTotal)}</p>
 							</div>
 							<div className="flex justify-between">
-								<p className="text-heading-6 lg:text-heading-5 dark:text-white">Phí giao hàng:</p>
+								<p className="text-heading-6 lg:text-heading-5 dark:text-white">
+									{language.shopping_cart_page.shipping_fee}:
+								</p>
 								<p className="text-heading-6 lg:text-heading-5 dark:text-white">{convertPrice(shippingFee)}</p>
 							</div>
 							<div className="flex justify-between">
-								<p className="font-semibold text-heading-6 lg:text-heading-5 dark:text-white">Tổng:</p>
+								<p className="font-semibold text-heading-6 lg:text-heading-5 dark:text-white">
+									{language.shopping_cart_page.total_payment}:
+								</p>
 								<p className="font-semibold text-heading-6 lg:text-heading-5 dark:text-white">
 									{convertPrice(subTotal + shippingFee)}
 								</p>
 							</div>
 						</div>
 						<Button className="w-full" type="primary" onClick={handleCheckout}>
-							Thanh toán
+							{language.shopping_cart_page.checkout}
 						</Button>
 					</div>
 				</div>

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { orderApi } from "../../api/order-api";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useSettings } from "../../store/hooks";
 import LoadingHorizontal from "../../components/icons/loading";
 import APP_PATH from "../../constants/app-path";
 import { deleteAll } from "../../redux/slices/cart-slice";
@@ -11,7 +11,7 @@ export default function Loading() {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const orderId = router.query.orderId as string;
-	console.log("orderId: ", orderId);
+	const { language } = useSettings();
 
 	const handleCheckOrder = async () => {
 		try {
@@ -41,8 +41,8 @@ export default function Loading() {
 	return (
 		<div className="flex flex-col gap-y-3 items-center mt-14 mb-14 md:mb-[112px] xl:mb-[144px]">
 			<LoadingHorizontal className="h-[100px] text-primary-100" />
-			<p className="dark:text-white">Đơn hàng của bạn đang được xử lý</p>
-			<p className="dark:text-white">Vui lòng đợi trong giây lát..</p>
+			<p className="dark:text-white">{language.checkout_page.processing_order}</p>
+			<p className="dark:text-white">{language.checkout_page.please_wait}</p>
 		</div>
 	);
 }

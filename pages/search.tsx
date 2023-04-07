@@ -159,14 +159,14 @@ export default function Search() {
 					<Button className="lg:hidden" onClick={handleOpenFilter} type="secondary">
 						<div className="flex items-center gap-x-3">
 							<Filter className="dark:text-white" />
-							<span className="font-normal dark:text-white">Lọc</span>
+							<span className="font-normal dark:text-white">{language.category_page.filter}</span>
 						</div>
 					</Button>
 				</div>
 
 				{((from && to) || brand) && (
 					<div className="hidden space-y-4 lg:block">
-						<h5 className="font-semibold text-paragraph-3">Đang lọc theo</h5>
+						<h5 className="font-semibold text-paragraph-3">{language.category_page.filtering_by}</h5>
 						<div className="flex flex-wrap items-center gap-4">
 							{from && to && (
 								<RemoveFilterButton
@@ -185,7 +185,7 @@ export default function Search() {
 									return <Fragment key={item}></Fragment>;
 								})}
 							<p onClick={handleRemoveAllFilter} className="cursor-pointer text-red-accent text-paragraph-4">
-								Xóa tất cả
+								{language.category_page.clear_all}
 							</p>
 						</div>
 					</div>
@@ -229,15 +229,12 @@ export default function Search() {
 					{after !== "end" && (
 						<div className="flex justify-center mt-14 md:mt-16">
 							<Button onClick={loadMore} type="primary">
-								Xem thêm
+								{language.product_detail_page.see_more}
 							</Button>
 						</div>
 					)}
 				</div>
 			</div>
-
-			{/* categories */}
-			{/* <CategoriesWindow ref={categoriesRef} overlay={overlayRef} /> */}
 
 			{/* filter modal */}
 			<FilterModal ref={filterRef} overlay={overlayRef} brands={brands} />

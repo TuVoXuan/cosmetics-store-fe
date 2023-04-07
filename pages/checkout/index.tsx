@@ -8,7 +8,7 @@ import Badge from "../../components/badge/badge";
 import AddressDictionary, { AddressDictRefType } from "../../components/modal/address-dictionary";
 import Overlay from "../../components/modal/overlay";
 import Radio from "../../components/inputs/radio";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector, useSettings } from "../../store/hooks";
 import { deleteAll, selectCart } from "../../redux/slices/cart-slice";
 import { convertPrice } from "../../util/product";
 import { selectUser } from "../../redux/slices/user-slice";
@@ -43,6 +43,8 @@ export default function Checkout() {
 	const [total, setTotal] = useState<number>(0);
 	const [selectedAddress, setSelectedAddress] = useState<IAddressExtract>();
 	const [shippingFee, setShippingFee] = useState<number>(0);
+
+	const { language } = useSettings();
 
 	const handleShippingFee = () => {
 		if (selectedAddress) {
@@ -145,13 +147,13 @@ export default function Checkout() {
 	return (
 		<Fragment>
 			<div className="space-y-14 mt-14 mb-14 md:mb-[112px]  xl:mb-[144px]">
-				<TitlePage subtitle="Gần hoàn thành" title="Thanh toán" />
+				<TitlePage subtitle={language.checkout_page.almost_there} title={language.checkout_page.checkout} />
 				<div className="space-y-6 lg:w-3/5 md:w-4/5 md:mx-auto md:space-y-8">
 					<div className="space-y-6 md:space-y-8">
 						{/* cart section */}
 						<div className="p-6 space-y-10 border-2 md:p-8 rounded-4xl border-gray-accent dark:border-black-dark-2 md:space-y-12">
 							<p className="font-semibold capitalize text-heading-5 lg:text-heading-4 text-dark-100 dark:text-light-100">
-								Giỏ hàng
+								{language.shopping_cart_page.your_cart}
 							</p>
 							<div className="space-y-10 md:space-y-6">
 								{cart.length > 0 && cart.map((item) => <ItemCartCheckout key={item.itemId} item={item} />)}
@@ -161,7 +163,7 @@ export default function Checkout() {
 								className="w-full !mt-14 md:!mt-20 lg:w-fit dark:text-light-100"
 								type="secondary"
 							>
-								Chỉnh sửa giỏ hàng
+								{language.checkout_page.edit_cart}
 							</Button>
 						</div>
 						{/* address section */}
@@ -169,7 +171,7 @@ export default function Checkout() {
 							<div className="flex items-center gap-x-4">
 								<Pin height={24} width={24} className="text-primary-100" />
 								<h4 className="font-semibold capitalize text-heading-5 lg:text-heading-4 text-primary-100 dark:text-light-100">
-									Địa chỉ nhận hàng
+									{language.checkout_page.delivery_address}
 								</h4>
 							</div>
 
@@ -188,11 +190,11 @@ export default function Checkout() {
 									</p>
 								</div>
 								<Badge className="w-fit md:shrink-0" color="primary" isResponsive={false}>
-									Mặc định
+									{language.category_page.default}
 								</Badge>
 							</div>
 							<Button onClick={handleOpenAddressDictModal} className="w-full lg:w-fit" type="secondary">
-								Thay đổi
+								{language.checkout_page.change}
 							</Button>
 						</div>
 					</div>
@@ -201,7 +203,7 @@ export default function Checkout() {
 						{/* payment method section */}
 						<div className="p-6 space-y-6 border-2 border-gray-accent rounded-4xl dark:border-black-dark-2">
 							<h4 className="font-semibold text-heading-5 lg:text-heading-4 dark:text-light-100">
-								Phương thức thanh toán
+								{language.checkout_page.payment_method}
 							</h4>
 
 							<div className="space-y-4">
@@ -238,26 +240,28 @@ export default function Checkout() {
 						</div>
 						{/* order info section */}
 						<div className="p-6 space-y-4 border-2 border-gray-accent rounded-4xl dark:border-black-dark-2">
-							<h4 className="font-semibold text-heading-5 lg:text-heading-4 dark:text-light-100">Thông tin đơn hàng</h4>
+							<h4 className="font-semibold text-heading-5 lg:text-heading-4 dark:text-light-100">
+								{language.checkout_page.order_value}
+							</h4>
 
 							<div className="flex justify-between text-heading-6 lg:text-heading-5">
-								<p className="dark:text-light-100">Tổng phụ:</p>
+								<p className="dark:text-light-100">{language.shopping_cart_page.merchandise_subTotal}:</p>
 								<p className="dark:text-light-100">{convertPrice(total)}</p>
 							</div>
 							<div className="flex justify-between text-heading-6 lg:text-heading-5">
-								<p className="dark:text-light-100">Phí ship:</p>
+								<p className="dark:text-light-100">{language.shopping_cart_page.shipping_fee}:</p>
 								<p className="dark:text-light-100">{convertPrice(shippingFee)}</p>
 							</div>
 
 							<div className="flex justify-between text-heading-6 lg:text-heading-5">
-								<p className="dark:text-light-100">Tổng:</p>
+								<p className="dark:text-light-100">{language.shopping_cart_page.total_payment}:</p>
 								<p className="dark:text-light-100">{convertPrice(total + shippingFee)}</p>
 							</div>
 						</div>
 					</div>
 
 					<Button onClick={handleCheckout} type="primary" className="w-full">
-						submit
+						{language.checkout_page.place_order}
 					</Button>
 				</div>
 			</div>

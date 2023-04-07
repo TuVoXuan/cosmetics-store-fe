@@ -28,17 +28,17 @@ export default function SmallPara({ title, children }: Props) {
 
 	return (
 		<div>
-			<div onClick={handleClick} className="flex items-start justify-between gap-x-6">
-				<h4 className="font-semibold text-heading-4 lg:text-paragraph-1 dark:text-white">{title}</h4>
+			<div onClick={handleClick} className="flex items-center justify-between gap-x-6">
+				<h4 className="font-semibold text-heading-5 lg:text-paragraph-2 dark:text-white">{title}</h4>
 
 				<button
 					ref={titleRef}
-					className="p-4 transition-all duration-300 ease-linear border-2 rounded-full border-gray-accent dark:border-black-dark-2"
+					className="p-3 transition-all duration-300 ease-linear border-2 rounded-full border-gray-accent dark:border-black-dark-2"
 				>
 					<Expand height={16} width={16} className="dark:text-white" />
 				</button>
 			</div>
-			<div ref={paraRef} className="h-0 mt-4 overflow-hidden transition-all duration-300 ease-linear">
+			<div ref={paraRef} className="h-0 mt-4 overflow-hidden transition-all duration-300 ease-linear text-paragraph-5">
 				<p ref={paraWrapRef} className="text-paragraph-4 lg:text-paragraph-3 dark:text-white">
 					{children}
 				</p>

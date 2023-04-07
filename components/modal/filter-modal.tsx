@@ -94,9 +94,10 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 	const onSubmit = (value: FormValues) => {
 		// onSelectBrand(tempSelectedBrands);
 		let url: string = "";
-		if (pathName === APP_PATH.CATEGORY) {
+
+		if (pathName.startsWith(APP_PATH.CATEGORY)) {
 			url = `${APP_PATH.CATEGORY}/${id}?`;
-		} else if (pathName === APP_PATH.SEARCH) {
+		} else if (pathName.startsWith(APP_PATH.SEARCH)) {
 			url = `${APP_PATH.SEARCH}?search=${search}&`;
 		} else {
 			url = `${APP_PATH.BRAND}/${id}?`;
@@ -316,11 +317,13 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 						{brandsList.length > 0 && (
 							<div className="space-y-3">
 								<div className="flex items-center justify-between">
-									<h6 className="font-medium uppercase text-heading-6">Thương hiệu</h6>
+									<h6 className="font-medium uppercase text-heading-6">{language.component_ui.brands}</h6>
 
 									{brandsList.length > 10 && (
 										<button onClick={handleMoreBrands} type="button" className="flex items-center gap-x-1">
-											<p className="text-paragraph-5 text-dark-64">Tất cả ({brands.length})</p>
+											<p className="text-paragraph-5 text-dark-64">
+												{language.product_detail_page.all} ({brands.length})
+											</p>
 											<GoForward className="w-3 h-3 text-dark-24" />
 										</button>
 									)}
@@ -344,16 +347,16 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 			{moreBrands ? (
 				<div className="flex p-4 shadow-t-md">
 					<Button btnType="button" onClick={handleMoreBrands} type="primary" className="flex-1">
-						Chọn
+						{language.category_page.choose}
 					</Button>
 				</div>
 			) : (
 				<div className="flex p-4 shadow-t-md gap-x-4">
 					<Button onClick={resetForm} btnType="button" type="secondary" className="flex-1">
-						Thiết lập lại
+						{language.component_ui.clear}
 					</Button>
 					<Button form="filterForm" btnType="submit" type="primary" className="flex-1">
-						Áp dụng
+						{language.component_ui.apply}
 					</Button>
 				</div>
 			)}
