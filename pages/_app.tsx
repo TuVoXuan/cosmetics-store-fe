@@ -13,6 +13,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getLocalData } from "../redux/slices/cart-slice";
 import { SettingProvider } from "../context/setting.context";
+// CSS
+import "node_modules/flag-icons/css/flag-icons.min.css";
 
 const montserrat = Montserrat({ subsets: ["latin", "vietnamese"], variable: "--font-montserrat" });
 
@@ -30,6 +32,11 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
 		const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
 		store.dispatch(getLocalData(cart));
+
+		const language = localStorage.getItem("language");
+		if (language) {
+			router.push(router.asPath, router.asPath, { locale: language });
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

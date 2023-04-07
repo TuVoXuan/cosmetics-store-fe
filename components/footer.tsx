@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { English, Vietnamese } from "../translation";
 import { selectCategories } from "../redux/slices/category-slice";
 import APP_PATH from "../constants/app-path";
+import LanguageDropdown from "./inputs/language-dropdown";
 
 export default function Footer() {
 	// Redux
@@ -91,12 +92,16 @@ export default function Footer() {
 						<Facebook width={24} height={24} className="text-black dark:text-light-100" />
 					</div>
 				</div>
-				<ToggleBtn
-					value={settings.mode === "dark"}
-					toggle={Toggle}
-					childrenOn={<Moon width={16} height={16} color="#F7FAFC" />}
-					childrenOff={<Sun width={16} height={16} color="#F7FAFC" />}
-				/>
+
+				<div className="grid grid-cols-2 md:flex md:gap-x-4 md:items-center">
+					<ToggleBtn
+						value={settings.mode === "dark"}
+						toggle={Toggle}
+						childrenOn={<Moon width={16} height={16} color="#F7FAFC" />}
+						childrenOff={<Sun width={16} height={16} color="#F7FAFC" />}
+					/>
+					<LanguageDropdown className="lg:hidden" />
+				</div>
 			</div>
 			<div className="space-y-4">
 				<h4 className="dark:text-light-100 text-heading-5 md:text-heading-4">
