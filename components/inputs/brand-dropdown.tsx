@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Button from "../buttons/button";
 import APP_PATH from "../../constants/app-path";
 import BrandItemLoading from "../card/skeleton-loader/brand-item-loading";
+import { useSettings } from "../../store/hooks";
 
 interface Props {
 	options: IOption[];
@@ -25,6 +26,8 @@ export default function BrandDropdown({ options, className, loading }: Props) {
 			brands: [],
 		},
 	});
+	const { locale } = router;
+	const { language } = useSettings();
 
 	const { id, from, to, brand, order, search } = router.query;
 
@@ -156,7 +159,13 @@ export default function BrandDropdown({ options, className, loading }: Props) {
 					)}
 				>
 					<p className={clsx("select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5")}>
-						{selectedValue.length > 0 ? `Đã chọn ${selectedValue.length} thương hiệu` : "Chọn thương hiệu"}
+						{clsx(
+							selectedValue.length > 0 && locale === "vi" && `Đã chọn ${selectedValue.length} thương hiệu`,
+							selectedValue.length > 0 &&
+								locale === "en" &&
+								`${selectedValue.length} brand${selectedValue.length > 1 ? "s" : ""} selected`,
+							selectedValue.length === 0 && language.component_ui.choose_brands
+						)}
 					</p>
 					<div ref={expandIconRef} className="duration-300 ease-linear">
 						<Expand width={16} height={16} className="dark:text-light-100" />
@@ -217,7 +226,9 @@ export default function BrandDropdown({ options, className, loading }: Props) {
 							})}
 						</ul>
 					)}
-					{!loading && options.length === 0 && <p className="text-paragraph-5 lg:text-paragraph-4">Không có dữ liệu</p>}
+					{!loading && options.length === 0 && (
+						<p className="text-paragraph-5 lg:text-paragraph-4">{language.component_ui.no_data}</p>
+					)}
 
 					<div className="flex justify-between p-4">
 						<Button
@@ -226,10 +237,10 @@ export default function BrandDropdown({ options, className, loading }: Props) {
 							className="w-fit !px-6 !py-2 text-paragraph-5 font-medium"
 							onClick={handleApply}
 						>
-							Áp dụng
+							{language.component_ui.apply}
 						</Button>
 						<Button type="secondary" className="w-fit !px-6 !py-2 text-paragraph-5 font-medium" onClick={handleReset}>
-							Bỏ chọn
+							{language.component_ui.clear}
 						</Button>
 					</div>
 				</div>

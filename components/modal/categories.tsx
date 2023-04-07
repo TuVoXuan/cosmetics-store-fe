@@ -1,5 +1,5 @@
 import React, { Fragment, MouseEvent, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { useAppSelector } from "../../store/hooks";
+import { useAppSelector, useSettings } from "../../store/hooks";
 import Delete from "../icons/delete";
 import { selectCategories } from "../../redux/slices/category-slice";
 import Category from "../category/categoryItem";
@@ -25,7 +25,9 @@ const Categories = React.forwardRef<CategoriesRefType, Props>(({ overlay }, ref)
 	const [path, setPath] = useState<ICategory[]>([]);
 
 	const router = useRouter();
+	const { language } = useSettings();
 	const { id } = router.query;
+	const { locale } = router;
 
 	// handle model function
 	const handleOpen = () => {
@@ -137,7 +139,9 @@ const Categories = React.forwardRef<CategoriesRefType, Props>(({ overlay }, ref)
 				  transition-transform duration-500 ease-in-out"
 		>
 			<div className="relative p-4 border-b-2 border-gray-accent dark:border-black-dark-2 md:p-5">
-				<h3 className="text-center text-heading-5 lg:text-heading-4 dark:text-white">Danh mục sản phẩm</h3>
+				<h3 className="text-center text-heading-5 lg:text-heading-4 dark:text-white">
+					{language.category_page.category}
+				</h3>
 
 				<button onClick={handleClose} className="absolute top-[50%] -translate-y-1/2 right-4 md:right-5">
 					<Delete width={20} height={20} className="dark:text-white" />
@@ -152,8 +156,8 @@ const Categories = React.forwardRef<CategoriesRefType, Props>(({ overlay }, ref)
 
 			<div className="flex flex-wrap p-4 bg-gray-accent dark:bg-black-dark-2">
 				{path.length > 0 && (
-					<p className="text-paragraph-5 capitalize dark:text-light-100">
-						{path.map((item) => item.name.filter((e) => e.language === "vi")[0].value).join(" / ")}
+					<p className="capitalize text-paragraph-5 dark:text-light-100">
+						{path.map((item) => item.name.filter((e) => e.language === locale)[0].value).join(" / ")}
 					</p>
 				)}
 			</div>
@@ -166,7 +170,7 @@ const Categories = React.forwardRef<CategoriesRefType, Props>(({ overlay }, ref)
 			</div>
 			<div className="p-4 shadow-t-md">
 				<Button className="!py-2 md:!py-3 w-full md:w-fit" type="primary" onClick={handleChooseButtonClick}>
-					Chọn
+					{language.category_page.choose}
 				</Button>
 			</div>
 		</div>

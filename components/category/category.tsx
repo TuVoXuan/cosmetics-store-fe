@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import React, { Children, MouseEvent, useEffect, useRef, useState } from "react";
 import APP_PATH from "../../constants/app-path";
-import { usePathCategory } from "../../store/hooks";
+import { usePathCategory, useSettings } from "../../store/hooks";
 import GoForward from "../icons/go-forward";
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 
 export default function CategoryItem({ category }: Props) {
 	const router = useRouter();
+	const { locale } = router;
 	const { path } = usePathCategory();
 
 	const [active, setActive] = useState(false);
@@ -45,7 +46,7 @@ export default function CategoryItem({ category }: Props) {
 				{category.children ? (
 					<div
 						onClick={handleExpand}
-						className="p-2 rounded-full group hover:bg-primary-10 transition-colors duration-200 ease-out"
+						className="p-2 transition-colors duration-200 ease-out rounded-full group hover:bg-primary-10"
 					>
 						<GoForward
 							width={12}
@@ -71,7 +72,7 @@ export default function CategoryItem({ category }: Props) {
 						"capitalize text-heading-5 font-medium hover:text-primary-100"
 					)}
 				>
-					{category.name.filter((item) => item.language === "vi")[0].value}
+					{category.name.filter((item) => item.language === locale)[0].value}
 				</p>
 			</div>
 

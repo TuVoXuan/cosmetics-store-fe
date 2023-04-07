@@ -55,7 +55,7 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 	const [searchBrand, setSearchBrand] = useState<string>("");
 
 	// context
-	const { toggleLayout } = useSettings();
+	const { toggleLayout, language } = useSettings();
 
 	// react-hook form
 	const {
@@ -206,17 +206,6 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// useEffect(() => {
-	// 	setTempSelectedBrands(selectedBrands);
-	// }, [selectedBrands]);
-
-	// useEffect(() => {
-	// 	if (priceRange) {
-	// 		setValue("priceFrom", priceRange.from);
-	// 		setValue("priceTo", priceRange.to);
-	// 	}
-	// }, [priceRange]);
-
 	useEffect(() => {
 		handleGetSelectedBrandFromRoute();
 	}, [brand]);
@@ -232,31 +221,21 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 		>
 			<div className="relative p-4 border-b-2 md:p-5">
 				{moreBrands && (
-					<button
-						onClick={handleMoreBrands}
-						className="absolute top-[50%] -translate-y-1/2 left-4 md:right-5"
-					>
+					<button onClick={handleMoreBrands} className="absolute top-[50%] -translate-y-1/2 left-4 md:right-5">
 						<GoBack className="dark:text-white" />
 					</button>
 				)}
 
 				<h3 className="text-center text-heading-5 lg:text-heading-4 dark:text-white">
-					{moreBrands ? "Thương hiệu" : "Lọc sản phẩm"}
+					{moreBrands ? language.component_ui.brands : language.component_ui.filter_products}
 				</h3>
 
-				<button
-					onClick={handleClose}
-					className="absolute top-[50%] -translate-y-1/2 right-4 md:right-5"
-				>
+				<button onClick={handleClose} className="absolute top-[50%] -translate-y-1/2 right-4 md:right-5">
 					<Delete width={20} height={20} className="dark:text-white" />
 				</button>
 			</div>
 
-			<form
-				id="filterForm"
-				onSubmit={handleSubmit(onSubmit)}
-				className="p-4 space-y-6 overflow-y-auto grow"
-			>
+			<form id="filterForm" onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-6 overflow-y-auto grow">
 				{moreBrands ? (
 					<>
 						<div className="relative flex items-center gap-x-3">
@@ -265,9 +244,7 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 								type="text"
 								name="search"
 								id="search"
-								onChange={(event: ChangeEvent<HTMLInputElement>) =>
-									setSearchBrand(event.target.value)
-								}
+								onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchBrand(event.target.value)}
 								className="w-full p-3 border-2 pl-9 border-gray-accent rounded-3xl focus:outline-none focus:border-primary-100"
 							/>
 						</div>
@@ -288,7 +265,7 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 				) : (
 					<>
 						<div>
-							<h6 className="font-medium uppercase text-heading-6">Mức giá</h6>
+							<h6 className="font-medium uppercase text-heading-6">{language.component_ui.price_range}</h6>
 							<div className="flex items-center justify-between">
 								<div className="w-[45%]">
 									<Input
@@ -297,15 +274,15 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 										option={{
 											required: {
 												value: priceToWatch ? true : false,
-												message: "Price from is requited",
+												message: language.component_ui.rule_required_price_range,
 											},
 											min: {
 												value: 1000,
-												message: "price must be greater than 1000",
+												message: language.component_ui.rule_min_price_range,
 											},
 										}}
 										type="number"
-										placeholder="Từ"
+										placeholder={language.component_ui.from}
 										className="w-full"
 									/>
 								</div>
@@ -319,14 +296,14 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 										option={{
 											required: {
 												value: priceFromWatch ? true : false,
-												message: "Price to is requited",
+												message: language.component_ui.rule_required_price_range,
 											},
 											validate: () =>
-												Number(getValues("priceTo")) >=
-													Number(getValues("priceFrom")) || "Đến phải lớn hơn Từ",
+												Number(getValues("priceTo")) >= Number(getValues("priceFrom")) ||
+												language.component_ui.rule_required_price_range,
 										}}
 										type="number"
-										placeholder="Đến"
+										placeholder={language.component_ui.to}
 										className="w-full"
 									/>
 								</div>
@@ -334,9 +311,7 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 							{errors.priceFrom?.message && (
 								<p className="text-red-accent text-heading-6">{errors.priceFrom.message}</p>
 							)}
-							{errors.priceTo?.message && (
-								<p className="text-red-accent text-heading-6">{errors.priceTo.message}</p>
-							)}
+							{errors.priceTo?.message && <p className="text-red-accent text-heading-6">{errors.priceTo.message}</p>}
 						</div>
 						{brandsList.length > 0 && (
 							<div className="space-y-3">
@@ -344,14 +319,8 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 									<h6 className="font-medium uppercase text-heading-6">Thương hiệu</h6>
 
 									{brandsList.length > 10 && (
-										<button
-											onClick={handleMoreBrands}
-											type="button"
-											className="flex items-center gap-x-1"
-										>
-											<p className="text-paragraph-5 text-dark-64">
-												Tất cả ({brands.length})
-											</p>
+										<button onClick={handleMoreBrands} type="button" className="flex items-center gap-x-1">
+											<p className="text-paragraph-5 text-dark-64">Tất cả ({brands.length})</p>
 											<GoForward className="w-3 h-3 text-dark-24" />
 										</button>
 									)}

@@ -18,6 +18,7 @@ import BrandDropdown from "../components/inputs/brand-dropdown";
 import PriceRangeDropdown from "../components/inputs/price-range-dropdown";
 import ProductCardLoader from "../components/card/skeleton-loader/product-card-loader";
 import RemoveFilterButton from "../components/buttons/remove-filter-btn";
+import { useSettings } from "../store/hooks";
 
 export default function Search() {
 	// ref
@@ -27,6 +28,8 @@ export default function Search() {
 	// route
 	const router = useRouter();
 	const { search, from, to, brand, order } = router.query;
+
+	const { language } = useSettings();
 
 	// state
 	const [products, setProducts] = useState<IProductItem[]>([]);
@@ -127,7 +130,7 @@ export default function Search() {
 				<Breadcrumb className="hidden xl:block xl:mt-[93px]" items={["Trang chủ", "Kết quả tìm kiếm"]} />
 				<TitlePage
 					className="capitalize mt-14 md:mt-16 xl:mt-12"
-					subtitle="Kết quả tìm kiếm"
+					subtitle={language.search_page.search_results}
 					title={(search as string) || ""}
 				/>
 
@@ -139,9 +142,9 @@ export default function Search() {
 						className="w-fit"
 						onChange={handleSortByChange}
 						options={[
-							{ label: "Mặc định", value: SortPrice.Default },
-							{ label: "Tăng dần", value: SortPrice.Ascending },
-							{ label: "giảm dần", value: SortPrice.Descending },
+							{ label: language.category_page.default, value: SortPrice.Default },
+							{ label: language.category_page.ascending, value: SortPrice.Ascending },
+							{ label: language.category_page.descending, value: SortPrice.Descending },
 						]}
 					/>
 
@@ -163,8 +166,8 @@ export default function Search() {
 
 				{((from && to) || brand) && (
 					<div className="hidden space-y-4 lg:block">
-						<h5 className="text-paragraph-3 font-semibold">Đang lọc theo</h5>
-						<div className="flex items-center flex-wrap gap-4">
+						<h5 className="font-semibold text-paragraph-3">Đang lọc theo</h5>
+						<div className="flex flex-wrap items-center gap-4">
 							{from && to && (
 								<RemoveFilterButton
 									type="price-range"
@@ -181,7 +184,7 @@ export default function Search() {
 									}
 									return <Fragment key={item}></Fragment>;
 								})}
-							<p onClick={handleRemoveAllFilter} className="text-red-accent text-paragraph-4 cursor-pointer">
+							<p onClick={handleRemoveAllFilter} className="cursor-pointer text-red-accent text-paragraph-4">
 								Xóa tất cả
 							</p>
 						</div>

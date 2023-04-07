@@ -3,6 +3,9 @@ import Expand from "../icons/expand";
 import Selected from "../icons/selected";
 import clsx from "clsx";
 import { RegisterOptions, UseFormRegister } from "react-hook-form";
+import { useRouter } from "next/router";
+import { English, Vietnamese } from "../../translation";
+import { useSettings } from "../../store/hooks";
 
 interface Props {
 	options: IOption[];
@@ -29,10 +32,12 @@ export default function Dropdown({
 	register,
 	onChange,
 }: Props) {
-	const [selectedValue, setSelectedValue] = useState<IOption>();
-	const listBoxButtonRef = useRef<HTMLButtonElement>(null);
+	const { language } = useSettings();
+
 	const listBoxRef = useRef<HTMLUListElement>(null);
 	const expandIconRef = useRef<HTMLDivElement>(null);
+	const listBoxButtonRef = useRef<HTMLButtonElement>(null);
+	const [selectedValue, setSelectedValue] = useState<IOption>();
 
 	const handleClick = () => {
 		if (listBoxButtonRef.current && listBoxRef.current) {
@@ -116,7 +121,7 @@ export default function Dropdown({
 					)}
 				>
 					<p className={clsx("select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5")}>
-						{selectedValue ? selectedValue.label : "Chọn giá trị"}
+						{selectedValue ? selectedValue.label : language.component_ui.choose_value}
 					</p>
 					<div ref={expandIconRef} className="duration-300 ease-linear">
 						<Expand width={16} height={16} className="dark:text-light-100" />

@@ -7,6 +7,7 @@ import InputCurrency from "./input-currency";
 import Input from "./input";
 import { useRouter } from "next/router";
 import APP_PATH from "../../constants/app-path";
+import { useSettings } from "../../store/hooks";
 
 interface Props {
 	className?: string;
@@ -23,7 +24,7 @@ export default function PriceRangeDropdown({ className }: Props) {
 	const expandIconRef = useRef<HTMLDivElement>(null);
 
 	const router = useRouter();
-	console.log("router.pathname: ", router.pathname);
+	const { language } = useSettings();
 	const { id, from, to, brand, order, search } = router.query;
 
 	const {
@@ -125,16 +126,12 @@ export default function PriceRangeDropdown({ className }: Props) {
 						"border-gray-accent dark:border-black-dark-2 py-3 px-6 rounded-[32px] gap-x-4"
 					)}
 				>
-					<p
-						className={clsx(
-							"select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5"
-						)}
-					>
+					<p className={clsx("select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5")}>
 						{watchFrom && watchTo
-							? `${new Intl.NumberFormat("vn-VN").format(
-									watchFrom / 1000
-							  )}k - ${new Intl.NumberFormat("vn-VN").format(watchTo / 1000)}k`
-							: "Khoảng giá"}
+							? `${new Intl.NumberFormat("vn-VN").format(watchFrom / 1000)}k - ${new Intl.NumberFormat("vn-VN").format(
+									watchTo / 1000
+							  )}k`
+							: language.component_ui.price_range}
 					</p>
 					<div ref={expandIconRef} className="duration-300 ease-linear">
 						<Expand width={16} height={16} className="dark:text-light-100" />
@@ -156,17 +153,17 @@ export default function PriceRangeDropdown({ className }: Props) {
 								option={{
 									required: {
 										value: watchTo ? true : false,
-										message: "vui lòng nhập số tiền",
+										message: language.component_ui.rule_required_price_range,
 									},
 									min: {
 										value: 1000,
-										message: "Số tiền phải lớn hơn 10000",
+										message: language.component_ui.rule_min_price_range,
 									},
 								}}
 								type="number"
 								error={errors.from?.message}
 								className="w-full"
-								placeholder="Từ"
+								placeholder={language.component_ui.from}
 							/>
 							<p className="font-medium text-paragraph-4">đ</p>
 						</div>
@@ -177,16 +174,16 @@ export default function PriceRangeDropdown({ className }: Props) {
 								option={{
 									required: {
 										value: watchFrom ? true : false,
-										message: "vui lòng nhập số tiền",
+										message: language.component_ui.rule_required_price_range,
 									},
 									validate: () =>
 										Number(getValues("to")) >= Number(getValues("from")) ||
-										"Từ phải nhỏ hơn hoặc bằng Đến",
+										language.component_ui.rule_required_price_range,
 								}}
 								type="number"
 								error={errors.to?.message}
 								className="w-full"
-								placeholder="Đến"
+								placeholder={language.component_ui.to}
 							/>
 							<p className="font-medium text-paragraph-4">đ</p>
 						</div>
@@ -199,14 +196,10 @@ export default function PriceRangeDropdown({ className }: Props) {
 							form="form-price-range"
 							disable={!watchFrom || !watchTo}
 						>
-							Áp dụng
+							{language.component_ui.apply}
 						</Button>
-						<Button
-							type="secondary"
-							className="w-fit !px-6 text-paragraph-5 font-medium py-2"
-							onClick={handleReset}
-						>
-							Bỏ chọn
+						<Button type="secondary" className="w-fit !px-6 text-paragraph-5 font-medium py-2" onClick={handleReset}>
+							{language.component_ui.clear}
 						</Button>
 					</div>
 				</div>

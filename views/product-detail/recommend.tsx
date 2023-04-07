@@ -10,9 +10,14 @@ import TitlePage from "../../components/title-page/title-page";
 import { selectRecommend } from "../../redux/slices/recommend-slice";
 import { useAppSelector, useProductDetail } from "../../store/hooks";
 import ProductCardLoader from "../../components/card/skeleton-loader/product-card-loader";
+import { useRouter } from "next/router";
+import { English, Vietnamese } from "../../translation";
 
 export default function ProductRecommend() {
+	const { locale } = useRouter();
 	const { currentItem } = useProductDetail();
+
+	const { product_detail_page } = locale === "en" ? English : Vietnamese;
 
 	const relatedProdsSwiperRef = useRef<SwiperRef>(null);
 	const mayBeLikeProdsSwiperRef = useRef<SwiperRef>(null);
@@ -44,8 +49,8 @@ export default function ProductRecommend() {
 				<div className="md:flex md:justify-between md:mb-16 xl:mb-[72px]">
 					<TitlePage
 						className="mb-6 text-center md:text-left md:mb-0"
-						subtitle="Tìm hiểu thêm"
-						title="Sản phẩm tương tự"
+						subtitle={product_detail_page.recommend_subTitle}
+						title={product_detail_page.related_prod_title}
 					/>
 
 					<div className="hidden md:flex md:gap-x-4 md:items-end">
@@ -139,8 +144,8 @@ export default function ProductRecommend() {
 				<div className="md:flex md:justify-between md:mb-16 xl:mb-[72px]">
 					<TitlePage
 						className="mb-6 text-center md:text-left md:mb-0"
-						subtitle="Tìm hiểu thêm"
-						title="Có thể bạn cũng thích"
+						subtitle={product_detail_page.recommend_subTitle}
+						title={product_detail_page.may_be_like_prod_title}
 					/>
 
 					<div className="hidden md:flex md:gap-x-4 md:items-end">

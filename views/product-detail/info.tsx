@@ -19,12 +19,12 @@ import ProductImage from "../../components/Image/product-image";
 import QuantityBtn from "../../components/buttons/quantity-btn";
 import { useAppDispatch, useProductDetail } from "../../store/hooks";
 import VariationOptions from "../../components/variation-option/variationOptions";
+import { English, Vietnamese } from "../../translation";
 
 export default function ProductInfo() {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { data: session, status } = useSession();
-
 	const { currentItem, descriptions, productId } = useProductDetail();
 
 	const prodImagesSwiperRef = useRef<SwiperRef>(null);
@@ -36,6 +36,8 @@ export default function ProductInfo() {
 	const [showMore, setShowMore] = useState(false);
 
 	const { locale } = router;
+
+	const { product_detail_page } = locale === "en" ? English : Vietnamese;
 
 	const handleDescription = () => {
 		const description = descriptions.find((des) => des.language === locale);
@@ -155,7 +157,7 @@ export default function ProductInfo() {
 				<div className="lg:col-span-6 lg:pl-12">
 					<TitlePage
 						className="mb-6 text-center md:mb-8 lg:text-left"
-						subtitle="Bán chạy"
+						subtitle={product_detail_page.selling_fast}
 						title={currentItem?.name.find((item) => item.language == locale)?.value || ""}
 					/>
 
@@ -168,15 +170,19 @@ export default function ProductInfo() {
 					<div className="flex flex-col items-center gap-6 md:items-stretch md:flex-row md:justify-center">
 						<QuantityBtn value={quantity} onChange={handleChangeQuantity} />
 						<Button onClick={handleAddToCart} type="primary">
-							Thêm vào giỏ
+							{product_detail_page.add_to_cart}
 						</Button>
 					</div>
 				</div>
 			</div>
 
 			{/* product info */}
-			<div ref={productDesRef} className="relative h-96 overflow-hidden">
-				<TitlePage className="text-center xl:text-left " subtitle="Đặc điểm sản phẩm" title="Khám phá các đặc điểm" />
+			<div ref={productDesRef} className="relative overflow-hidden h-96">
+				<TitlePage
+					className="text-center xl:text-left "
+					subtitle={product_detail_page.prod_specification_subTitle}
+					title={product_detail_page.prod_specification_title}
+				/>
 				<div
 					className="mt-8 text-paragraph-5 lg:text-paragraph-4 dark:text-white"
 					dangerouslySetInnerHTML={{
@@ -185,10 +191,10 @@ export default function ProductInfo() {
 				></div>
 				<div
 					ref={seeMoreRef}
-					className="flex justify-center absolute bg-gradient-to-t from-white to-white/60 dark:from-black-dark-3 dark:to-black-dark-3/60 w-full bottom-0 py-4"
+					className="absolute bottom-0 flex justify-center w-full py-4 bg-gradient-to-t from-white to-white/60 dark:from-black-dark-3 dark:to-black-dark-3/60"
 				>
 					<Button onClick={handleSeeMoreClick} type="primary">
-						{showMore ? "Thu gọn" : "Xem thêm"}
+						{showMore ? product_detail_page.see_less : product_detail_page.see_more}
 					</Button>
 				</div>
 			</div>

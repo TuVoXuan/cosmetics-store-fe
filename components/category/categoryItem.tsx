@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 import GoForward from "../icons/go-forward";
+import { useRouter } from "next/router";
 
 interface Props {
 	category: ICategory;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function Category({ category, active, onClick }: Props) {
+	const { locale } = useRouter();
 	return (
 		<div onClick={onClick} className="flex items-center justify-between py-2">
 			<p
@@ -18,7 +20,7 @@ export default function Category({ category, active, onClick }: Props) {
 					{ "text-primary-100 dark:text-primary-100": active }
 				)}
 			>
-				{category.name.filter((item) => item.language === "vi")[0].value}
+				{category.name.filter((item) => item.language === locale)[0].value}
 			</p>
 			{category.children && (
 				<GoForward

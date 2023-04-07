@@ -11,6 +11,7 @@ interface Props {
 
 export default function ProductCard({ productItem }: Props) {
 	const router = useRouter();
+	const { locale } = router;
 
 	const handleOnClick = () => {
 		router.push(`${APP_PATH.PRODUCT}/${productItem.productId}/${productItem.itemId}`);
@@ -24,7 +25,7 @@ export default function ProductCard({ productItem }: Props) {
 			<ProductImage src={productItem.thumbnail} />
 			<div className="mt-8 space-y-2">
 				<p className="font-semibold text-paragraph-5 md:text-paragraph-4 text-dark-100 dark:text-light-100 line-clamp-2">
-					{productItem.name.find((item) => item.language === "vi")?.value}
+					{productItem.name.find((item) => item.language === locale)?.value}
 				</p>
 				<Badge className="w-fit" color="pink_tertiary" isResponsive={false}>
 					{productItem.brand}

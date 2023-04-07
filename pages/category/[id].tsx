@@ -9,7 +9,7 @@ import ProductCard from "../../components/card/product-card";
 import Overlay from "../../components/modal/overlay";
 import { useRouter } from "next/router";
 import productApi from "../../api/product-api";
-import { useAppSelector } from "../../store/hooks";
+import { useAppSelector, useSettings } from "../../store/hooks";
 import { selectCategories } from "../../redux/slices/category-slice";
 import { brandApi } from "../../api/brand-api";
 import APP_PATH from "../../constants/app-path";
@@ -25,10 +25,14 @@ import PriceRangeDropdown from "../../components/inputs/price-range-dropdown";
 import RemoveFilterButton from "../../components/buttons/remove-filter-btn";
 import ProductCardLoader from "../../components/card/skeleton-loader/product-card-loader";
 import CategoryCardLoader from "../../components/card/skeleton-loader/category-card-loader";
+import clsx from "clsx";
 
 export default function Category() {
 	const router = useRouter();
 	const { register } = useForm();
+	const { language } = useSettings();
+
+	const { locale } = router;
 
 	const { id, from, to, brand, order } = router.query;
 
@@ -186,15 +190,27 @@ export default function Category() {
 
 				<TitlePage
 					className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
-					subtitle={category ? category.name.filter((item) => item.language === "vi")[0].value : ""}
-					title={`Khám phá các sản phẩm ${
-						category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
-					}`}
+					subtitle={clsx(
+						category &&
+							locale === "vi" &&
+							"Sản Phẩm " + category.name.filter((item) => item.language === "vi")[0].value,
+						category && locale === "en" && category.name.filter((item) => item.language === "en")[0].value + " Products"
+					)}
+					title={clsx(
+						locale === "vi" &&
+							`Khám phá các sản phẩm ${
+								category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""
+							}`,
+						locale === "en" &&
+							`Explore the ${
+								category ? category.name.filter((item) => item.language === "en")[0].value.toLocaleLowerCase() : ""
+							} products`
+					)}
 				/>
 
 				<div className="mt-10 lg:grid lg:grid-cols-4">
 					<div className="hidden lg:block">
-						<h5 className="font-semibold text-heading-4">Danh mục</h5>
+						<h5 className="font-semibold text-heading-4">{language.category_page.category}</h5>
 						<PathCategoryProvider>
 							<div className="mt-2 space-y-3">
 								{loading.category && (
@@ -220,7 +236,9 @@ export default function Category() {
 								onClick={handleOpenCategoriesModel}
 							>
 								<p className="capitalize text-paragraph-5 dark:text-light-100">
-									{category ? category.name.filter((item) => item.language === "vi")[0].value.toLocaleLowerCase() : ""}
+									{category
+										? category.name.filter((item) => item.language === locale)[0].value.toLocaleLowerCase()
+										: ""}
 								</p>
 								<Expand
 									width={16}
@@ -237,9 +255,9 @@ export default function Category() {
 									className="w-fit"
 									onChange={handleSortByChange}
 									options={[
-										{ label: "Mặc định", value: SortPrice.Default },
-										{ label: "Tăng dần", value: SortPrice.Ascending },
-										{ label: "giảm dần", value: SortPrice.Descending },
+										{ label: language.category_page.default, value: SortPrice.Default },
+										{ label: language.category_page.ascending, value: SortPrice.Ascending },
+										{ label: language.category_page.descending, value: SortPrice.Descending },
 									]}
 								/>
 
@@ -254,7 +272,7 @@ export default function Category() {
 								<Button onClick={handleOpenFilter} type="secondary" className="lg:hidden">
 									<div className="flex items-center gap-x-3">
 										<Filter className="dark:text-white" />
-										<span className="font-normal dark:text-white">Lọc</span>
+										<span className="font-normal dark:text-white">{language.category_page.filter}</span>
 									</div>
 								</Button>
 							</div>
@@ -262,8 +280,8 @@ export default function Category() {
 
 						{((from && to) || brand) && (
 							<div className="hidden space-y-4 lg:block">
-								<h5 className="text-paragraph-3 font-semibold">Đang lọc theo</h5>
-								<div className="flex items-center flex-wrap gap-4">
+								<h5 className="font-semibold text-paragraph-3">{language.category_page.filtering_by}</h5>
+								<div className="flex flex-wrap items-center gap-4">
 									{from && to && (
 										<RemoveFilterButton
 											type="price-range"
@@ -280,8 +298,8 @@ export default function Category() {
 											}
 											return <Fragment key={item}></Fragment>;
 										})}
-									<p onClick={handleRemoveAllFilter} className="text-red-accent text-paragraph-4 cursor-pointer">
-										Xóa tất cả
+									<p onClick={handleRemoveAllFilter} className="cursor-pointer text-red-accent text-paragraph-4">
+										{language.category_page.clear_all}
 									</p>
 								</div>
 							</div>
@@ -325,7 +343,7 @@ export default function Category() {
 							{after !== "end" && (
 								<div className="flex justify-center mt-14 md:mt-16">
 									<Button onClick={loadMore} type="primary">
-										Xem thêm
+										{language.product_detail_page.see_more}
 									</Button>
 								</div>
 							)}
