@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppSelector, useSettings } from "../store/hooks";
 import ToggleBtn from "./buttons/toggle-btn";
 import Facebook from "./icons/facebook";
@@ -21,25 +21,15 @@ export default function Footer() {
 	const router = useRouter();
 	const { locale } = router;
 
-	const { settings, saveSettings } = useSettings();
-	const Toggle = () => {
+	const { darkMode, saveDarkMode } = useSettings();
+	const toggleDarkMode = () => {
 		if (
-			localStorage.theme === "dark" ||
-			(!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+			!darkMode ||
+			(!("darkMode" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
 		) {
-			document.documentElement.classList.add("dark");
-			localStorage.theme = "light";
-			saveSettings({
-				...settings,
-				mode: "dark",
-			});
+			saveDarkMode(true);
 		} else {
-			document.documentElement.classList.remove("dark");
-			localStorage.theme = "dark";
-			saveSettings({
-				...settings,
-				mode: "light",
-			});
+			saveDarkMode(false);
 		}
 	};
 
@@ -94,8 +84,8 @@ export default function Footer() {
 
 				<div className="grid grid-cols-2 md:flex md:gap-x-4 md:items-center">
 					<ToggleBtn
-						value={settings.mode === "dark"}
-						toggle={Toggle}
+						value={darkMode}
+						toggle={toggleDarkMode}
 						childrenOn={<Moon width={16} height={16} color="#F7FAFC" />}
 						childrenOff={<Sun width={16} height={16} color="#F7FAFC" />}
 					/>

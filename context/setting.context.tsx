@@ -3,27 +3,18 @@ import { PaletteMode } from "../types/types";
 import { English, Vietnamese } from "../translation";
 import { useRouter } from "next/router";
 
-// Type
-export type Settings = {
-	mode: PaletteMode;
-};
-
 export type SettingsContextValue = {
-	settings: Settings;
-	saveSettings: (updatedSettings: Settings) => void;
+	darkMode: boolean;
+	saveDarkMode: (dark: boolean) => void;
 	showLayout: boolean;
 	toggleLayout: (value?: boolean) => void;
 	language: typeof Vietnamese;
 };
 
-const initialSettings: Settings = {
-	mode: "light",
-};
-
 // Create context
 export const SettingsContext = createContext<SettingsContextValue>({
-	saveSettings: () => null,
-	settings: initialSettings,
+	saveDarkMode: (dark: boolean) => null,
+	darkMode: false,
 	showLayout: false,
 	toggleLayout: (value?: boolean) => null,
 	language: Vietnamese,
@@ -32,12 +23,19 @@ export const SettingsContext = createContext<SettingsContextValue>({
 export const SettingProvider = ({ children }: { children: ReactNode }) => {
 	const { locale } = useRouter();
 
-	const [settings, setSettings] = useState<Settings>(initialSettings);
+	const [darkMode, setDarkMode] = useState<boolean>(false);
 	const [showLayout, setShowLayout] = useState<boolean>(false);
 	const [language, setLanguage] = useState(Vietnamese);
 
-	const saveSettings = (updatedSettings: Settings) => {
-		setSettings(updatedSettings);
+	const saveDarkMode = (dark: boolean) => {
+		if (dark) {
+			document.documentElement.classList.add("dark");
+			localStorage.setItem("darkMode", "true");
+		} else {
+			document.documentElement.classList.remove("dark");
+			localStorage.setItem("darkMode", "false");
+		}
+		setDarkMode(dark);
 	};
 
 	const toggleLayout = (value?: boolean) => {
@@ -56,8 +54,22 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
 		}
 	}, [locale]);
 
+	useEffect(() => {
+		const darkMode = localStorage.getItem("darkMode");
+
+		if (darkMode === "true") {
+			document.documentElement.classList.add("dark");
+			setDarkMode(true);
+		} else {
+			document.documentElement.classList.remove("dark");
+			setDarkMode(false);
+		}
+	}, []);
+
 	return (
-		<SettingsContext.Provider value={{ settings, saveSettings, showLayout, toggleLayout, language }}>
+		<SettingsContext.Provider
+			value={{ darkMode: darkMode, saveDarkMode, showLayout, toggleLayout, language }}
+		>
 			{children}
 		</SettingsContext.Provider>
 	);
