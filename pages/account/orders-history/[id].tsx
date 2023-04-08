@@ -11,10 +11,12 @@ import { OrderStatus } from "../../../constants/enums";
 import { IComment, IOrderDetail } from "../../../types/apis/order-api";
 import { convertDate, convertPrice } from "../../../util/product";
 import { hashCode } from "../../../util/short-hash";
+import { useSettings } from "../../../store/hooks";
 
 export default function OrderDetail() {
 	const router = useRouter();
 	const { id } = router.query;
+	const { language } = useSettings();
 
 	const [order, setOrder] = useState<IOrderDetail>();
 	const [total, setTotal] = useState(0);
@@ -59,6 +61,21 @@ export default function OrderDetail() {
 		}
 	};
 
+	const handleOrderStatus = (status: OrderStatus) => {
+		switch (status) {
+			case OrderStatus.Pending:
+				return language.account_orders_history.order_status_pending;
+			case OrderStatus.Delivering:
+				return language.account_orders_history.order_status_delivering;
+			case OrderStatus.Completed:
+				return language.account_orders_history.order_status_completed;
+			case OrderStatus.Cancelled:
+				return language.account_orders_history.order_status_cancelled;
+			default:
+				return "";
+		}
+	};
+
 	useEffect(() => {
 		fetchOrder();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,10 +84,16 @@ export default function OrderDetail() {
 	return order ? (
 		<Fragment>
 			<div className="space-y-6 md:space-y-8 mb-[104px]">
-				<TitlePage className="mt-14" subtitle="Đơn hàng" title="Thông tin đơn hàng của bạn" />
+				<TitlePage
+					className="mt-14"
+					subtitle={language.account_order_detail.order_subtitle}
+					title={language.account_order_detail.order_tittle}
+				/>
 
 				<div className="p-6 space-y-8 border-2 md:mx-24 lg:mx-auto lg:space-y-12 lg:p-8 border-gray-accent rounded-3xl lg:w-3/5">
-					<h3 className="text-heading-5 lg:text-heading-4">Thông tin sản phẩm</h3>
+					<h3 className="text-heading-5 lg:text-heading-4">
+						{language.account_order_detail.product_info}
+					</h3>
 					<div className="space-y-8 lg:space-y-12">
 						<div className="space-y-6">
 							{order.orderItems.map((item) => (
@@ -83,7 +106,11 @@ export default function OrderDetail() {
 											/>
 											<div className="justify-center md:flex md:flex-col md:gap-y-1">
 												<p className="w-4/5 mx-auto font-medium text-center md:text-left md:w-full md:mx-0 text-paragraph-5 lg:text-paragraph-4 line-clamp-2">
-													{item.name.filter((e) => e.language === "vi")[0].value}
+													{
+														item.name.filter(
+															(e) => e.language === router.locale
+														)[0].value
+													}
 												</p>
 												<p className="text-center md:text-left text-paragraph-6 lg:text-paragraph-5">
 													X {item.quantity}
@@ -106,7 +133,7 @@ export default function OrderDetail() {
 													}}
 													className="text-primary-100 text-paragraph-5 whitespace-nowrap"
 												>
-													Sửa đánh giá
+													{language.account_order_detail.edit_comment}
 												</button>
 											) : (
 												<button
@@ -122,7 +149,7 @@ export default function OrderDetail() {
 													// className="font-medium whitespace-nowrap w-fit text-paragraph-5 md:text-paragraph-4 md:px-8 md:py-2 md:w-fit"
 													// type="primary"
 												>
-													Đánh giá
+													{language.account_order_detail.comment}
 												</button>
 											)
 										) : null}
@@ -134,41 +161,51 @@ export default function OrderDetail() {
 						</div>
 						<div className="space-y-2 md:space-y-4 lg:px-20">
 							<p className="flex justify-between text-heading-6 lg:text-heading-5">
-								Mã đơn hàng: <span>{hashCode(order._id)}</span>
+								{language.account_order_detail.order_code} <span>{hashCode(order._id)}</span>
 							</p>
 							<p className="flex justify-between text-heading-6 lg:text-heading-5">
-								Ngày đặt: <span>{convertDate(order.date)}</span>
+								{language.account_order_detail.order_date}
+								<span>{convertDate(order.date)}</span>
 							</p>
 							<p className="flex justify-between text-heading-6 lg:text-heading-5">
-								Trạng thái: <span>{order.status}</span>
+								{language.account_order_detail.order_status}{" "}
+								<span>{handleOrderStatus(order.status)}</span>
 							</p>
 							<p className="flex justify-between text-heading-6 lg:text-heading-5">
-								Tổng tiền hàng: <span>{convertPrice(total)}</span>
+								{language.account_order_detail.total_price_of_products}{" "}
+								<span>{convertPrice(total)}</span>
 							</p>
 							<p className="flex justify-between text-heading-6 lg:text-heading-5">
-								Phí vận chuyển: <span>{convertPrice(order.shippingFee)}</span>
+								{language.account_order_detail.shipping_fee}{" "}
+								<span>{convertPrice(order.shippingFee)}</span>
 							</p>
 							<p className="flex justify-between font-semibold text-heading-6 lg:text-heading-5">
-								Tổng đơn hàng: <span>{convertPrice(total + order.shippingFee)}</span>
+								{language.account_order_detail.total_order_amount}{" "}
+								<span>{convertPrice(total + order.shippingFee)}</span>
 							</p>
 						</div>
 					</div>
 				</div>
 
 				<div className="p-6 space-y-8 border-2 md:mx-24 lg:p-8 border-gray-accent rounded-3xl lg:w-3/5 lg:mx-auto">
-					<h3 className="text-heading-5 lg:text-heading-4">Thông tin nhận hàng</h3>
+					<h3 className="text-heading-5 lg:text-heading-4">
+						{language.account_order_detail.delivery_info}
+					</h3>
 					<div className="space-y-2 lg:space-y-4">
 						<p className="text-heading-6 lg:text-heading-5">
-							Tên người nhân: <span className="font-semibold">{order.address.name}</span>
+							{language.account_order_detail.recipient_name}{" "}
+							<span className="font-semibold">{order.address.name}</span>
 						</p>
 						<p className="text-heading-6 lg:text-heading-5">
-							SĐT: <span className="font-semibold">{order.address.phone}</span>
+							{language.account_order_detail.phone}{" "}
+							<span className="font-semibold">{order.address.phone}</span>
 						</p>
 						<p className="text-heading-6 lg:text-heading-5">
-							Hình thức thanh toán: <span className="font-semibold">{order.paymentMethod}</span>
+							{language.account_order_detail.payment_method}{" "}
+							<span className="font-semibold">{order.paymentMethod}</span>
 						</p>
 						<p className="text-heading-6 lg:text-heading-5">
-							Nơi nhận:{" "}
+							{language.account_order_detail.order_pick_up_place}{" "}
 							<span className="font-semibold">{`${order.address.specificAddress}, ${order.address.ward}, ${order.address.district}, ${order.address.province}`}</span>
 						</p>
 					</div>
@@ -182,8 +219,8 @@ export default function OrderDetail() {
 	) : (
 		<div className="flex flex-col gap-y-3 items-center mt-14 mb-14 md:mb-[112px] xl:mb-[144px]">
 			<LoadingHorizontal className="h-[100px] text-primary-100" />
-			<p className="dark:text-white">Đang lấy dữ liệu</p>
-			<p className="dark:text-white">Vui lòng đợi trong giây lát..</p>
+			<p className="dark:text-white">{language.account_order_detail.retrieving_data}</p>
+			<p className="dark:text-white">{language.account_order_detail.wait_a_moment}</p>
 		</div>
 	);
 }

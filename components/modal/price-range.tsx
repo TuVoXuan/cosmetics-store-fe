@@ -5,6 +5,7 @@ import APP_PATH from "../../constants/app-path";
 import Button from "../buttons/button";
 import Delete from "../icons/delete";
 import Input from "../inputs/input";
+import { useSettings } from "../../store/hooks";
 
 export type PriceRangeRefType = {
 	current: HTMLDivElement | null;
@@ -24,6 +25,7 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 	const priceRangeRef = useRef<HTMLDivElement>(null);
 	const priceRangeChidrenRef = useRef<HTMLDivElement>(null);
 
+	const { language } = useSettings();
 	const { push, query } = useRouter();
 
 	const {
@@ -131,17 +133,17 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 							option={{
 								required: {
 									value: true,
-									message: "Vui lòng nhập giá trị từ",
+									message: language.component_ui.input_price_from_required_mes,
 								},
 								min: {
 									value: 0,
-									message: "Giá trị bắt đầu phải lớn hơn 0",
+									message: language.component_ui.input_price_from_min_mes,
 								},
 								validate: () => Number(getValues("from")) <= Number(getValues("to")),
 							}}
 							className="w-full"
 							placeholder="20.000 đ"
-							label="Từ"
+							label={language.component_ui.input_price_from_label}
 						/>
 						<Input
 							register={register}
@@ -151,23 +153,23 @@ const PriceRange = React.forwardRef<PriceRangeRefType, Props>(({ overlay }, ref)
 							option={{
 								required: {
 									value: true,
-									message: "Vui lòng nhập giá trị đến",
+									message: language.component_ui.input_price_to_required_mes,
 								},
 								min: {
 									value: 0,
-									message: "Giá trị bắt đầu phải lớn hơn 0",
+									message: language.component_ui.input_price_to_min_mes,
 								},
 								validate: () => Number(getValues("from")) <= Number(getValues("to")),
 							}}
 							className="w-full"
 							placeholder="30.000 đ"
-							label="Đến"
+							label={language.component_ui.input_price_to_label}
 						/>
 					</div>
 				</form>
 				<div className="flex justify-center lg:block">
 					<Button form="price-range-form" btnType="submit" type={"primary"}>
-						Áp dụng
+						{language.component_ui.apply}
 					</Button>
 				</div>
 				<div
