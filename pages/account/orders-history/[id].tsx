@@ -11,6 +11,9 @@ import { OrderStatus } from "../../../constants/enums";
 import { IComment, IOrderDetail } from "../../../types/apis/order-api";
 import { convertDate, convertPrice } from "../../../util/product";
 import { hashCode } from "../../../util/short-hash";
+import Breadcrumb from "../../../components/breadcrumb/breadcrumb";
+import APP_PATH from "../../../constants/app-path";
+import { useSettings } from "../../../store/hooks";
 
 export default function OrderDetail() {
 	const router = useRouter();
@@ -21,6 +24,8 @@ export default function OrderDetail() {
 
 	const prodReviewModalRef = useRef<ProdReviewRefType>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
+
+	const { language } = useSettings();
 
 	const fetchOrder = async () => {
 		if (id) {
@@ -67,6 +72,15 @@ export default function OrderDetail() {
 	return order ? (
 		<Fragment>
 			<div className="space-y-6 md:space-y-8 mb-[104px]">
+				<Breadcrumb
+					className="hidden lg:block lg:mt-14"
+					items={[
+						{ title: language.header.home_tag, href: APP_PATH.HOME },
+						{ title: language.account_info_page.info_subtitle, href: APP_PATH.INFO },
+						{ title: language.account_orders_history.personal_title, href: `${APP_PATH.ORDER_HISTORY}?status=pending` },
+						{ title: order.orderId, href: `${APP_PATH.ORDER_HISTORY}/${order._id}` },
+					]}
+				/>
 				<TitlePage className="mt-14" subtitle="Đơn hàng" title="Thông tin đơn hàng của bạn" />
 
 				<div className="p-6 space-y-8 border-2 md:mx-24 lg:mx-auto lg:space-y-12 lg:p-8 border-gray-accent rounded-3xl lg:w-3/5">
@@ -99,10 +113,7 @@ export default function OrderDetail() {
 													onClick={() => {
 														handleOpenProdReviewModal();
 														handleSetDefaultComment(item.comment);
-														handleSetValueProdReviewModal(
-															item._id,
-															item.productItemId
-														);
+														handleSetValueProdReviewModal(item._id, item.productItemId);
 													}}
 													className="text-primary-100 text-paragraph-5 whitespace-nowrap"
 												>
@@ -112,10 +123,7 @@ export default function OrderDetail() {
 												<button
 													onClick={() => {
 														handleOpenProdReviewModal();
-														handleSetValueProdReviewModal(
-															item._id,
-															item.productItemId
-														);
+														handleSetValueProdReviewModal(item._id, item.productItemId);
 													}}
 													className="text-primary-100 text-paragraph-5 whitespace-nowrap"
 
@@ -134,7 +142,7 @@ export default function OrderDetail() {
 						</div>
 						<div className="space-y-2 md:space-y-4 lg:px-20">
 							<p className="flex justify-between text-heading-6 lg:text-heading-5">
-								Mã đơn hàng: <span>{hashCode(order._id)}</span>
+								Mã đơn hàng: <span>{order.orderId}</span>
 							</p>
 							<p className="flex justify-between text-heading-6 lg:text-heading-5">
 								Ngày đặt: <span>{convertDate(order.date)}</span>
@@ -186,4 +194,10 @@ export default function OrderDetail() {
 			<p className="dark:text-white">Vui lòng đợi trong giây lát..</p>
 		</div>
 	);
+}
+
+export async function getServerSideProps(context: any) {
+	return {
+		props: {},
+	};
 }

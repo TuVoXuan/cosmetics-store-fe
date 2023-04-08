@@ -33,6 +33,7 @@ export default function Dropdown({
 	onChange,
 }: Props) {
 	const { language } = useSettings();
+	const { locale } = useRouter();
 
 	const listBoxRef = useRef<HTMLUListElement>(null);
 	const expandIconRef = useRef<HTMLDivElement>(null);
@@ -84,7 +85,7 @@ export default function Dropdown({
 	useEffect(() => {
 		setSelectedValue(options.find((item) => item.value === defaulValue));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [defaulValue]);
+	}, [defaulValue, options]);
 
 	return (
 		<div>
@@ -106,7 +107,9 @@ export default function Dropdown({
 				)}
 			</div>
 			{label && (
-				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">{label}</p>
+				<p className="mb-2 text-dark-100 md:mb-4 text-paragraph-5 md:text-paragraph-4 dark:text-white-light">
+					{label}
+				</p>
 			)}
 
 			<div className={clsx("relative", className)}>
@@ -120,7 +123,11 @@ export default function Dropdown({
 						error && "border-red-accent dark:border-red-accent"
 					)}
 				>
-					<p className={clsx("select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5")}>
+					<p
+						className={clsx(
+							"select-none capitalize dark:text-white-light text-heading-6 md:text-heading-5"
+						)}
+					>
 						{selectedValue ? selectedValue.label : language.component_ui.choose_value}
 					</p>
 					<div ref={expandIconRef} className="duration-300 ease-linear">
@@ -145,10 +152,19 @@ export default function Dropdown({
 										"text-heading-6 px-6 py-3 md:text-heading-5 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 									)}
 								>
-									<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
+									<label
+										className="cursor-pointer"
+										onClick={() => handleOnchange(item)}
+										htmlFor={item.value}
+									>
 										{item.label}
 									</label>
-									<Selected width={16} height={16} color="#1A202C" className="dark:text-light-100" />
+									<Selected
+										width={16}
+										height={16}
+										color="#1A202C"
+										className="dark:text-light-100"
+									/>
 								</li>
 							);
 						}
@@ -160,7 +176,11 @@ export default function Dropdown({
 									"text-heading-6 px-6 py-3 md:text-heading-5 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 								)}
 							>
-								<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
+								<label
+									className="cursor-pointer"
+									onClick={() => handleOnchange(item)}
+									htmlFor={item.value}
+								>
 									{item.label}
 								</label>
 							</li>
@@ -168,7 +188,11 @@ export default function Dropdown({
 					})}
 				</ul>
 			</div>
-			{error && <p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">{error}</p>}
+			{error && (
+				<p className="pl-6 mt-1 text-red-accent text-paragraph-5 md:text-paragraph-4 md:mt-2">
+					{error}
+				</p>
+			)}
 		</div>
 	);
 }

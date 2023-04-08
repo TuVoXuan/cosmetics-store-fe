@@ -3,6 +3,8 @@ import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import APP_PATH from "../../constants/app-path";
 import Search from "../icons/search";
+import { useSettings } from "../../store/hooks";
+import { Language } from "../../constants/enums";
 
 interface Props {
 	className?: string;
@@ -56,7 +58,7 @@ export default function SearchInput({ onClose, className }: Props) {
 					type="text"
 					name="search"
 					id="search"
-					placeholder="search"
+					placeholder={router.locale === Language.en ? "search" : "tìm kiếm"}
 				/>
 			</form>
 		</div>

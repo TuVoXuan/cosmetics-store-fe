@@ -5,6 +5,7 @@ import Button from "../../../components/buttons/button";
 import Input from "../../../components/inputs/input";
 import TitlePage from "../../../components/title-page/title-page";
 import { toastError, toastSuccess } from "../../../util/toast";
+import { useSettings } from "../../../store/hooks";
 
 interface FormValue {
 	oldPass: string;
@@ -13,6 +14,8 @@ interface FormValue {
 }
 
 export default function ChangePass() {
+	const { language } = useSettings();
+
 	const {
 		register,
 		formState: { errors },
@@ -30,7 +33,7 @@ export default function ChangePass() {
 
 			reset();
 
-			toastSuccess("Update your password successfully.");
+			toastSuccess(language.account_info_page.mes_update_pass_success);
 		} catch (error) {
 			toastError((error as IResponseError).error);
 		}
@@ -38,7 +41,11 @@ export default function ChangePass() {
 
 	return (
 		<div>
-			<TitlePage className="mb-8 mt-14" subtitle="Đổi mật khẩu" title="Đổi mật khẩu" />
+			<TitlePage
+				className="mb-8 mt-14"
+				subtitle={language.account_info_page.change_pass_subtitle}
+				title={language.account_info_page.change_pass_title}
+			/>
 
 			<form
 				onSubmit={handleSubmit(onSubmit)}
@@ -46,50 +53,60 @@ export default function ChangePass() {
 			>
 				<Input
 					className="w-full"
-					label="Mật khẩu cũ"
+					label={language.account_info_page.input_old_pass_label}
 					name="oldPass"
 					type="password"
 					register={register}
 					placeholder="•••••••••"
 					error={errors.oldPass?.message}
-					option={{ required: { value: true, message: "Nhập mật khẩu cũ" } }}
+					option={{
+						required: {
+							value: true,
+							message: language.account_info_page.input_old_pass_require_mes,
+						},
+					}}
 				/>
 				<Input
 					className="w-full"
-					label="Mật khẩu mới"
+					label={language.account_info_page.input_new_pass_label}
 					type="password"
 					name="newPass"
 					placeholder="•••••••••"
 					error={errors.newPass?.message}
 					register={register}
 					option={{
-						required: { value: true, message: "Nhập mật khẩu mới" },
+						required: {
+							value: true,
+							message: language.account_info_page.input_new_pass_required_mes,
+						},
 						pattern: {
 							value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-							message:
-								"Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
+							message: language.account_info_page.input_new_pass_not_match_mes,
 						},
 					}}
 				/>
 				<Input
 					className="w-full"
 					type="password"
-					label="Nhập lại"
+					label={language.account_info_page.input_new_pass_repeat_label}
 					name="repeat"
 					placeholder="•••••••••"
 					error={
 						errors.repeat?.type === "validate"
-							? "Không trùng với mật khẩu mới"
+							? language.account_info_page.input_new_pass_repeat_not_match_new_pass
 							: errors.repeat?.message
 					}
 					register={register}
 					option={{
-						required: { value: true, message: "Nhập lại mật khẩu mới" },
+						required: {
+							value: true,
+							message: language.account_info_page.input_new_pass_repeat_require_mes,
+						},
 						validate: () => getValues("repeat") === getValues("newPass"),
 					}}
 				/>
 				<Button btnType="submit" className="self-end w-full h-fit" type="primary">
-					Cập nhập
+					{language.account_info_page.update_btn}
 				</Button>
 			</form>
 		</div>

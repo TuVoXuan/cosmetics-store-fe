@@ -36,6 +36,7 @@ declare interface IOrder {
 	paymentMethod: PaymentMethod;
 	shippingFee: number;
 	date: string;
+	orderId: string;
 }
 
 declare interface IOrderDetail extends IOrder {

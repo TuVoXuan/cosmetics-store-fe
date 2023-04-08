@@ -134,12 +134,16 @@ const productApi = {
 			newURL += `&order=${data.order}`;
 		}
 
-		const response = await axiosService.post<
-			IResponseSuccess<ILoadMorePaginationRes<IProductBrandItem[]>>
-		>(newURL, {
+		const response = await axiosService.post<IResponseSuccess<ILoadMorePaginationRes<IProductBrandItem[]>>>(newURL, {
 			limit: data.limit,
 			after: data.after ? data.after : undefined,
 		});
+
+		return response.data.data;
+	},
+
+	getCategoryId: async (id: string) => {
+		const response = await axiosService.get<IResponseSuccess<string>>(`${URL}/category-id/${id}`);
 
 		return response.data.data;
 	},

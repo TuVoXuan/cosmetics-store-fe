@@ -8,6 +8,8 @@ import Profile from "../components/icons/profile";
 import Button from "../components/buttons/button";
 import Input from "../components/inputs/input";
 import { useSettings } from "../store/hooks";
+import Breadcrumb from "../components/breadcrumb/breadcrumb";
+import APP_PATH from "../constants/app-path";
 
 export default function About() {
 	const { language } = useSettings();
@@ -19,8 +21,15 @@ export default function About() {
 		>
 			{/* learn more */}
 			<div>
+				<Breadcrumb
+					className="hidden lg:block"
+					items={[
+						{ title: language.header.home_tag, href: APP_PATH.HOME },
+						{ title: language.about_page.about_us_title, href: APP_PATH.ABOUT },
+					]}
+				/>
 				<TitlePage
-					className="mb-14 md:mb-16 xl:mb-[72px]"
+					className="mb-14 md:mb-16 lg:mt-14 xl:mb-[72px]"
 					subtitle={language.product_detail_page.recommend_subTitle}
 					title={language.about_page.all_about_us_title}
 				/>

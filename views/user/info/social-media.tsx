@@ -7,9 +7,12 @@ import ToggleBtn from "../../../components/buttons/toggle-btn";
 import { signIn } from "next-auth/react";
 import { toastError, toastSuccess } from "../../../util/toast";
 import APP_PATH from "../../../constants/app-path";
+import { useSettings } from "../../../store/hooks";
 
 export default function SocialMedia() {
 	const [statusSocialAccount, setStatusSocialAccount] = useState<StatusSocialAccount>();
+
+	const { language } = useSettings();
 
 	const fetchStatusAccount = async () => {
 		try {
@@ -29,7 +32,7 @@ export default function SocialMedia() {
 				});
 
 				if (response && response.ok) {
-					toastSuccess("Liên kết thành công");
+					toastSuccess(language.account_info_page.link_social_success_mes);
 				}
 
 				if (response && response.error) {
@@ -50,7 +53,7 @@ export default function SocialMedia() {
 				});
 
 				if (response && response.ok) {
-					toastSuccess("Liên kết thành công");
+					toastSuccess(language.account_info_page.link_social_success_mes);
 				}
 
 				if (response && response.error) {
@@ -68,7 +71,11 @@ export default function SocialMedia() {
 
 	return (
 		<div>
-			<TitlePage className="mb-8 mt-14" subtitle="Mạng xã hội" title="Liên kết mạng xã hội" />
+			<TitlePage
+				className="mb-8 mt-14"
+				subtitle={language.account_info_page.social_subtitle}
+				title={language.account_info_page.social_title}
+			/>
 
 			<div className="space-y-4 md:w-1/2 md:mx-auto lg:w-4/5 lg:grid lg:grid-cols-2 lg:gap-x-14 lg:space-y-0">
 				<div className="flex items-center justify-between">

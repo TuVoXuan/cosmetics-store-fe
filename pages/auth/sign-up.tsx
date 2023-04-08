@@ -12,6 +12,8 @@ import APP_PATH from "../../constants/app-path";
 import { Gender } from "../../constants/enums";
 import Dropdown from "../../components/inputs/dropdown";
 import { toastError } from "../../util/toast";
+import { useSettings } from "../../store/hooks";
+import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 
 type FormValues = {
 	email: string;
@@ -25,6 +27,7 @@ type FormValues = {
 
 export default function SignUp() {
 	const router = useRouter();
+	const { language } = useSettings();
 	const {
 		register,
 		handleSubmit,
@@ -32,17 +35,7 @@ export default function SignUp() {
 		formState: { errors },
 	} = useForm<FormValues>();
 
-	// const [gender, setGender] = useState<string>("");
-	// const [genderError, setGenderError] = useState<string>("");
-
 	const onSubmit = async (data: FormValues) => {
-		console.log("data: ", data);
-		// console.log("gender: ", gender);
-		// if (gender === "") {
-		// 	setGenderError("Yêu cầu chọn giới tính");
-		// 	return;
-		// }
-
 		try {
 			await authApi.signUp({
 				birthday: data.birthday,
@@ -65,44 +58,51 @@ export default function SignUp() {
 
 	return (
 		<div className="pb-[104px] dark:bg-black-dark-3">
-			<TitlePage className="py-14" subtitle="Đăng ký" title="Tạo tài khoản của bạn" />
-			<form
-				id="registerForm"
-				className="gap-5 space-y-5 md:grid md:grid-cols-2 md:space-y-0 lg:w-2/3 lg:mx-auto"
-			>
+			<Breadcrumb
+				className="hidden lg:block lg:mt-14"
+				items={[
+					{ title: language.header.home_tag, href: APP_PATH.HOME },
+					{ title: language.sign_up_page.sign_up_sub_title, href: APP_PATH.SIGN_UP },
+				]}
+			/>
+			<TitlePage
+				className="py-14"
+				subtitle={language.sign_up_page.sign_up_sub_title}
+				title={language.sign_up_page.sign_up_title}
+			/>
+			<form id="registerForm" className="gap-5 space-y-5 md:grid md:grid-cols-2 md:space-y-0 lg:w-2/3 lg:mx-auto">
 				<Input
 					name="email"
 					register={register}
 					option={{
 						required: {
 							value: true,
-							message: "Yêu cầu email",
+							message: language.sign_in_page.rule_required_email,
 						},
 						pattern: {
 							value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-							message: "Email không đúng định dạng",
+							message: language.sign_in_page.rule_format_email,
 						},
 					}}
 					error={errors.email?.message}
 					className="w-full"
-					label="Địa chỉ email"
+					label={language.contact_page.email_address}
 					placeholder="NguyenVanA@gmail.com"
 				/>
 				<Input
 					name="password"
 					register={register}
 					className="w-full tracking-widest"
-					label="Mật khẩu"
+					label={language.account_info_page.input_pass_label}
 					placeholder="•••••••••"
 					option={{
 						required: {
 							value: true,
-							message: "Yêu cầu mật khẩu",
+							message: language.account_info_page.input_pass_required_mes,
 						},
 						pattern: {
 							value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-							message:
-								"Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
+							message: language.account_info_page.input_pass_not_match_format,
 						},
 					}}
 					error={errors.password?.message}
@@ -112,12 +112,12 @@ export default function SignUp() {
 					name="name"
 					register={register}
 					className="w-full tracking-widest"
-					label="Họ tên"
+					label={language.account_info_page.input_name_label}
 					placeholder="Nguyễn Văn A"
 					option={{
 						required: {
 							value: true,
-							message: "Yêu cầu họ tên",
+							message: language.account_info_page.input_name_required_mes,
 						},
 					}}
 					error={errors.name?.message}
@@ -126,15 +126,15 @@ export default function SignUp() {
 				<CodeInput
 					name="code"
 					register={register}
-					label="Code"
+					label={language.sign_up_page.input_code_label}
 					option={{
 						required: {
 							value: true,
-							message: "Yêu cầu nhập code",
+							message: language.sign_up_page.input_code_required_mes,
 						},
 						pattern: {
 							value: /^[0-9]*$/,
-							message: "Code chỉ chứa số",
+							message: language.sign_up_page.input_code_incorrect_format_mes,
 						},
 					}}
 					error={errors.code?.message}
@@ -143,31 +143,31 @@ export default function SignUp() {
 				/>
 				<Birthday
 					name="birthday"
-					label="Ngày sinh"
+					label={language.account_info_page.input_birthday_label}
 					register={register}
 					error={errors.birthday?.message}
 					option={{
 						required: {
 							value: true,
-							message: "Yêu cầu nhập ngày sinh",
+							message: language.account_info_page.input_birthday_required_mes,
 						},
 					}}
 					className="w-full"
 				/>
 
 				<Dropdown
-					label="Giới tính"
+					label={language.account_info_page.dropdown_gender_label}
 					options={[
 						{
-							label: "Female",
+							label: language.account_info_page.gender_female,
 							value: "female",
 						},
 						{
-							label: "Male",
+							label: language.account_info_page.gender_male,
 							value: "male",
 						},
 						{
-							label: "Other",
+							label: language.account_info_page.gender_other,
 							value: "other",
 						},
 					]}
@@ -176,7 +176,7 @@ export default function SignUp() {
 					option={{
 						required: {
 							value: true,
-							message: "Chọn giới tính",
+							message: language.account_info_page.dropdown_gender_required_mes,
 						},
 					}}
 					error={errors.gender?.message}
@@ -188,29 +188,24 @@ export default function SignUp() {
 						option={{
 							required: {
 								value: true,
-								message: "Yêu cầu đồng ý chính sách",
+								message: language.sign_up_page.agree_with_terms_mes,
 							},
 						}}
 						error={errors.agreePolicy?.message}
 					>
 						<p className="text-paragraph-5 dark:text-white-light md:text-paragraph-4">
-							Tôi đã đọc và đồng ý{" "}
-							<a className="font-semibold underline">điều khoản & điều kiện</a>
+							{language.sign_up_page.read_adnd_agree}{" "}
+							<a className="font-semibold underline">{language.sign_up_page.terms_and_conditions}</a>
 						</p>
 					</Checkbox>
 				</div>
 			</form>
 			<div className="grid grid-cols-1 gap-y-4 mt-14 md:grid-cols-2 md:gap-x-6 md:w-[496px] md:mx-auto">
-				<Button
-					form="registerForm"
-					onClick={handleSubmit(onSubmit)}
-					type="primary"
-					className="w-full"
-				>
-					Tại tài khoản
+				<Button form="registerForm" onClick={handleSubmit(onSubmit)} type="primary" className="w-full">
+					{language.sign_in_page.create_an_account_title}
 				</Button>
 				<Button type="secondary" className="w-full">
-					Đăng nhập
+					{language.sign_in_page.sign_in_sub_title}
 				</Button>
 			</div>
 		</div>

@@ -9,7 +9,7 @@ import ProductCard from "../../components/card/product-card";
 import Overlay from "../../components/modal/overlay";
 import { useRouter } from "next/router";
 import productApi from "../../api/product-api";
-import { useAppSelector, useSettings } from "../../store/hooks";
+import { useAppSelector, usePathCategory, useSettings } from "../../store/hooks";
 import { selectCategories } from "../../redux/slices/category-slice";
 import { brandApi } from "../../api/brand-api";
 import APP_PATH from "../../constants/app-path";
@@ -28,16 +28,21 @@ import CategoryCardLoader from "../../components/card/skeleton-loader/category-c
 import clsx from "clsx";
 
 export default function Category() {
+	// router
 	const router = useRouter();
 	const { register } = useForm();
-	const { language } = useSettings();
-
 	const { locale } = router;
-
 	const { id, from, to, brand, order } = router.query;
 
+	// context
+	const { language } = useSettings();
+	const { path } = usePathCategory();
+	console.log("path: ", path);
+
+	// redux-toolkit
 	const categories = useAppSelector(selectCategories).categories;
 
+	// state
 	const [products, setProducts] = useState<IProductItem[]>([]);
 	const [category, setCategory] = useState<ICategory>();
 	const [brands, setBrands] = useState<IBrand[]>([]);
@@ -52,6 +57,7 @@ export default function Category() {
 		category: true,
 	});
 
+	// ref
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const categoryRef = useRef<CategoriesRefType>(null);
 	const filterRef = useRef<FilterRefType>(null);
@@ -186,7 +192,18 @@ export default function Category() {
 	return (
 		<div>
 			<div className="space-y-14 mt-14 mb-14 md:mb-[112px] xl:mb-[144px]">
-				<Breadcrumb className="hidden xl:block xl:mt-24" items={["Trang chủ", "Trang điểm"]} />
+				<Breadcrumb
+					className="hidden lg:block lg:mt-14"
+					items={[
+						{ title: language.header.home_tag, href: APP_PATH.HOME },
+						...path
+							.slice(1)
+							.map((item) => ({
+								title: item.name.filter((e) => e.language === locale)[0].value,
+								href: `${APP_PATH.CATEGORY}/${item._id}`,
+							})),
+					]}
+				/>
 
 				<TitlePage
 					className="mt-14 xl:mt-12 md:mt-16 lg:mt-14"
@@ -211,23 +228,21 @@ export default function Category() {
 				<div className="mt-10 lg:grid lg:grid-cols-4">
 					<div className="hidden lg:block">
 						<h5 className="font-semibold text-heading-4">{language.category_page.category}</h5>
-						<PathCategoryProvider>
-							<div className="mt-2 space-y-3">
-								{loading.category && (
-									<>
-										<CategoryCardLoader />
-										<CategoryCardLoader />
-										<CategoryCardLoader />
-										<CategoryCardLoader />
-										<CategoryCardLoader />
-										<CategoryCardLoader />
-									</>
-								)}
-								{!loading.category &&
-									categories.length > 0 &&
-									categories.map((category) => <CategoryItem key={category._id} category={category} />)}
-							</div>
-						</PathCategoryProvider>
+						<div className="mt-2 space-y-3">
+							{loading.category && (
+								<>
+									<CategoryCardLoader />
+									<CategoryCardLoader />
+									<CategoryCardLoader />
+									<CategoryCardLoader />
+									<CategoryCardLoader />
+									<CategoryCardLoader />
+								</>
+							)}
+							{!loading.category &&
+								categories.length > 0 &&
+								categories.map((category) => <CategoryItem key={category._id} category={category} />)}
+						</div>
 					</div>
 					<div className="space-y-6 lg:col-span-3">
 						<div className="space-y-6 md:space-y-0 md:flex gap-x-4 lg:block">
@@ -360,4 +375,10 @@ export default function Category() {
 			<Overlay ref={overlayRef} />
 		</div>
 	);
+}
+
+export async function getServerSideProps(context: any) {
+	return {
+		props: {},
+	};
 }

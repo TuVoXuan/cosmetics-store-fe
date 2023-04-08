@@ -5,6 +5,7 @@ import { selectCategories } from "../redux/slices/category-slice";
 import { useAppSelector } from "../store/hooks";
 import { PaletteMode } from "../types/types";
 import { findPath } from "../util/category";
+import productApi from "../api/product-api";
 
 // Type
 
@@ -23,7 +24,7 @@ export const PathCategoryProvider = ({ children }: { children: ReactNode }) => {
 	const categories = useAppSelector(selectCategories).categories;
 
 	const router = useRouter();
-	const { id } = router.query;
+	const { id, productId } = router.query;
 
 	const findPathCategory = (cateId: string | undefined) => {
 		if (cateId) {
@@ -41,11 +42,21 @@ export const PathCategoryProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
+	const fetchCategoryIdOfProduct = (id: string) => {
+		return productApi.getCategoryId(id);
+	};
+
 	useEffect(() => {
 		if (id) {
 			findPathCategory(id as string);
 		}
 	}, [id, categories]);
+
+	useEffect(() => {
+		if (productId) {
+			fetchCategoryIdOfProduct(productId as string).then((id) => findPathCategory(id));
+		}
+	}, [productId, categories]);
 
 	return <PathCategoryContext.Provider value={{ path }}>{children}</PathCategoryContext.Provider>;
 };

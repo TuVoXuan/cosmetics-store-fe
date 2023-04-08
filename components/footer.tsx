@@ -8,19 +8,18 @@ import Moon from "./icons/moon";
 import Sun from "./icons/sun";
 import Twitter from "./icons/twitter";
 import { useRouter } from "next/router";
-import { English, Vietnamese } from "../translation";
 import { selectCategories } from "../redux/slices/category-slice";
 import APP_PATH from "../constants/app-path";
 import LanguageDropdown from "./inputs/language-dropdown";
 
 export default function Footer() {
-	// Redux
+	// Redux & Context
 	const categories = useAppSelector(selectCategories).categories;
+	const { language } = useSettings();
 
 	// Router
 	const router = useRouter();
 	const { locale } = router;
-	const language = locale === "en" ? English : Vietnamese;
 
 	const { settings, saveSettings } = useSettings();
 	const Toggle = () => {

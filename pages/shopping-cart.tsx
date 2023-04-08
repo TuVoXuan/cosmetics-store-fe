@@ -15,6 +15,7 @@ import { deleteAll, selectCart } from "../redux/slices/cart-slice";
 import { selectUser } from "../redux/slices/user-slice";
 import { toastError } from "../util/toast";
 import { convertPrice } from "../util/product";
+import Breadcrumb from "../components/breadcrumb/breadcrumb";
 
 export default function ShoppingCart() {
 	// State
@@ -91,6 +92,13 @@ export default function ShoppingCart() {
 			<Head>
 				<title>{language.shopping_cart_page.shopping_cart}</title>
 			</Head>
+			<Breadcrumb
+				className="hidden lg:block lg:mt-14"
+				items={[
+					{ title: language.header.home_tag, href: APP_PATH.HOME },
+					{ title: language.shopping_cart_page.shopping_cart, href: APP_PATH.CART },
+				]}
+			/>
 			<section className="pt-14 md:pt-16 mb-[104px] md:mb-[112px] xl:mb-[144px]">
 				<div className="justify-between mb-10 md:items-end md:flex md:mb-16">
 					<TitlePage

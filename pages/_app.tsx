@@ -15,6 +15,7 @@ import { getLocalData } from "../redux/slices/cart-slice";
 import { SettingProvider } from "../context/setting.context";
 // CSS
 import "node_modules/flag-icons/css/flag-icons.min.css";
+import { PathCategoryProvider } from "../context/path-category.context";
 
 const montserrat = Montserrat({ subsets: ["latin", "vietnamese"], variable: "--font-montserrat" });
 
@@ -50,18 +51,20 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 	return (
 		<Provider store={store}>
 			<SettingProvider>
-				<SessionProvider session={session}>
-					<main className={`${montserrat.variable} font-sans`}>
-						<MainLayout>
-							<Component {...pageProps} />
-						</MainLayout>
-						<Toaster
-							toastOptions={{
-								className: "z-[500]",
-							}}
-						/>
-					</main>
-				</SessionProvider>
+				<PathCategoryProvider>
+					<SessionProvider session={session}>
+						<main className={`${montserrat.variable} font-sans`}>
+							<MainLayout>
+								<Component {...pageProps} />
+							</MainLayout>
+							<Toaster
+								toastOptions={{
+									className: "z-[500]",
+								}}
+							/>
+						</main>
+					</SessionProvider>
+				</PathCategoryProvider>
 			</SettingProvider>
 		</Provider>
 	);

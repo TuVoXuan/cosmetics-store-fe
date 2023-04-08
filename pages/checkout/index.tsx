@@ -21,6 +21,8 @@ import { toastError, toastSuccess } from "../../util/toast";
 import { orderApi } from "../../api/order-api";
 import { useRouter } from "next/router";
 import APP_PATH from "../../constants/app-path";
+import path from "path";
+import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 
 type FormValues = {
 	paymentMethod: string;
@@ -147,6 +149,14 @@ export default function Checkout() {
 	return (
 		<Fragment>
 			<div className="space-y-14 mt-14 mb-14 md:mb-[112px]  xl:mb-[144px]">
+				<Breadcrumb
+					className="hidden lg:block lg:mt-14"
+					items={[
+						{ title: language.header.home_tag, href: APP_PATH.HOME },
+						{ title: language.shopping_cart_page.shopping_cart, href: APP_PATH.CART },
+						{ title: language.checkout_page.checkout, href: APP_PATH.CHECKOUT },
+					]}
+				/>
 				<TitlePage subtitle={language.checkout_page.almost_there} title={language.checkout_page.checkout} />
 				<div className="space-y-6 lg:w-3/5 md:w-4/5 md:mx-auto md:space-y-8">
 					<div className="space-y-6 md:space-y-8">

@@ -5,6 +5,7 @@ import Button from "../../../components/buttons/button";
 import Input from "../../../components/inputs/input";
 import TitlePage from "../../../components/title-page/title-page";
 import { toastError, toastSuccess } from "../../../util/toast";
+import { useSettings } from "../../../store/hooks";
 
 interface FormValue {
 	password: string;
@@ -16,6 +17,8 @@ interface Props {
 }
 
 export default function CreatePass({ setHasPass }: Props) {
+	const { language } = useSettings();
+
 	const {
 		register,
 		formState: { errors },
@@ -29,7 +32,7 @@ export default function CreatePass({ setHasPass }: Props) {
 			await userApi.createPass(value.password);
 			reset();
 			setHasPass(true);
-			toastSuccess("Create your password successfully.");
+			toastSuccess(language.account_info_page.mes_create_pass_success);
 		} catch (error) {
 			toastError((error as IResponseError).error);
 		}
@@ -37,7 +40,11 @@ export default function CreatePass({ setHasPass }: Props) {
 
 	return (
 		<div>
-			<TitlePage className="mb-8 mt-14" subtitle="Tạo mật khẩu" title="Tạo mật khẩu" />
+			<TitlePage
+				className="mb-8 mt-14"
+				subtitle={language.account_info_page.create_pass_subtitle}
+				title={language.account_info_page.create_pass_title}
+			/>
 
 			<form
 				onSubmit={handleSubmit(onSubmit)}
@@ -45,35 +52,45 @@ export default function CreatePass({ setHasPass }: Props) {
 			>
 				<Input
 					className="w-full"
-					label="Mật khẩu"
+					label={language.account_info_page.input_pass_label}
 					type="password"
 					name="password"
 					placeholder="•••••••••"
 					error={errors.password?.message}
 					register={register}
 					option={{
-						required: { value: true, message: "Nhập mật khẩu" },
+						required: {
+							value: true,
+							message: language.account_info_page.input_pass_required_mes,
+						},
 						pattern: {
 							value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-							message: "Mật khẩu phải chứa ít nhất 8 kí tự bao gồm chữ, số, kí tự đặc biệt",
+							message: language.account_info_page.input_pass_not_match_format,
 						},
 					}}
 				/>
 				<Input
 					className="w-full"
 					type="password"
-					label="Nhập lại"
+					label={language.account_info_page.input_repeat_pass_label}
 					name="repeat"
 					placeholder="•••••••••"
-					error={errors.repeat?.type === "validate" ? "Không trùng với mật khẩu" : errors.repeat?.message}
+					error={
+						errors.repeat?.type === "validate"
+							? language.account_info_page.input_repeat_pass_not_match_pass
+							: errors.repeat?.message
+					}
 					register={register}
 					option={{
-						required: { value: true, message: "Nhập lại mật khẩu" },
+						required: {
+							value: true,
+							message: language.account_info_page.input_repeat_pass_required_mes,
+						},
 						validate: () => getValues("repeat") === getValues("password"),
 					}}
 				/>
 				<Button btnType="submit" className="w-full md:col-span-2 lg:col-span-1" type="primary">
-					Cập nhập
+					{language.account_info_page.update_btn}
 				</Button>
 			</form>
 		</div>

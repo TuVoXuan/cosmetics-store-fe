@@ -10,6 +10,10 @@ import ProductInfo from "../../../views/product-detail/info";
 import ProductComment from "../../../views/product-detail/comment";
 import ProductRecommend from "../../../views/product-detail/recommend";
 import { ProductDetailProvider } from "../../../context/product-detail.context";
+import Breadcrumb from "../../../components/breadcrumb/breadcrumb";
+import path from "path";
+import APP_PATH from "../../../constants/app-path";
+import { usePathCategory, useSettings } from "../../../store/hooks";
 
 interface Props {
 	productId: string;
@@ -40,19 +44,17 @@ export const getServerSideProps = async (context: any) => {
 	};
 };
 
-export default function Product({
-	productId,
-	selectedItem,
-	descriptions,
-	productItems,
-	variationList,
-}: Props) {
+export default function Product({ productId, selectedItem, descriptions, productItems, variationList }: Props) {
 	// State
 	const [currItem, setCurrItem] = useState<IProductItemDetail | undefined>(selectedItem);
 
-	// Router & Redux
+	// Router
 	const router = useRouter();
 	const { locale } = router;
+
+	// Context
+	const { language } = useSettings();
+	const { path } = usePathCategory();
 
 	useEffect(() => {
 		setCurrItem(selectedItem);
@@ -71,6 +73,20 @@ export default function Product({
 			<Head>
 				<title>{currItem?.name.find((item) => item.language == locale)?.value}</title>
 			</Head>
+			<Breadcrumb
+				className="hidden lg:block lg:mt-14"
+				items={[
+					{ title: language.header.home_tag, href: APP_PATH.HOME },
+					...path.slice(1).map((item) => ({
+						title: item.name.filter((e) => e.language === locale)[0].value,
+						href: `${APP_PATH.CATEGORY}/${item._id}`,
+					})),
+					{
+						title: currItem?.name.find((item) => item.language == locale)?.value || "",
+						href: `${APP_PATH.PRODUCT}/${productId}/${currItem?._id}`,
+					},
+				]}
+			/>
 			<section
 				className="pt-14 md:pt-16 space-y-14 md:space-y-[112px] xl:space-y-[144px]
 			mb-[104px] md:mb-[112px] xl:mb-[144px]"

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppDispatch, useAppSelector, useSettings } from "../store/hooks";
 import TitlePage from "../components/title-page/title-page";
 import CategoryBtn from "../components/buttons/category-btn";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
@@ -25,13 +25,10 @@ import Head from "next/head";
 import APP_PATH from "../constants/app-path";
 import ProductCardLoader from "../components/card/skeleton-loader/product-card-loader";
 import Link from "next/link";
-import { brandApi } from "../api/brand-api";
-import Image from "next/image";
 import BrandLogoCard from "../components/card/brand-logo-card";
 import BrandCardLoader from "../components/card/skeleton-loader/brand-card-loader";
 import { selectHomeSlice } from "../redux/slices/home-slice";
 import { getPopularBrands } from "../redux/actions/home-action";
-import { English, Vietnamese } from "../translation";
 import Input from "../components/inputs/input";
 
 export default function Home() {
@@ -40,12 +37,12 @@ export default function Home() {
 	const [highEndCosmeticsProds, setHighEndCosmeticsProds] = useState<IProductItem[]>([]);
 	const [makeupProds, setMakeupProds] = useState<IProductItem[]>([]);
 
+	// ** Context
+	const { language } = useSettings();
+
 	// ** Redux & Session && Router
-	const { push } = useRouter();
+	const { push, locale } = useRouter();
 	const dispatch = useAppDispatch();
-	const router = useRouter();
-	const { locale } = router;
-	const language = locale === "en" ? English : Vietnamese;
 	const categories = useAppSelector(selectCategories).categories;
 	const popularBrands = useAppSelector(selectHomeSlice).popularBrands;
 

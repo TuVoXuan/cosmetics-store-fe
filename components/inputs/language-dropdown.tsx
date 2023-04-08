@@ -107,9 +107,9 @@ export default function LanguageDropdown({ className }: Props) {
 				>
 					<p className={clsx("select-none capitalize dark:text-white-light")}>
 						{selectedValue ? (
-							<p
-								className={`h-5 w-5 lg:h-6 lg:w-6 rounded-full text-heading-3 fib fis fi-${selectedValue.value}`}
-							></p>
+							<span
+								className={`block h-5 w-5 lg:h-6 lg:w-6 rounded-full text-heading-3 fib fis fi-${selectedValue.value}`}
+							></span>
 						) : (
 							"Chọn ngôn ngữ"
 						)}
@@ -137,21 +137,10 @@ export default function LanguageDropdown({ className }: Props) {
 											"py-1 px-2 lg:py-2 lg:px-4 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 										)}
 									>
-										<label
-											className="cursor-pointer"
-											onClick={() => handleOnchange(item)}
-											htmlFor={item.value}
-										>
-											<p
-												className={`h-5 w-5 lg:h-6 lg:w-6 rounded-full text-heading-3 fib fis fi-${item.value}`}
-											></p>
+										<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
+											<p className={`h-5 w-5 lg:h-6 lg:w-6 rounded-full text-heading-3 fib fis fi-${item.value}`}></p>
 										</label>
-										<Selected
-											width={16}
-											height={16}
-											color="#1A202C"
-											className="dark:text-light-100"
-										/>
+										<Selected width={16} height={16} color="#1A202C" className="dark:text-light-100" />
 									</li>
 								);
 							}
@@ -163,14 +152,8 @@ export default function LanguageDropdown({ className }: Props) {
 										"py-1 px-2 lg:py-2 lg:px-4 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 									)}
 								>
-									<label
-										className="cursor-pointer"
-										onClick={() => handleOnchange(item)}
-										htmlFor={item.value}
-									>
-										<p
-											className={`h-5 w-5 lg:h-6 lg:w-6 rounded-full text-heading-3 fib fis fi-${item.value}`}
-										></p>
+									<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
+										<p className={`h-5 w-5 lg:h-6 lg:w-6 rounded-full text-heading-3 fib fis fi-${item.value}`}></p>
 									</label>
 								</li>
 							);

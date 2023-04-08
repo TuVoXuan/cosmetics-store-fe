@@ -1,20 +1,22 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
+import { useSettings } from "../../store/hooks";
 
 export default function Error() {
+	const { language } = useSettings();
 	const errors = {
-		Signin: "Try signing with a different account.",
-		OAuthSignin: "Try signing with a different account.",
-		OAuthCallback: "Try signing with a different account.",
-		OAuthCreateAccount: "Try signing with a different account.",
-		EmailCreateAccount: "Try signing with a different account.",
-		Callback: "Try signing with a different account.",
-		OAuthAccountNotLinked: "To confirm your identity, sign in with the same account you used originally.",
-		EmailSignin: "Check your email address.",
-		CredentialsSignin: "Sign in failed. Check the details you provided are correct.",
-		default: "Unable to sign in.",
-		ERROR_ALREADY_LINKED_TO_ANOTHER_ACCOUNT: "Try using another account",
+		Signin: language.error_page.using_another_account_mes,
+		OAuthSignin: language.error_page.using_another_account_mes,
+		OAuthCallback: language.error_page.using_another_account_mes,
+		OAuthCreateAccount: language.error_page.using_another_account_mes,
+		EmailCreateAccount: language.error_page.using_another_account_mes,
+		Callback: language.error_page.using_another_account_mes,
+		OAuthAccountNotLinked: language.error_page.sign_in_with_original_account_mes,
+		EmailSignin: language.error_page.check_email_mes,
+		CredentialsSignin: language.error_page.invalid_credentical_mes,
+		default: language.error_page.unable_sign_in_mes,
+		ERROR_ALREADY_LINKED_TO_ANOTHER_ACCOUNT: language.error_page.using_another_account_mes,
 	};
 
 	let { error } = useRouter().query;
