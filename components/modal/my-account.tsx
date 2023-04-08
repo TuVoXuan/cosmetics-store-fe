@@ -52,7 +52,7 @@ export default function MyAccount({ onClose }: Props) {
 	return (
 		<div
 			ref={myAccountRef}
-			className="absolute right-0 overflow-hidden border-2 top-[calc(100%+16px)] drop-shadow-md w-fit bg-white-light border-gray-accent rounded-xl"
+			className="absolute right-0 overflow-hidden border-2 top-[calc(100%+16px)] drop-shadow-md w-fit bg-white-light dark:bg-black-dark-4 dark:border-black-dark-4 border-gray-accent rounded-xl"
 		>
 			{status === "authenticated" ? (
 				<Fragment>
@@ -61,21 +61,21 @@ export default function MyAccount({ onClose }: Props) {
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<Profile className="text-black shrink-0 dark:text-light-100" />
-						<p>{language.component_ui.info}</p>
+						<p className="dark:text-light-100">{language.component_ui.info}</p>
 					</button>
 					<button
 						onClick={() => handleMyAccount(APP_PATH.ADDRESS)}
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<PinLine className="text-black shrink-0 dark:text-light-100" />
-						<p>{language.component_ui.address}</p>
+						<p className="dark:text-light-100">{language.component_ui.address}</p>
 					</button>
 					<button
 						onClick={() => handleMyAccount(`${APP_PATH.ORDER_HISTORY}?status=pending`)}
 						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<ClipBoard className="text-black shrink-0 dark:text-light-100" />
-						<p>{language.component_ui.order_history}</p>
+						<p className="dark:text-light-100">{language.component_ui.order_history}</p>
 					</button>
 					<button
 						onClick={() => {
@@ -83,7 +83,7 @@ export default function MyAccount({ onClose }: Props) {
 							setCookie("Authorization", "");
 							signOut({ callbackUrl: APP_PATH.HOME });
 						}}
-						className="flex items-center w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
+						className="flex items-center dark:text-light-100 w-full px-3 py-2 text-left gap-x-4 whitespace-nowrap"
 					>
 						<SignOut className="text-black shrink-0 dark:text-light-100" />
 						{language.component_ui.signout}

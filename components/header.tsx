@@ -20,9 +20,11 @@ import MyAccount from "./modal/my-account";
 import LanguageDropdown from "./inputs/language-dropdown";
 import { useAppSelector, useSettings } from "../store/hooks";
 import { selectCategories } from "../redux/slices/category-slice";
+import HamburgerButton from "./buttons/hamburger-btn";
+import Link from "next/link";
 
 interface Props {
-	onShowNavbar: () => void;
+	onShowNavbar: (value?: boolean) => void;
 }
 
 export default function Header({ onShowNavbar }: Props) {
@@ -120,14 +122,7 @@ export default function Header({ onShowNavbar }: Props) {
 			}
 		} else {
 			if (categoriesRef.current) {
-				categoriesRef.current.classList.remove(
-					"fixed",
-					"z-[2]",
-					"top-0",
-					"bottom-0",
-					"left-0",
-					"right-0"
-				);
+				categoriesRef.current.classList.remove("fixed", "z-[2]", "top-0", "bottom-0", "left-0", "right-0");
 			}
 			if (navbarListRef.current) {
 				if (navbarListRef.current.classList.contains("-translate-x-[110px]")) {
@@ -208,8 +203,45 @@ export default function Header({ onShowNavbar }: Props) {
 		});
 	};
 
+	const handleCloseNavbar = () => {
+		if (navbarRef.current) {
+			navbarRef.current.classList.add("hidden");
+			setShowNavbar(false);
+
+			if (headerRef.current) {
+				if (!headerRef.current.classList.contains("z-[3]")) {
+					headerRef.current.classList.add("z-[3]");
+				}
+			}
+			onShowNavbar(false);
+		}
+		if (categoriesRef.current) {
+			if (!categoriesRef.current.classList.contains("hidden")) {
+				categoriesRef.current.classList.add("hidden");
+			}
+		}
+
+		if (window.innerWidth >= 768) {
+			if (navbarListRef.current) {
+				if (navbarListRef.current.classList.contains("-translate-x-[110px]")) {
+					navbarListRef.current.classList.remove("-translate-x-[110px]");
+				}
+
+				if (navbarListRef.current.classList.contains("h-[552px]")) {
+					navbarListRef.current.classList.remove("h-[552px]");
+				}
+			}
+
+			if (categoriesTagRef.current) {
+				if (categoriesTagRef.current.classList.contains("text-primary-100")) {
+					categoriesTagRef.current.classList.remove("text-primary-100", "dark:text-primary-100");
+				}
+			}
+		}
+	};
+
 	const handleMyAccount = (to: string) => {
-		handleClickNavBarBtn();
+		handleCloseNavbar();
 		router.push(to);
 	};
 
@@ -237,23 +269,8 @@ export default function Header({ onShowNavbar }: Props) {
 						alt="logo"
 					/>
 				</div>
-				<div
-					onClick={handleClickNavBarBtn}
-					className=" p-3 rounded-full cursor-pointer bg-gray-accent w-fit lg:absolute lg:left-[50%] lg:-translate-x-[50%] hover:bg-primary-100 group dark:bg-black-dark-2 transition-colors duration-300 ease-linear"
-				>
-					{showNavbar ? (
-						<Delete
-							className="group-hover:text-light-100 dark:text-light-100"
-							height={24}
-							width={24}
-						/>
-					) : (
-						<Menu
-							className="group-hover:text-light-100 dark:text-light-100"
-							height={24}
-							width={24}
-						/>
-					)}
+				<div className="lg:absolute lg:left-[50%] lg:-translate-x-[50%]">
+					<HamburgerButton onClick={handleClickNavBarBtn} />
 				</div>
 
 				<div ref={logoRef} className="absolute h-12 left-[50%] -translate-x-[50%] lg:hidden">
@@ -310,7 +327,7 @@ export default function Header({ onShowNavbar }: Props) {
 					)}
 
 					<CartIndicator
-						onClick={() => router.push(APP_PATH.CART)}
+						onClick={() => handleMyAccount(APP_PATH.CART)}
 						className="cursor-pointer shrink-0 md:mr-6 md:ml-8 dark:text-light-100"
 						height={28}
 						width={32}
@@ -334,7 +351,7 @@ export default function Header({ onShowNavbar }: Props) {
 				ref={navbarRef}
 				className="fixed pt-[110px] top-0 bottom-0 left-0 right-0 z-[2] hidden px-8 bg-white-light dark:bg-black-dark-3 md:px-10 lg:px-12 xl:px-24"
 			>
-				<SearchInput className="mb-6 md:hidden" />
+				<SearchInput className="mb-6 md:hidden" closeHeader={handleClickNavBarBtn} />
 
 				<ul
 					ref={navbarListRef}
@@ -370,11 +387,12 @@ export default function Header({ onShowNavbar }: Props) {
 							<ul className="space-y-6 text-center select-none text-paragraph-1">
 								{categories.map((cate) => (
 									<li
+										key={cate._id}
 										onClick={() => {
 											handleClickNavBarBtn();
 											router.push(`${APP_PATH.CATEGORY}/${cate._id}`);
 										}}
-										className="duration-300 ease-linear cursor-pointer whitespace-nowrap hover:text-primary-100"
+										className="capitalize duration-300 ease-linear cursor-pointer whitespace-nowrap hover:text-primary-100"
 									>
 										{cate.name.filter((item) => item.language == router.locale)[0].value}
 									</li>
@@ -423,9 +441,7 @@ export default function Header({ onShowNavbar }: Props) {
 										{language.header.my_account_info}
 									</li>
 									<li
-										onClick={() =>
-											handleMyAccount(`${APP_PATH.ORDER_HISTORY}?status=pending`)
-										}
+										onClick={() => handleMyAccount(`${APP_PATH.ORDER_HISTORY}?status=pending`)}
 										className="duration-300 ease-linear cursor-pointer hover:text-primary-100"
 									>
 										{language.header.my_account_order}
@@ -435,10 +451,16 @@ export default function Header({ onShowNavbar }: Props) {
 						</div>
 					)}
 
-					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
+					<li
+						onClick={() => handleMyAccount(APP_PATH.ABOUT)}
+						className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100"
+					>
 						{language.header.about_tag}
 					</li>
-					<li className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100">
+					<li
+						onClick={() => handleMyAccount(APP_PATH.CONTACT)}
+						className="duration-300 ease-linear cursor-pointer text-paragraph-1 hover:text-primary-100"
+					>
 						{language.header.contact_tag}
 					</li>
 				</ul>
@@ -456,11 +478,7 @@ export default function Header({ onShowNavbar }: Props) {
 						{language.header.signout_btn}
 					</Button>
 				) : (
-					<Button
-						onClick={handleRedirectToLoginPage}
-						type="primary"
-						className="w-full mt-6 mb-[68px] md:hidden"
-					>
+					<Button onClick={handleRedirectToLoginPage} type="primary" className="w-full mt-6 mb-[68px] md:hidden">
 						{language.header.signin_btn}
 					</Button>
 				)}

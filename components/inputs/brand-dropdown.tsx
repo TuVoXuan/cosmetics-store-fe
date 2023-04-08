@@ -198,7 +198,7 @@ export default function BrandDropdown({ options, className, loading }: Props) {
 												"text-heading-6 px-6 py-3 md:text-heading-5 hover:bg-gray-accent hover:dark:bg-black-dark-2"
 											)}
 										>
-											<div className="p-1 border-2 rounded-md border-black-dark-1">
+											<div className="p-1 border-2 rounded-md border-black-dark-1 dark:border-light-100">
 												<Selected width={12} height={12} color="#1A202C" className="dark:text-light-100" />
 											</div>
 											<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
@@ -216,7 +216,7 @@ export default function BrandDropdown({ options, className, loading }: Props) {
 										)}
 									>
 										<div className="p-1 border-2 rounded-md">
-											<Selected width={12} height={12} color="#1A202C" className="text-light-100" />
+											<Selected width={12} height={12} color="#1A202C" className="text-transparent" />
 										</div>
 										<label className="cursor-pointer" onClick={() => handleOnchange(item)} htmlFor={item.value}>
 											{item.label}

@@ -139,10 +139,7 @@ export default function Home() {
 				{/* the categories */}
 				<div>
 					<div className="text-center mb-14 md:text-left md:mb-12 md:flex md:justify-between">
-						<TitlePage
-							subtitle={language.home_page.category_sub_title}
-							title={language.home_page.category_title}
-						/>
+						<TitlePage subtitle={language.home_page.category_sub_title} title={language.home_page.category_title} />
 
 						{/* navigation button of swiper */}
 						<div className="hidden md:flex md:gap-x-4 md:items-end">
@@ -156,11 +153,7 @@ export default function Home() {
 								onClick={() => categoriesSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full bg-gray-accent dark:bg-black-dark-2"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>
@@ -258,21 +251,13 @@ export default function Home() {
 							onClick={() => skinCareProdsSwiperRef.current?.swiper.slidePrev()}
 							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
-							<GoBack
-								height={16}
-								width={16}
-								className="text-primary-100 dark:text-white-light"
-							/>
+							<GoBack height={16} width={16} className="text-primary-100 dark:text-white-light" />
 						</button>
 						<button
 							onClick={() => skinCareProdsSwiperRef.current?.swiper.slideNext()}
 							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
-							<GoForward
-								height={16}
-								width={16}
-								className="text-primary-100 dark:text-white-light"
-							/>
+							<GoForward height={16} width={16} className="text-primary-100 dark:text-white-light" />
 						</button>
 					</div>
 				</div>
@@ -328,21 +313,13 @@ export default function Home() {
 							onClick={() => highEndCostmeticsProdsSwiperRef.current?.swiper.slidePrev()}
 							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
-							<GoBack
-								height={16}
-								width={16}
-								className="text-primary-100 dark:text-white-light"
-							/>
+							<GoBack height={16} width={16} className="text-primary-100 dark:text-white-light" />
 						</button>
 						<button
 							onClick={() => highEndCostmeticsProdsSwiperRef.current?.swiper.slideNext()}
 							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
-							<GoForward
-								height={16}
-								width={16}
-								className="text-primary-100 dark:text-white-light"
-							/>
+							<GoForward height={16} width={16} className="text-primary-100 dark:text-white-light" />
 						</button>
 					</div>
 				</div>
@@ -398,21 +375,13 @@ export default function Home() {
 							onClick={() => makeupProdsSwiperRef.current?.swiper.slidePrev()}
 							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
-							<GoBack
-								height={16}
-								width={16}
-								className="text-primary-100 dark:text-white-light"
-							/>
+							<GoBack height={16} width={16} className="text-primary-100 dark:text-white-light" />
 						</button>
 						<button
 							onClick={() => makeupProdsSwiperRef.current?.swiper.slideNext()}
 							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
-							<GoForward
-								height={16}
-								width={16}
-								className="text-primary-100 dark:text-white-light"
-							/>
+							<GoForward height={16} width={16} className="text-primary-100 dark:text-white-light" />
 						</button>
 					</div>
 				</div>
@@ -434,9 +403,11 @@ export default function Home() {
 						</Link>
 						<Swiper
 							slidesPerView={2}
+							spaceBetween={16}
 							breakpoints={{
 								756: {
 									slidesPerView: 5,
+									spaceBetween: 32,
 								},
 							}}
 							modules={[Pagination]}
@@ -446,7 +417,7 @@ export default function Home() {
 							{popularBrands.length > 0 ? (
 								popularBrands.map((brand) => (
 									<SwiperSlide key={brand._id}>
-										<div className="h-[150px] flex items-center w-full">
+										<div className="flex items-center w-full h-24 px-2 rounded-lg dark:bg-light-100">
 											<BrandLogoCard brand={brand} />
 										</div>
 									</SwiperSlide>
@@ -467,21 +438,13 @@ export default function Home() {
 							onClick={() => popularBrandsSwiperRef.current?.swiper.slidePrev()}
 							className="absolute flex justify-between z-10 top-1/2 -translate-y-[50%] -translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
-							<GoBack
-								height={16}
-								width={16}
-								className="text-primary-100 dark:text-white-light"
-							/>
+							<GoBack height={16} width={16} className="text-primary-100 dark:text-white-light" />
 						</button>
 						<button
 							onClick={() => popularBrandsSwiperRef.current?.swiper.slideNext()}
 							className=" absolute right-0 flex justify-between z-10 top-1/2 -translate-y-[50%] translate-x-4 p-4 rounded-full bg-primary-10 dark:bg-black-dark-2"
 						>
-							<GoForward
-								height={16}
-								width={16}
-								className="text-primary-100 dark:text-white-light"
-							/>
+							<GoForward height={16} width={16} className="text-primary-100 dark:text-white-light" />
 						</button>
 					</div>
 				</div>
@@ -564,11 +527,7 @@ export default function Home() {
 								onClick={() => reviewsSwiperRef.current?.swiper.slideNext()}
 								className="p-4 rounded-full lg:border-2 lg:border-black lg:dark:border-none bg-gray-accent dark:bg-black-dark-2 lg:dark:bg-black-dark-4"
 							>
-								<GoForward
-									height={16}
-									width={16}
-									className="text-black dark:text-white-light"
-								/>
+								<GoForward height={16} width={16} className="text-black dark:text-white-light" />
 							</button>
 						</div>
 					</div>

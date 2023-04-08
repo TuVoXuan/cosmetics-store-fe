@@ -53,8 +53,8 @@ export default function RemoveFilterButton({ type, value, brandId }: Props) {
 	};
 
 	return (
-		<div className="flex items-center py-1 pl-6 pr-1 rounded-full w-fit gap-x-2 bg-gray-accent">
-			<p className="text-paragraph-5">{value}</p>
+		<div className="flex items-center py-1 pl-6 pr-1 rounded-full dark:bg-black-dark-2 w-fit gap-x-2 bg-gray-accent">
+			<p className="text-paragraph-5 dark:text-light-100">{value}</p>
 			<div
 				onClick={handleDelete}
 				className="p-2 transition-all duration-200 ease-in-out rounded-full cursor-pointer hover:bg-primary-10 group hover:rotate-90 dark:text-white"

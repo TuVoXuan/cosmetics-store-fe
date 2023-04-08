@@ -36,7 +36,7 @@ export default function Button({
 			type={btnType}
 			className={`rounded-[32px] font-bold px-6 py-3 text-heading-6 md:px-10 md:text-heading-5 
 			hover:border-primary-100 transition-colors ease-linear select-none
-				disabled:cursor-not-allowed disabled:bg-dark-40 duration-150
+				disabled:cursor-not-allowed disabled:bg-dark-24 disabled:text-dark-64 duration-150
 			${getCSSType()} ${className}`}
 		>
 			{children}

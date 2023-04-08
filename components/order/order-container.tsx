@@ -36,7 +36,7 @@ export default function OrderContainer({ order, status, onCancelOrder }: Props) 
 	return (
 		<div
 			onClick={handleOnClick}
-			className="p-4 space-y-4 border-2 md:p-6 lg:p-8 border-gray-accent dark:border-black-dark-2"
+			className="p-4 space-y-4 cursor-pointer rounded-3xl border-2 md:p-6 lg:p-8 border-gray-accent dark:border-black-dark-2"
 		>
 			<div className="flex items-end justify-between">
 				<h4 className="text-heading-6 md:text-heading-5 lg:text-paragraph-3 dark:text-light-100">{order.orderId}</h4>

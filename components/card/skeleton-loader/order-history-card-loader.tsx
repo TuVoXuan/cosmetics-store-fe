@@ -2,7 +2,7 @@ import React from "react";
 
 export default function OrderHistoryCardLoader() {
 	return (
-		<div className="p-4 space-y-4 border-2 animate-pulse md:p-6 lg:p-8 border-gray-accent dark:border-black-dark-2">
+		<div className="p-4 space-y-4 border-2 rounded-3xl animate-pulse md:p-6 lg:p-8 border-gray-accent dark:border-black-dark-2">
 			<div className="flex items-end justify-between">
 				<h4 className="h-[14px] md:h-4 lg:h-[18px] w-[100px] rounded-lg bg-slate-200"></h4>
 				<p className="h-[14px] md:h-4 lg:h-[18px] w-[100px] rounded-lg bg-slate-200"></p>

@@ -326,7 +326,7 @@ export default function Address() {
 					placeholder={language.account_address_page.input_specific_address_placeholder}
 				/>
 			</form>
-			<p className="font-semibold text-red-accent">{language.account_address_page.noted}</p>
+			<p className="font-semibold text-red-accent lg:w-4/5 lg:mx-auto">{language.account_address_page.noted}</p>
 			<Button onClick={handleGetPosition} className="self-end w-full lg:w-fit" btnType="submit" type="primary">
 				{language.account_address_page.view_location_in_map_btn}
 			</Button>

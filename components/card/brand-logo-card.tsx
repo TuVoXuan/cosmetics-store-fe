@@ -16,8 +16,8 @@ export default function BrandLogoCard({ brand }: Props) {
 	};
 
 	return (
-		<div onClick={handleClickBrand} className="w-full p-3 cursor-pointer">
-			<Image src={brand.logo} alt={brand.name} height={150} width={150} />
+		<div onClick={handleClickBrand} className="w-full relative h-20 p-2 cursor-pointer">
+			<Image src={brand.logo} alt={brand.name} fill className="object-contain" />
 		</div>
 	);
 }

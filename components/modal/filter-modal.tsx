@@ -239,14 +239,14 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 			<form id="filterForm" onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-6 overflow-y-auto grow">
 				{moreBrands ? (
 					<>
-						<div className="relative flex items-center gap-x-3">
+						<div className="relative  flex items-center gap-x-3">
 							<Search className="absolute w-4 h-4 left-3 dark:text-white" />
 							<input
 								type="text"
 								name="search"
 								id="search"
 								onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchBrand(event.target.value)}
-								className="w-full p-3 border-2 pl-9 border-gray-accent rounded-3xl focus:outline-none focus:border-primary-100"
+								className="w-full p-3 border-2 pl-9 dark:bg-transparent dark:border-black-dark-2 dark:text-light-100 border-gray-accent rounded-3xl focus:outline-none focus:border-primary-100"
 							/>
 						</div>
 
@@ -266,7 +266,9 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 				) : (
 					<>
 						<div>
-							<h6 className="font-medium uppercase text-heading-6">{language.component_ui.price_range}</h6>
+							<h6 className="font-medium dark:text-light-100 uppercase text-heading-6">
+								{language.component_ui.price_range}
+							</h6>
 							<div className="flex items-center justify-between">
 								<div className="w-[45%]">
 									<Input
@@ -317,11 +319,13 @@ const FilterModal = React.forwardRef<FilterRefType, Props>(({ overlay, brands },
 						{brandsList.length > 0 && (
 							<div className="space-y-3">
 								<div className="flex items-center justify-between">
-									<h6 className="font-medium uppercase text-heading-6">{language.component_ui.brands}</h6>
+									<h6 className="font-medium dark:text-light-100 uppercase text-heading-6">
+										{language.component_ui.brands}
+									</h6>
 
 									{brandsList.length > 10 && (
 										<button onClick={handleMoreBrands} type="button" className="flex items-center gap-x-1">
-											<p className="text-paragraph-5 text-dark-64">
+											<p className="text-paragraph-5 dark:text-light-100 text-dark-64">
 												{language.product_detail_page.all} ({brands.length})
 											</p>
 											<GoForward className="w-3 h-3 text-dark-24" />

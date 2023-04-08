@@ -21,7 +21,7 @@ export default function Breadcrumb({ items, className }: IBreadcrumb) {
 					<Fragment key={index}>
 						<Link
 							href={e.href}
-							className="inline-block font-medium select-none xl:text-heading-4 text-paragraph-5 dark:text-light-100 text-dark-100"
+							className="inline-block capitalize font-medium select-none xl:text-heading-4 text-paragraph-5 dark:text-light-100 text-dark-100"
 						>
 							{e.title}
 						</Link>

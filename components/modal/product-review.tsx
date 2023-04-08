@@ -8,6 +8,7 @@ import { toastError } from "../../util/toast";
 import Button from "../buttons/button";
 import GroupStars from "../comment/group-stars";
 import Delete from "../icons/delete";
+import { useSettings } from "../../store/hooks";
 
 export type ProdReviewRefType = {
 	current: HTMLDivElement | null;
@@ -27,6 +28,8 @@ interface FormValues {
 }
 
 const ProductReview = React.forwardRef<ProdReviewRefType, Props>(({ overlay, setComment }, ref) => {
+	const { language } = useSettings();
+
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	const [orderItemId, setOrderItemId] = useState<string>("");
@@ -51,7 +54,7 @@ const ProductReview = React.forwardRef<ProdReviewRefType, Props>(({ overlay, set
 		try {
 			if (defaultComment) {
 				console.log("value: ", value);
-				toast.loading("Updating comment ...", { id: "toastUpdateComment" });
+				toast.loading(language.component_ui.mes_updating_comment, { id: "toastUpdateComment" });
 				const body: IUpdateComment = {
 					_id: defaultComment._id,
 					content: value.content,
@@ -63,9 +66,9 @@ const ProductReview = React.forwardRef<ProdReviewRefType, Props>(({ overlay, set
 				setComment(response, orderItemId);
 
 				toast.dismiss("toastUpdateComment");
-				toast.success("Update comment success");
+				toast.success(language.component_ui.mes_update_comment_success);
 			} else {
-				toast.loading("Creating comment ...", { id: "toastCreateComment" });
+				toast.loading(language.component_ui.mes_creating_comment, { id: "toastCreateComment" });
 				const body: ICreateComment = {
 					content: value.content,
 					orderItemId: orderItemId,
@@ -76,7 +79,7 @@ const ProductReview = React.forwardRef<ProdReviewRefType, Props>(({ overlay, set
 				setComment(response, orderItemId);
 
 				toast.dismiss("toastCreateComment");
-				toast.success("Create comment success");
+				toast.success(language.component_ui.mes_create_comment_success);
 			}
 			handleClose();
 		} catch (error) {
@@ -156,7 +159,9 @@ const ProductReview = React.forwardRef<ProdReviewRefType, Props>(({ overlay, set
 			className="fixed -left-[100%] z-20 w-[80%] md:w-4/5 lg:w-3/5 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-black-dark-3 rounded-3xl top-1/2 transition-all duration-300 ease-out"
 		>
 			<div className="relative flex justify-between p-4 border-b-2 md:p-5">
-				<h3 className="text-heading-4 md:text-heading-3 dark:text-white">Đánh giá của bạn</h3>
+				<h3 className="text-heading-4 md:text-heading-3 dark:text-white">
+					{language.component_ui.your_review}
+				</h3>
 
 				<button
 					onClick={handleClose}
@@ -167,13 +172,15 @@ const ProductReview = React.forwardRef<ProdReviewRefType, Props>(({ overlay, set
 			</div>
 			<form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-3">
 				<div className="flex items-center gap-x-4">
-					<p className={clsx(errors.rate && "text-red-accent", "whitespace-nowrap")}>Đánh giá</p>
+					<p className={clsx(errors.rate && "text-red-accent", "whitespace-nowrap")}>
+						{language.component_ui.rate_label}
+					</p>
 					<GroupStars
 						name="rate"
 						register={register}
 						option={{
-							required: { value: true, message: "Vote star is required" },
-							min: { value: 1, message: "Vote star from 1 to 5" },
+							required: { value: true, message: language.component_ui.mes_rate_required },
+							min: { value: 1, message: language.component_ui.mes_rate_min },
 						}}
 						stars={stars}
 						onChangeStars={changeStars}
@@ -183,11 +190,11 @@ const ProductReview = React.forwardRef<ProdReviewRefType, Props>(({ overlay, set
 				{errors.rate && <p className="text-red-accent">{errors.rate.message}</p>}
 				<div className="space-y-2">
 					<label htmlFor="content" className={clsx(errors.content && "text-red-accent")}>
-						Bình luận
+						{language.component_ui.comment_label}
 					</label>
 					<textarea
 						{...register("content", {
-							required: { value: true, message: "Comment is required" },
+							required: { value: true, message: language.component_ui.mes_comment_required },
 						})}
 						className={clsx(
 							"w-full p-3 border-2 rounded-lg outline-none border-primary-100",
@@ -199,7 +206,7 @@ const ProductReview = React.forwardRef<ProdReviewRefType, Props>(({ overlay, set
 					{errors.content && <p className="text-red-accent">{errors.content.message}</p>}
 				</div>
 				<Button btnType="submit" type="primary" className="w-full">
-					Viết đánh giá
+					{language.component_ui.write_review}
 				</Button>
 			</form>
 		</div>

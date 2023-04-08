@@ -127,7 +127,6 @@ export default function Search() {
 	return (
 		<div>
 			<div className="space-y-14 mt-14 mb-14 md:mb-[112px] xl:mb-[144px]">
-				<Breadcrumb className="hidden xl:block xl:mt-[93px]" items={["Trang chủ", "Kết quả tìm kiếm"]} />
 				<TitlePage
 					className="capitalize mt-14 md:mt-16 xl:mt-12"
 					subtitle={language.search_page.search_results}
@@ -166,7 +165,9 @@ export default function Search() {
 
 				{((from && to) || brand) && (
 					<div className="hidden space-y-4 lg:block">
-						<h5 className="font-semibold text-paragraph-3">{language.category_page.filtering_by}</h5>
+						<h5 className="font-semibold text-paragraph-3 dark:text-light-100">
+							{language.category_page.filtering_by}
+						</h5>
 						<div className="flex flex-wrap items-center gap-4">
 							{from && to && (
 								<RemoveFilterButton

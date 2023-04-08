@@ -124,7 +124,7 @@ export default function OrdersHistory() {
 							value: EnumOrderStatus.Pending,
 						},
 						{
-							label: language.account_orders_history.order_status_shipping,
+							label: language.account_orders_history.order_status_delivering,
 							value: EnumOrderStatus.Delivering,
 						},
 						{
@@ -143,7 +143,7 @@ export default function OrdersHistory() {
 							{language.account_orders_history.order_status_pending}
 						</OrderStatus>
 						<OrderStatus value={EnumOrderStatus.Delivering}>
-							{language.account_orders_history.order_status_shipping}
+							{language.account_orders_history.order_status_delivering}
 						</OrderStatus>
 						<OrderStatus value={EnumOrderStatus.Completed}>
 							{language.account_orders_history.order_status_completed}
@@ -173,7 +173,7 @@ export default function OrdersHistory() {
 										/>
 									))}
 								{orders.length === 0 && (
-									<p className="text-center md:text-paragraph-2 lg:h-full lg:flex lg:justify-center lg:items-center">
+									<p className="text-center md:text-paragraph-2 dark:text-light-100 lg:h-full lg:flex lg:justify-center lg:items-center">
 										{language.account_orders_history.no_order}
 									</p>
 								)}

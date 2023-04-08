@@ -9,13 +9,14 @@ import { Language } from "../../constants/enums";
 interface Props {
 	className?: string;
 	onClose?: () => void;
+	closeHeader?: () => void;
 }
 
 interface FormValue {
 	search: string;
 }
 
-export default function SearchInput({ onClose, className }: Props) {
+export default function SearchInput({ onClose, className, closeHeader }: Props) {
 	const searchCoverRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
 	const { register, handleSubmit, reset } = useForm<FormValue>();
@@ -32,6 +33,9 @@ export default function SearchInput({ onClose, className }: Props) {
 
 	const onSubmit = (value: FormValue) => {
 		reset();
+		if (typeof closeHeader === "function") {
+			closeHeader();
+		}
 		router.push({
 			pathname: APP_PATH.SEARCH,
 			query: {

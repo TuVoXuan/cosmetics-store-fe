@@ -96,13 +96,16 @@ export default function Brands() {
 						return brand.name.toLowerCase().match(regex) ? true : false;
 					});
 					return (
-						<div key={index}>
-							<h5 id={char} className="px-3 capitalize rounded-lg text-heading-4 bg-primary-10">
+						<div key={index} className="dark:space-y-4">
+							<h5
+								id={char}
+								className="px-3 dark:text-light-100 capitalize rounded-lg text-heading-4 bg-primary-10 dark:bg-primary-100"
+							>
 								{char}
 							</h5>
-							<div key={char} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+							<div key={char} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
 								{brandNameBeginWithChar.map((brand) => (
-									<div key={brand._id} className="flex items-center py-2">
+									<div key={brand._id} className="flex bg-light-100 items-center rounded-lg p-2">
 										<BrandLogoCard brand={brand} />
 									</div>
 								))}

@@ -196,12 +196,10 @@ export default function Category() {
 					className="hidden lg:block lg:mt-14"
 					items={[
 						{ title: language.header.home_tag, href: APP_PATH.HOME },
-						...path
-							.slice(1)
-							.map((item) => ({
-								title: item.name.filter((e) => e.language === locale)[0].value,
-								href: `${APP_PATH.CATEGORY}/${item._id}`,
-							})),
+						...path.slice(1).map((item) => ({
+							title: item.name.filter((e) => e.language === locale)[0].value,
+							href: `${APP_PATH.CATEGORY}/${item._id}`,
+						})),
 					]}
 				/>
 
@@ -227,7 +225,7 @@ export default function Category() {
 
 				<div className="mt-10 lg:grid lg:grid-cols-4">
 					<div className="hidden lg:block">
-						<h5 className="font-semibold text-heading-4">{language.category_page.category}</h5>
+						<h5 className="font-semibold text-heading-4 dark:text-light-100">{language.category_page.category}</h5>
 						<div className="mt-2 space-y-3">
 							{loading.category && (
 								<>
@@ -247,7 +245,8 @@ export default function Category() {
 					<div className="space-y-6 lg:col-span-3">
 						<div className="space-y-6 md:space-y-0 md:flex gap-x-4 lg:block">
 							<div
-								className="flex shrink-0 gap-x-4 w-full justify-between md:w-fit border-2 rounded-[32px] border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center lg:hidden"
+								className="flex shrink-0 gap-x-4 w-full justify-between md:w-fit border-2 rounded-[32px]
+										 border-gray-accent dark:border-black-dark-2 px-6 py-3 items-center lg:hidden"
 								onClick={handleOpenCategoriesModel}
 							>
 								<p className="capitalize text-paragraph-5 dark:text-light-100">
@@ -295,7 +294,9 @@ export default function Category() {
 
 						{((from && to) || brand) && (
 							<div className="hidden space-y-4 lg:block">
-								<h5 className="font-semibold text-paragraph-3">{language.category_page.filtering_by}</h5>
+								<h5 className="font-semibold text-paragraph-3 dark:text-light-100">
+									{language.category_page.filtering_by}
+								</h5>
 								<div className="flex flex-wrap items-center gap-4">
 									{from && to && (
 										<RemoveFilterButton
