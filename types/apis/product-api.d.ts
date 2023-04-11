@@ -5,7 +5,10 @@ declare interface IProductItem {
 	thumbnail: string;
 	name: ITranslation[];
 	brand: string;
-	categories: string[];
+	// categories: string[];
+	rating: number;
+	comments: number;
+	sold: number;
 }
 
 declare interface IGetProductByCategory extends IRandomPagination {
@@ -17,7 +20,7 @@ declare interface IGetProductByCategoryAndOptions extends ILoadMorePagination {
 	from?: string;
 	to?: string;
 	brands?: string;
-	order?: "asc" | "desc";
+	order?: "asc" | "desc" | "def";
 }
 
 declare interface IVariationList {

@@ -15,20 +15,8 @@ const productApi = {
 		return axiosService.get<IResponseSuccess<IProductDetailInfo>>(`${URL}/product-detail/${productId}/${itemId}`);
 	},
 
-	getProductItemsByCategory: async (data: IGetProductByCategory) => {
-		const response = await axiosService.post<IResponseSuccess<IProductItem[]>>(
-			`${URL}/product-items/category/${data.id}`,
-			{
-				previous: data.previous,
-				limit: data.limit,
-			}
-		);
-
-		return response.data.data;
-	},
-
 	getProductItemsByCategoryAndOptions: async (data: IGetProductByCategoryAndOptions) => {
-		let newURL = URL + `/product-items/category/${data.id}/options?`;
+		let newURL = URL + `/product-items/category/${data.id}?`;
 		if (data.from) {
 			newURL += `&from=${data.from}`;
 		}

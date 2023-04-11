@@ -82,9 +82,9 @@ export default function PriceRangeDropdown({ className }: Props) {
 
 		let url = "";
 
-		if (pathName === APP_PATH.SEARCH) {
+		if (pathName.startsWith(APP_PATH.SEARCH)) {
 			url = `${APP_PATH.SEARCH}?search=${search}&from=${data.from}&to=${data.to}`;
-		} else if (pathName === APP_PATH.CATEGORY) {
+		} else if (pathName.startsWith(APP_PATH.CATEGORY)) {
 			url = `${APP_PATH.CATEGORY}/${id}?from=${data.from}&to=${data.to}`;
 		} else {
 			url = `${APP_PATH.BRAND}/${id}?from=${data.from}&to=${data.to}`;

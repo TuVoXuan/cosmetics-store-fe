@@ -56,11 +56,12 @@ export default function Home() {
 
 	const handleFetchFacialSkinCareProds = async () => {
 		try {
-			const response = await productApi.getProductItemsByCategory({
+			const response = await productApi.getProductItemsByCategoryAndOptions({
 				id: "63ea42b09d7b67d0ae6c14d9",
 				limit: "20",
+				order: "def",
 			});
-			setFacialSkinCareProds(response);
+			setFacialSkinCareProds(response.data);
 		} catch (error) {
 			toast.error((error as IResponseError).error);
 		}
@@ -68,11 +69,12 @@ export default function Home() {
 
 	const handleFetchHighEndProds = async () => {
 		try {
-			const response = await productApi.getProductItemsByCategory({
+			const response = await productApi.getProductItemsByCategoryAndOptions({
 				id: "63ea43bf9d7b67d0ae6c14de",
 				limit: "20",
+				order: "def",
 			});
-			setHighEndCosmeticsProds(response);
+			setHighEndCosmeticsProds(response.data);
 		} catch (error) {
 			toast.error((error as IResponseError).error);
 		}
@@ -80,11 +82,12 @@ export default function Home() {
 
 	const handleMakeupProds = async () => {
 		try {
-			const response = await productApi.getProductItemsByCategory({
+			const response = await productApi.getProductItemsByCategoryAndOptions({
 				id: "63ea440f9d7b67d0ae6c14e1",
 				limit: "20",
+				order: "def",
 			});
-			setMakeupProds(response);
+			setMakeupProds(response.data);
 		} catch (error) {
 			toast.error((error as IResponseError).error);
 		}
