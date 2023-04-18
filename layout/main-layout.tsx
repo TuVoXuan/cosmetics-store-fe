@@ -7,6 +7,7 @@ import Header from "../components/header";
 import { getCategories } from "../redux/actions/category-action";
 import { getAddress } from "../redux/actions/user-action";
 import { recommendItemBase } from "../redux/actions/recommend-action";
+import { getShippingFeePerKm } from "../redux/actions/home-action";
 
 interface Props {
 	children?: React.ReactNode;
@@ -20,6 +21,10 @@ export default function MainLayout({ children }: Props) {
 
 	const fetchCategories = () => {
 		dispatch(getCategories()).unwrap();
+	};
+
+	const fetchShippingFeePerKm = () => {
+		dispatch(getShippingFeePerKm()).unwrap();
 	};
 
 	const fetchRecommendedProducts = () => {
@@ -45,6 +50,7 @@ export default function MainLayout({ children }: Props) {
 
 	useEffect(() => {
 		fetchCategories();
+		fetchShippingFeePerKm();
 	}, []);
 
 	useEffect(() => {

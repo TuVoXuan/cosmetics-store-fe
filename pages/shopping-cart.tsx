@@ -16,6 +16,7 @@ import { selectUser } from "../redux/slices/user-slice";
 import { toastError } from "../util/toast";
 import { convertPrice } from "../util/product";
 import Breadcrumb from "../components/breadcrumb/breadcrumb";
+import { selectHomeSlice } from "../redux/slices/home-slice";
 
 export default function ShoppingCart() {
 	// State
@@ -28,6 +29,7 @@ export default function ShoppingCart() {
 	const cart = useAppSelector(selectCart);
 	const addresses = useAppSelector(selectUser).address;
 	const defaultAddress = addresses.find((item) => item.default === true);
+	const feePerKm = useAppSelector(selectHomeSlice).shippingFeePerKm;
 
 	// Context
 	const { language } = useSettings();
@@ -56,7 +58,7 @@ export default function ShoppingCart() {
 					response
 						.then((data) => data.data)
 						.then((data) => {
-							const feePerKm = parseInt(process.env.SHIPPING_FEE_PER_KM || "");
+							// const feePerKm = parseInt(process.env.SHIPPING_FEE_PER_KM || "");
 
 							setShippingFee(feePerKm * data.route.distance);
 						});
@@ -147,7 +149,7 @@ export default function ShoppingCart() {
 						<h4 className="mb-8 font-semibold text-heading-5 lg:text-heading-4 md:mb-8 lg:mb-10 dark:text-white">
 							{language.shopping_cart_page.cart_total}
 						</h4>
-						<div className="space-y-6 mb-8 md:mb-10 lg:mx-0 lg:block lg:mb-14">
+						<div className="mb-8 space-y-6 md:mb-10 lg:mx-0 lg:block lg:mb-14">
 							<div className="flex justify-between">
 								<p className="text-heading-6 lg:text-heading-5 dark:text-white">
 									{language.shopping_cart_page.merchandise_subTotal}:

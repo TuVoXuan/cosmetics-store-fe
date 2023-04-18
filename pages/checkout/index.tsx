@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import APP_PATH from "../../constants/app-path";
 import path from "path";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
+import { selectHomeSlice } from "../../redux/slices/home-slice";
 
 type FormValues = {
 	paymentMethod: string;
@@ -40,6 +41,7 @@ export default function Checkout() {
 
 	const cart = useAppSelector(selectCart);
 	const address = useAppSelector(selectUser).address;
+	const feePerKm = useAppSelector(selectHomeSlice).shippingFeePerKm;
 
 	const [paymentMethod, setPaymentMethod] = useState<string>("COD");
 	const [total, setTotal] = useState<number>(0);
@@ -63,7 +65,7 @@ export default function Checkout() {
 					response
 						.then((data) => data.data)
 						.then((data) => {
-							const feePerKm = parseInt(process.env.SHIPPING_FEE_PER_KM || "");
+							// const feePerKm = parseInt(process.env.SHIPPING_FEE_PER_KM || "");
 
 							setShippingFee(feePerKm * data.route.distance);
 						});
@@ -209,7 +211,7 @@ export default function Checkout() {
 						</div>
 					</div>
 
-					<div className="lg:grid lg:grid-cols-2 space-y-10 lg:space-y-0 lg:gap-x-10">
+					<div className="space-y-10 lg:grid lg:grid-cols-2 lg:space-y-0 lg:gap-x-10">
 						{/* payment method section */}
 						<div className="p-6 space-y-6 border-2 border-gray-accent rounded-4xl dark:border-black-dark-2">
 							<h4 className="font-semibold text-heading-5 lg:text-heading-4 dark:text-light-100">
