@@ -17,7 +17,6 @@ export default function VariationOptions() {
 	);
 
 	const handleOnChange = (value: string) => {
-		console.log("value: ", value);
 		const enableOption: string[] = [];
 		for (const prodItem of productItems) {
 			const hasOption = prodItem.configurations.findIndex((item) => item === value);
@@ -60,8 +59,6 @@ export default function VariationOptions() {
 
 	const handleChangeProductItem = () => {
 		const config: string[] = selected.map((item) => item.optionId);
-		console.log("selected: ", selected);
-		console.log("config: ", config);
 		const selectedProductItem = productItems.find((item) => {
 			return (
 				item.configurations.length === config.length &&

@@ -84,6 +84,17 @@ declare interface ICommentProdItem {
 	};
 	rate: number;
 	createdAt: string;
+	contentTrans?: string;
+}
+
+declare interface ICommentSimp {
+	id: string;
+	content: string;
+}
+
+declare interface ICommentTrans {
+	id: string;
+	contentTrans: string;
 }
 
 declare interface ICommentPagination {

@@ -9,17 +9,20 @@ import productApi from "../../api/product-api";
 import { toastError } from "../../util/toast";
 import Comment from "../../components/comment/comment";
 import { useForm } from "react-hook-form";
+import { commentApi } from "../../api/comment-api";
 import { useRouter } from "next/router";
-import { English, Vietnamese } from "../../translation";
+import CommentCardLoader from "../../components/card/skeleton-loader/comment-card-loader";
 
 export default function ProductComment() {
 	const { register } = useForm();
+	const { locale } = useRouter();
 	const { currentItem } = useProductDetail();
 
 	const [currPage, setCurrPage] = useState<number>(1);
 	const [seletedStar, setSelectedStar] = useState<number>();
 	const [ratingProdItem, setRatingProdItem] = useState<IRatingProductItem>();
 	const [commentPagination, setCommentPagination] = useState<ICommentPagination>();
+	const [loadingComments, setLoadingComments] = useState<boolean>(true);
 
 	const { language } = useSettings();
 
@@ -36,9 +39,15 @@ export default function ProductComment() {
 	const handleGetCommentPagination = async (page: number, star?: number) => {
 		try {
 			if (currentItem) {
+				setLoadingComments(true);
 				const limit = parseInt(process.env.LIMI_COMMENT as string);
 				const response = await productApi.getCommentPagination(currentItem._id, page, limit, star);
-				setCommentPagination(response);
+				if (locale === "en") {
+					await handleTranslateComment(response);
+				} else {
+					setCommentPagination(response);
+				}
+				setLoadingComments(false);
 			}
 		} catch (error) {
 			toastError((error as IResponseError).error);
@@ -53,6 +62,34 @@ export default function ProductComment() {
 			}
 		} catch (error) {
 			toastError((error as IResponseError).error);
+		}
+	};
+
+	const handleTranslateComment = async (commentPagination: ICommentPagination) => {
+		try {
+			if (commentPagination.data.length > 0) {
+				const commentTrans: ICommentProdItem[] = commentPagination.data;
+				const comments: ICommentSimp[] = commentTrans.map((item) => ({
+					id: item._id,
+					content: item.content,
+				}));
+				const response = await commentApi.translateComment(comments);
+				const data = response.data;
+
+				for (let i = 0; i < commentTrans.length; i++) {
+					const comment = commentTrans[i];
+					const translate = data.find((item) => item.id === comment._id);
+					if (translate) {
+						comment.contentTrans = translate.contentTrans;
+					}
+				}
+				setCommentPagination({
+					data: commentTrans,
+					totalPage: commentPagination.totalPage,
+				});
+			}
+		} catch (error) {
+			toastError("Has error while translate comments");
 		}
 	};
 
@@ -77,11 +114,15 @@ export default function ProductComment() {
 					<div className="space-y-1">
 						{[...Array(5)]
 							.map((value, index) => {
-								const rateTypeFound = ratingProdItem.rateType.find((r) => r.rate === index + 1);
+								const rateTypeFound = ratingProdItem.rateType.find(
+									(r) => r.rate === index + 1
+								);
 								return (
 									<div key={index} className="flex items-center justify-start gap-x-1">
 										<GroupStars stars={index + 1} />
-										<p className="ml-2 dark:text-light-100 lg:text-heading-3">{rateTypeFound?.count || 0}</p>
+										<p className="ml-2 dark:text-light-100 lg:text-heading-3">
+											{rateTypeFound?.count || 0}
+										</p>
 									</div>
 								);
 							})
@@ -108,9 +149,20 @@ export default function ProductComment() {
 			{commentPagination && commentPagination.totalPage > 0 ? (
 				<Fragment>
 					<div className="lg:grid lg:grid-cols-2">
-						{commentPagination.data.map((item) => (
-							<Comment key={item._id} comment={item} />
-						))}
+						{loadingComments ? (
+							<>
+								<CommentCardLoader />
+								<CommentCardLoader />
+								<CommentCardLoader />
+								<CommentCardLoader />
+							</>
+						) : (
+							<>
+								{commentPagination.data.map((item) => (
+									<Comment key={item._id} comment={item} />
+								))}
+							</>
+						)}
 					</div>
 					<div className="flex items-center justify-center gap-x-2">
 						<button
@@ -142,7 +194,9 @@ export default function ProductComment() {
 				</Fragment>
 			) : (
 				<div className="flex flex-col items-center pt-[60px] md:pt-[40px] gap-y-4">
-					<p className="text-paragraph-4 md:text-paragraph-2">{language.product_detail_page.no_reviews}</p>
+					<p className="text-paragraph-4 md:text-paragraph-2">
+						{language.product_detail_page.no_reviews}
+					</p>
 				</div>
 			)}
 		</div>

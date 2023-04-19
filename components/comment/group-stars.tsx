@@ -14,8 +14,15 @@ interface Props {
 	className?: string;
 }
 
-export default function GroupStars({ stars, onChangeStars, error, name, option, register, className }: Props) {
-	console.log("className: ", className);
+export default function GroupStars({
+	stars,
+	onChangeStars,
+	error,
+	name,
+	option,
+	register,
+	className,
+}: Props) {
 	if (register && name && onChangeStars) {
 		// const { onChange, ...rest } = register(name, { ...option });
 
@@ -39,18 +46,34 @@ export default function GroupStars({ stars, onChangeStars, error, name, option, 
 				{[...Array(5)].map((value, index) => {
 					if (index < stars) {
 						return (
-							<label htmlFor={`star${index}`} key={index} onClick={() => handleClickStar(index + 1)}>
+							<label
+								htmlFor={`star${index}`}
+								key={index}
+								onClick={() => handleClickStar(index + 1)}
+							>
 								<Quality
 									fill={primary[100]}
-									className={clsx("w-6 h-6 text-primary-100 lg:w-7 lg:h-7", error && "text-red-accent", className)}
+									className={clsx(
+										"w-6 h-6 text-primary-100 lg:w-7 lg:h-7",
+										error && "text-red-accent",
+										className
+									)}
 								/>
 							</label>
 						);
 					}
 					return (
-						<label htmlFor={`star${index}`} key={index} onClick={() => handleClickStar(index + 1)}>
+						<label
+							htmlFor={`star${index}`}
+							key={index}
+							onClick={() => handleClickStar(index + 1)}
+						>
 							<Quality
-								className={clsx("w-6 h-6 text-primary-100 lg:w-7 lg:h-7", error && "text-red-accent", className)}
+								className={clsx(
+									"w-6 h-6 text-primary-100 lg:w-7 lg:h-7",
+									error && "text-red-accent",
+									className
+								)}
 							/>
 						</label>
 					);
@@ -65,7 +88,10 @@ export default function GroupStars({ stars, onChangeStars, error, name, option, 
 				if (index < stars) {
 					return (
 						<button key={index} disabled type="button">
-							<Quality fill={primary[100]} className={clsx("w-6 h-6 text-primary-100 lg:w-7 lg:h-7", className)} />
+							<Quality
+								fill={primary[100]}
+								className={clsx("w-6 h-6 text-primary-100 lg:w-7 lg:h-7", className)}
+							/>
 						</button>
 					);
 				}
