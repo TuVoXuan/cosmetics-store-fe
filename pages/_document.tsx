@@ -21,9 +21,9 @@ export default function Document() {
 					strategy="afterInteractive"
 					dangerouslySetInnerHTML={{
 						__html: `
-              const pageId = process.env.PAGE_ID
+              
               var chatbox = document.getElementById('fb-customer-chat');
-              chatbox.setAttribute("page_id", pageId);
+              chatbox.setAttribute("page_id", 110185948734131);
               chatbox.setAttribute("attribution", "biz_inbox");
             `,
 					}}

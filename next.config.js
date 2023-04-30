@@ -15,7 +15,6 @@ const nextConfig = {
 		MAPQUEST_KEY: process.env.MAPQUEST_KEY,
 		SHOP_LAT: process.env.SHOP_LAT,
 		SHOP_LNG: process.env.SHOP_LNG,
-		API_HOST: process.env.API_HOST,
 		LIMI_COMMENT: process.env.LIMI_COMMENT,
 		DOMAIN: process.env.DOMAIN,
 		PAGE_ID: process.env.PAGE_ID,
