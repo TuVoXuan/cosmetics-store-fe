@@ -6,7 +6,7 @@ import Footer from "../components/footer";
 import Header from "../components/header";
 import { getCategories } from "../redux/actions/category-action";
 import { getAddress } from "../redux/actions/user-action";
-import { recommendItemBase } from "../redux/actions/recommend-action";
+import { checkUserHasComments, recommendItemBase } from "../redux/actions/recommend-action";
 import { getShippingFeePerKm } from "../redux/actions/home-action";
 
 interface Props {
@@ -27,9 +27,13 @@ export default function MainLayout({ children }: Props) {
 		dispatch(getShippingFeePerKm()).unwrap();
 	};
 
-	const fetchRecommendedProducts = () => {
+	const fetchRecommendedProducts = async () => {
 		if (session) {
-			dispatch(recommendItemBase()).unwrap();
+			const response = await dispatch(checkUserHasComments()).unwrap();
+
+			if (response) {
+				dispatch(recommendItemBase()).unwrap();
+			}
 		}
 	};
 

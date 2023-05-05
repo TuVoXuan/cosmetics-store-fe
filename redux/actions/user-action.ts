@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import authApi from "../../api/auth-api";
 import { userApi } from "../../api/user-api";
 import { ISignInWithSocialMedia } from "../../types/apis/auth-api";
+import productApi from "../../api/product-api";
 
 export const SignInWithSocialMedia = createAsyncThunk(
 	"user/sign-in-with-social-media",

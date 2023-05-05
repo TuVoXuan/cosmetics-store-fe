@@ -32,23 +32,25 @@ export default function Comment({ comment }: Props) {
 			<p className="dark:text-light-100 text-paragraph-4 md:text-paragraph-2">
 				{locale === "en" && comment.contentTrans ? comment.contentTrans : comment.content}
 			</p>
-			<div className="space-y-3">
-				<button
-					onClick={handleSeeOriginComment}
-					className="flex items-center gap-x-3 text-secondary-100"
-				>
-					See original
-					<div ref={expandIconRef} className="transition-transform duration-300 ease-in-out">
-						<Expand height={16} width={16} />
-					</div>
-				</button>
-				<p
-					ref={originCommentRef}
-					className="hidden dark:text-light-100 text-paragraph-4 md:text-paragraph-2"
-				>
-					{comment.content}
-				</p>
-			</div>
+			{locale === "en" && (
+				<div className="space-y-3">
+					<button
+						onClick={handleSeeOriginComment}
+						className="flex items-center gap-x-3 text-secondary-100"
+					>
+						See original
+						<div ref={expandIconRef} className="transition-transform duration-300 ease-in-out">
+							<Expand height={16} width={16} />
+						</div>
+					</button>
+					<p
+						ref={originCommentRef}
+						className="hidden dark:text-light-100 text-paragraph-4 md:text-paragraph-2"
+					>
+						{comment.content}
+					</p>
+				</div>
+			)}
 			<p className="text-gray-300 dark:text-light-40 text-paragraph-4 md:text-paragraph-2">
 				{convertDate(comment.createdAt)}
 			</p>

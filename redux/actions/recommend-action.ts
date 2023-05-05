@@ -6,3 +6,12 @@ export const recommendItemBase = createAsyncThunk("recommend/item-based", async 
 
 	return response;
 });
+
+export const checkUserHasComments = createAsyncThunk("user/has-comments", async (_body, thunkAPI) => {
+	try {
+		const response = await productApi.checkUserHasComments();
+		return response;
+	} catch (error) {
+		return thunkAPI.rejectWithValue(error);
+	}
+});

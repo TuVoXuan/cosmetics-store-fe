@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
 import { getCategories } from "../actions/category-action";
-import { recommendItemBase } from "../actions/recommend-action";
+import { checkUserHasComments, recommendItemBase } from "../actions/recommend-action";
 
 interface IRecommendStore {
 	products: IProductItem[];
+	isUserHasComments: boolean;
 }
 
 const initialState: IRecommendStore = {
 	products: [],
+	isUserHasComments: false,
 };
 
 export const recommendSlide = createSlice({
@@ -20,6 +22,9 @@ export const recommendSlide = createSlice({
 			if (state.products.length === 0) {
 				state.products = action.payload;
 			}
+		});
+		builder.addCase(checkUserHasComments.fulfilled, (state, action: PayloadAction<boolean>) => {
+			state.isUserHasComments = action.payload;
 		});
 	},
 });
