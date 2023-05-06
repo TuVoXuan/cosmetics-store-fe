@@ -12,8 +12,11 @@ import { useAppSelector, useProductDetail } from "../../store/hooks";
 import ProductCardLoader from "../../components/card/skeleton-loader/product-card-loader";
 import { useRouter } from "next/router";
 import { English, Vietnamese } from "../../translation";
+import { useSession } from "next-auth/react";
 
 export default function ProductRecommend() {
+	const { data: session } = useSession();
+
 	const { locale } = useRouter();
 	const { currentItem } = useProductDetail();
 
@@ -140,7 +143,7 @@ export default function ProductRecommend() {
 			</div>
 
 			{/* products you may be like */}
-			{isUserHasComments && (
+			{isUserHasComments && session && (
 				<div>
 					<div className="md:flex md:justify-between md:mb-16 xl:mb-[72px]">
 						<TitlePage
