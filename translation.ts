@@ -237,8 +237,7 @@ export const English = {
 		input_specific_address_label: "Specific address",
 		input_specific_address_required_mes: "Specific address is required",
 		input_specific_address_placeholder: "Tổ dân phố 4B",
-		noted:
-			"*Note: when you finish editing the address on the form, click the View location button on the map to see if your delivery location is correct.",
+		noted: "*Note: when you finish editing the address on the form, click the View location button on the map to see if your delivery location is correct.",
 		view_location_in_map_btn: "View location on map",
 		confirm_location_btn: "Confirm location",
 		create_address_btn: "Create an address",
@@ -252,6 +251,7 @@ export const English = {
 		mes_update_location_success: "Address update successful",
 		mes_create_location_success: "Successfully created address",
 		mes_submit_form_error: "An error has occurred. Please try again later",
+		btn_update: "Update",
 	},
 	account_orders_history: {
 		personal_subtitle: "Personal",
@@ -329,7 +329,8 @@ export const English = {
 		great_innovation_title: "Great innovation",
 		great_innovation_body: "We are always focusing on making all our products as innovative as possible.",
 		high_quality_title: "High quality",
-		high_quality_body: "One of our main values is the quality of the products that we sell to the customers.",
+		high_quality_body:
+			"One of our main values is the quality of the products that we sell to the customers.",
 		teamwork_matters_title: "Teamwork matters",
 		teamwork_matters_body: "We believe that being a successful company is all about being a team.",
 	},
@@ -376,7 +377,8 @@ export const English = {
 	},
 	error_page: {
 		using_another_account_mes: "Try signing with a different account.",
-		sign_in_with_original_account_mes: "To confirm your identity, sign in with the same account you used originally.",
+		sign_in_with_original_account_mes:
+			"To confirm your identity, sign in with the same account you used originally.",
 		check_email_mes: "Check your email address.",
 		invalid_credentical_mes: "Sign in failed. Check the details you provided are correct.",
 		unable_sign_in_mes: "Unable to sign in.",
@@ -439,7 +441,8 @@ export const Vietnamese = {
 		why_us_service_title: "Chăm sóc khách hàng",
 		why_us_service_body: "Chúng tôi cung cấp dịch vụ khách hàng tuyệt vời bất kể điều gì xảy ra.",
 		why_us_quality_title: "Chất lượng cao",
-		why_us_quality_body: "Tất cả các sản phẩm của chúng tôi đều được kiểm tra rất nghiêm ngặt trước khi gửi đi.",
+		why_us_quality_body:
+			"Tất cả các sản phẩm của chúng tôi đều được kiểm tra rất nghiêm ngặt trước khi gửi đi.",
 		our_review_sub_title: "Nhận xét của chúng tôi",
 		our_review_title: "Khách hàng của chúng tôi nói gì",
 		our_newletter_sub_title: "Bản tin của chúng tôi",
@@ -458,9 +461,13 @@ export const Vietnamese = {
 			"Nếu bạn đang nghĩ đến việc thực hiện một đơn đặt hàng rất lớn, xin vui lòng liên hệ " +
 			"với chúng tôi tại sales@hygge.com và chúng tôi sẽ giảm giá đặc biệt cho bạn",
 		question_3: "Quan hệ công chúng",
-		answer_3: "Bạn có thể liên hệ với nhóm truyền thông của chúng tôi bằng cách gửi email " + "general@hygge.com",
+		answer_3:
+			"Bạn có thể liên hệ với nhóm truyền thông của chúng tôi bằng cách gửi email " +
+			"general@hygge.com",
 		question_4: "Các câu hỏi khác",
-		answer_4: "Đối với tất cả các câu hỏi khác của bạn, vui lòng gửi email cho chúng tôi tại " + "general@hygge.com",
+		answer_4:
+			"Đối với tất cả các câu hỏi khác của bạn, vui lòng gửi email cho chúng tôi tại " +
+			"general@hygge.com",
 		reach_out_to_us: "Liên hệ với chúng tôi",
 		reach_out_to_us_title: "Vui lòng điền vào mẫu liên hệ",
 		full_name: "Họ tên",
@@ -586,7 +593,8 @@ export const Vietnamese = {
 		input_old_pass_require_mes: "Nhập mật khẩu cũ",
 		input_new_pass_label: "Mật khẩu mới",
 		input_new_pass_required_mes: "Nhập mật khẩu mới",
-		input_new_pass_not_match_mes: "Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
+		input_new_pass_not_match_mes:
+			"Mật khẩu phải chứa ít nhất 8 kí tự bao gồm 1 chữ, 1 số, 1 kí tự đặc biệt",
 		input_new_pass_repeat_label: "Nhập lại",
 		input_new_pass_repeat_not_match_new_pass: "Không trùng với mật khẩu mới",
 		input_new_pass_repeat_require_mes: "Nhập lại mật khẩu mới",
@@ -626,8 +634,7 @@ export const Vietnamese = {
 		input_specific_address_label: "Địa chỉ cụ thể",
 		input_specific_address_required_mes: "Yêu cầu nhập địa chỉ cụ thể",
 		input_specific_address_placeholder: "Tổ dân phố 4B",
-		noted:
-			"*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy Click nút Xem vị trí trên map để xem vị trí nhận hàng của bạn có chính xác không.",
+		noted: "*Lưu ý: khi bạn chỉnh địa chỉ trên form xong thì hãy Click nút Xem vị trí trên map để xem vị trí nhận hàng của bạn có chính xác không.",
 		view_location_in_map_btn: "Xem vị trí trên map",
 		confirm_location_btn: "Xác nhận vị trí",
 		create_address_btn: "Tạo địa chỉ",
@@ -641,6 +648,7 @@ export const Vietnamese = {
 		mes_update_location_success: "Cập nhập địa chỉ thành công",
 		mes_create_location_success: "Tạo địa chỉ thành công",
 		mes_submit_form_error: "Đã có lỗi xảy ra. Vui lòng thử lại sau",
+		btn_update: "Cập nhật",
 	},
 	account_orders_history: {
 		personal_subtitle: "Cá nhân",
@@ -718,9 +726,11 @@ export const Vietnamese = {
 		great_innovation_title: "Bắt kịp xu thế",
 		great_innovation_body: "Chúng tôi luôn cập nhập các xu thế mới nhất lên sản phẩm của mình.",
 		high_quality_title: "Chất lượng tốt",
-		high_quality_body: "Tất cả các sản phẩm của chúng tôi đều được kiểm tra rất nghiêm ngặt trước khi gửi đi.",
+		high_quality_body:
+			"Tất cả các sản phẩm của chúng tôi đều được kiểm tra rất nghiêm ngặt trước khi gửi đi.",
 		teamwork_matters_title: "Làm việc nhóm",
-		teamwork_matters_body: "Chúng tôi tin rằng trở thành một công ty thành công là tất cả về việc trở thành một đội.",
+		teamwork_matters_body:
+			"Chúng tôi tin rằng trở thành một công ty thành công là tất cả về việc trở thành một đội.",
 	},
 	legal_page: {
 		legal_sub_title: "Hợp pháp",

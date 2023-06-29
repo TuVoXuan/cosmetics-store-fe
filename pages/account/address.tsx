@@ -349,7 +349,7 @@ export default function Address() {
 				btnType="submit"
 				type="primary"
 			>
-				{language.account_address_page.create_address_btn}
+				{updateAddressId ? language.account_address_page.btn_update : language.account_address_page.create_address_btn}
 			</Button>
 		</section>
 	);

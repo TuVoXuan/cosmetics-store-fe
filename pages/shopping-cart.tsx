@@ -75,7 +75,14 @@ export default function ShoppingCart() {
 	};
 
 	const handleCheckout = () => {
-		router.push(APP_PATH.CHECKOUT);
+		if (defaultAddress) {
+			router.push(APP_PATH.CHECKOUT);
+		} else {
+			toast(language.shopping_cart_page.warning_default_address, {
+				duration: 10000,
+				icon: <Warning className="text-yellow-tertiary-100 shrink-0" />,
+			});
+		}
 	};
 
 	useEffect(() => {
@@ -171,7 +178,7 @@ export default function ShoppingCart() {
 								</p>
 							</div>
 						</div>
-						<Button className="w-full" type="primary" onClick={handleCheckout}>
+						<Button disable={cart.length === 0} className="w-full" type="primary" onClick={handleCheckout}>
 							{language.shopping_cart_page.checkout}
 						</Button>
 					</div>
