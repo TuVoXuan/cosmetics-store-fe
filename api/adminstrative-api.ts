@@ -1,7 +1,7 @@
 import axiosService from "./axios-service";
 
 // const API = "https://vapi.vnappmob.com";
-const API = "http://www.mapquestapi.com";
+const API = process.env.MAPQUEST_URL;
 const MapQuestKey = process.env.MAPQUEST_KEY;
 
 const adminstrativeApi = {

@@ -18,6 +18,7 @@ const nextConfig = {
 		LIMI_COMMENT: process.env.LIMI_COMMENT,
 		DOMAIN: process.env.DOMAIN,
 		PAGE_ID: process.env.PAGE_ID,
+		MAPQUEST_URL: process.env.MAPQUEST_URL,
 	},
 	images: {
 		domains: ["i.pinimg.com", "res.cloudinary.com"],
